@@ -20,7 +20,7 @@ In Ubuntu 22.04, it seems that Apache can't acccess the directories, unless you 
 .. code-block:: sh
    
    $ chmod -R 755 /data/
-   $ chmod 777 /data/qmanager/campaigns.log
+   $ chmod 777 /data/deephunter/campaigns.log
 
 Install the database
 ********************
@@ -30,9 +30,9 @@ Install the database
 	$ sudo apt install mariadb-server libmariadb-dev
 	$ sudo mysql_secure_installation
 	$ mysql -u root -p
-	mysql> create database qmanager;
-	mysql> create user qmanager@localhost identified by 'Awes0meP4ssW0rd';
-	mysql> grant all privileges on qmanager.* to qmanager@localhost;
+	mysql> create database deephunter;
+	mysql> create user deephunter@localhost identified by 'Awes0meP4ssW0rd';
+	mysql> grant all privileges on deephunter.* to deephunter@localhost;
 	mysql> \q
 
 Install the python dependencies
@@ -89,7 +89,7 @@ Below line is mandatory because ``dhparam.pem`` is required in ``ssl-params.conf
 
 	$ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 	$ sudo a2enconf ssl-params
-	$ sudo a2ensite qmanager-ssl
+	$ sudo a2ensite deephunter-ssl
 
 Restart apache2:
 
@@ -105,9 +105,9 @@ You can use the crontab in ``qm/scripts/crontab``.
 .. code-block:: sh
 
 	# m h  dom mon dow   command
-	0  4 * * *      /data/qmanager/qm/scripts/run_campaign.sh
-	30 5 * * *      /data/qmanager/qm/scripts/optimize_db.sh
-	0  6 * * *      /data/qmanager/qm/scripts/backup.sh
+	0  4 * * *      /data/deephunter/qm/scripts/run_campaign.sh
+	30 5 * * *      /data/deephunter/qm/scripts/optimize_db.sh
+	0  6 * * *      /data/deephunter/qm/scripts/backup.sh
 
 For details about the scripts, see the `scripts page <scripts.html>`_.
 
@@ -155,7 +155,7 @@ Modify ``/etc/default/celery`` to fit with your environment. An example is given
 
 	CELERYD_NODES="w1"
 	CELERY_BIN="/data/venv/bin/celery"
-	CELERY_APP="qmanager"
+	CELERY_APP="deephunter"
 	CELERYD_MULTI="multi"
 	CELERYD_OPTS="--time-limit=3600 --concurrency=3"
 	CELERYD_PID_FILE="/var/run/celery/%n.pid"
@@ -183,7 +183,7 @@ Fix permissions:
 .. code-block:: sh
 
 	$ chmod -R 755 /data
-	$ chmod 777 /data/qmanager/campaigns.log 
+	$ chmod 777 /data/deephunter/campaigns.log 
 
 To start the Celery service automatically, you may want to create a file in ``/etc/systemd/system/celery.service`` as follows:
 
@@ -198,7 +198,7 @@ To start the Celery service automatically, you may want to create a file in ``/e
 	User=celery
 	Group=celery
 	EnvironmentFile=/etc/default/celery
-	WorkingDirectory=/data/qmanager
+	WorkingDirectory=/data/deephunter
 	ExecStart=/bin/sh -c '${CELERY_BIN} -A $CELERY_APP multi start $CELERYD_NODES \
 		--pidfile=${CELERYD_PID_FILE} --logfile=${CELERYD_LOG_FILE} \
 		--loglevel="${CELERYD_LOG_LEVEL}" $CELERYD_OPTS'

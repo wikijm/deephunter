@@ -9,5 +9,4 @@ DeepHunter is shipped with some scripts, located under the ``./qm/scripts/`` fol
 - **deploy.sh**: deployment script that you can use to update the application.
 - **optimize_db.sh**: script to optimize the database after the ``run_campaign.sh`` script is executed.
 - **run_campaign.sh**: launcher for running "dynamic" threat hunting analytics and daily campaigns script.
-- **update_docs.sh**: script to generate the updated sphinx documentation (in ``./static/html/``) when ``*.rst`` files are updated in ``./static/docs/``.
 - **vulnerable_driver_name_detected_loldriver.py**: Script of the dynamic threat hunting analytic called ``vulnerable_driver_name_detected_loldriver.py``. It relies on the ``runscript`` command of the ``django-extensions`` package.

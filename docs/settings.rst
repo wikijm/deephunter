@@ -192,12 +192,12 @@ INSTALLED_APPS
 ROOT_URLCONF
 ************
 - **Type**: string
-- **Description**: Main URL file used by DeepHunter. Default value: ``qmanager.urls``. Do not modify this value.
+- **Description**: Main URL file used by DeepHunter. Default value: ``deephunter.urls``. Do not modify this value.
 - **Example**: 
 
 .. code-block:: py
 	
-	ROOT_URLCONF = 'qmanager.urls'
+	ROOT_URLCONF = 'deephunter.urls'
 
 DATABASES
 *********
@@ -210,8 +210,8 @@ DATABASES
 	DATABASES = {
 		'default': {
 			'ENGINE': 'django.db.backends.mysql',
-			'NAME': 'qmanager',
-			'USER': 'qmanager',
+			'NAME': 'deephunter',
+			'USER': 'deephunter',
 			'PASSWORD': 'D4t4b453_P455w0rD',
 			'HOST': '127.0.0.1',
 			'PORT': '3306'
@@ -238,7 +238,7 @@ STATIC_URL
 .. code-block:: py
 
 	STATIC_URL = 'static/'
-	STATIC_ROOT = '/data/qmanager/static'
+	STATIC_ROOT = '/data/deephunter/static'
 
 
 SentinelOne API
