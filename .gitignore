@@ -1,0 +1,7 @@
+*.pyc
+*/migrations/*
+db.sqlite3
+_docs/*
+campaigns.log
+settings.py
+static/mitre.json
