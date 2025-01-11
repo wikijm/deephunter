@@ -45,6 +45,15 @@ Enter the virtual environment:
 	$ source /data/venv/bin/activate
 	(venv) $ pip install -r requirements.txt
 
+Download DeepHunter
+*******************
+To download DeepHunter, use the following git command:
+
+.. code-block:: sh
+
+	$ cd /data/
+	$ git clone https://github.com/sebastiendamaye/deephunter.git
+
 Initialization
 **************
 See the `settings <settings.html>`_ page.
@@ -53,14 +62,15 @@ Initialize the database:
 
 .. code-block:: sh
 
-	$ ./manage makemigrations
-	$ ./manage migrate
+	$ source /data/venv/bin/activate
+	(venv) $ ./manage makemigrations
+	(venv) $ ./manage migrate
 
 Load data:
 
 .. code-block:: sh
 
-	$ ./manage.py loaddata _docs/backup/qm.json
+	(venv) $ ./manage.py loaddata _docs/backup/qm.json
 
 Try to run ``./manage.py runserver`` on default port 8000 and confirm that there is no error
 
@@ -116,8 +126,8 @@ Encrypted backups
 
 .. code-block:: sh
 
-	$ pip install django-dbbackup
-	$ pip install python-gnupg>=0.5.0
+	(venv) $ pip install django-dbbackup
+	(venv) $ pip install python-gnupg>=0.5.0
 
 Generate a PGP key and set ``DBBACKUP_GPG_RECIPIENT`` to recipient in ``settings.py``.
 
@@ -127,7 +137,7 @@ Encrypt:
 
 .. code-block:: sh
 
-	$ python manage.py dbbackup --encrypt
+	(venv) $ ./manage.py dbbackup --encrypt
 
 Restore from an encrypted backup:
 
@@ -183,7 +193,7 @@ Fix permissions:
 .. code-block:: sh
 
 	$ chmod -R 755 /data
-	$ chmod 777 /data/deephunter/campaigns.log 
+	$ chmod 666 /data/deephunter/campaigns.log 
 
 To start the Celery service automatically, you may want to create a file in ``/etc/systemd/system/celery.service`` as follows:
 
