@@ -18,18 +18,19 @@ GITHUB_URL=$(grep -oP 'GITHUB_URL\s?=\s?"\K[^"]+' $APP_PATH/deephunter/settings.
 read -p "About to start upgrade. Press <ENTER> to continue"
 echo "[INFO] STARTING UPGRADE..."
 
-# Stop apache2
+# Stop services
 echo "[INFO] Stopping services..."
 sudo systemctl stop apache2
 sudo systemctl stop celery
 sudo systemctl stop redis-server
 
 # Backup DB (non encrypted)
+echo "[INFO] Starting DB backup..."
 rm -fR $TEMP_FOLDER/DB
 mkdir -p $TEMP_FOLDER/DB
 source $VENV_PATH/bin/activate
 cd $APP_PATH
-$VENV_PATH/bin/python3 manage.py dbbackup -O $TEMP_FOLDER/DB
+$VENV_PATH/bin/python3 manage.py dumpdata > $TEMP_FOLDER/DB/dump.json
 #leave virtual env
 deactivate
 
@@ -37,9 +38,10 @@ deactivate
 echo "[INFO] Backup application..."
 rm -fR $TEMP_FOLDER/deephunter
 mkdir -p $TEMP_FOLDER
-mv $APP_PATH $TEMP_FOLDER
+cp -R $APP_PATH $TEMP_FOLDER
 
 read -p "About to download new version. Press <ENTER> to continue"
+rm -fR $APP_PATH
 # Download new version
 echo "[INFO] Downloading new version from github..."
 rm -fR $APP_PATH
