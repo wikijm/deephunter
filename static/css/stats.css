@@ -1,0 +1,49 @@
+table, th, td {
+	border: solid 1px #ccc;
+	border-collapse: collapse;
+}
+.left15 {
+	float:left;
+	width:15%;
+}
+
+.w100 {
+	width:100px;
+}
+.w800 {
+	width:800px;
+	word-wrap: break-word;
+	word-break:break-all;
+}
+.w50 {
+	width:50px;
+}
+.acenter {
+	text-align:center;
+}
+.aright {
+	text-align:right;
+}
+
+.chartcontainer {
+	height: 300px;
+	width:100%;
+}
+
+#fsearch {
+	float:left;
+}
+#fhelp {
+	float:right;	
+}
+#fclear {
+	clear:both;
+}
+.vis-item.blue {
+	background-color: #d5ddf6;
+	border-color: #a9bef9;
+}
+.vis-item.red {
+	background-color: red;
+	border-color: darkred;
+}

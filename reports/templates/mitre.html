@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<h1>MITRE ATT&amp;CK Enterprise coverage</h1>
+<p>&nbsp;</p>
+{% for i in ttp %}
+	<div>
+		<div class="mitre_tactic" title="{{ i.mitre_id }}">{{ i.name }}</div>
+		{% for t in i.techniques %}
+		<div class="mitre_{% if t.numqueries > 0 %}green{% else %}red{% endif %}" title="{{ t.mitre_id }} - {{ t.name }}: {{ t.numqueries }} (sub)techniques">&nbsp;</div>
+		{% endfor %}
+	</div>
+	<div class="mitre_clear"></div>
+{% endfor %}
+<p>
+<div><b>Legend: </b></div>
+<div class="mitre_green">&nbsp;</div>&nbsp;covered (1 or more analytics)
+<div class="mitre_clear"></div>
+<div class="mitre_red">&nbsp;</div>&nbsp;uncovered (no analytic, or unmaped technique)
+<div class="mitre_clear"></div>
+</p>
+
+<p>&nbsp;</p>
+<p>You can also download the <a href="/static/mitre.json">mitre.json</a> file (right click and select "Save Link As") and upload it to <a target="_blank" href="https://mitre-attack.github.io/attack-navigator/">MITRE ATT&CK Navigator</a></p>
+{% endblock %}

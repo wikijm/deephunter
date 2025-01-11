@@ -1,0 +1,64 @@
+{% load qm_extras %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/css/base.css">
+{% block style %}{% endblock %}
+</head>
+<body>
+
+<section>
+    <div class="rt-container">
+		<div class="col-rt-12">
+			<div class="Scriptcontent">
+				<div id="container">
+					<nav>
+						<ul>
+							<li><a class="deephunter" href="#">DeepHunter<span class="blinking-cursor">_</span></a></li>
+
+							<li><a class="{{ request.path|isactiveurl:"/" }}" href="/">Analytics</a></li>
+							<li><a class="{{ request.path|isactiveurl:"/timeline" }}" href="/timeline">Timeline</a></li>
+							<li><a class="{{ request.path|isactiveurl:"/netview" }}" href="/netview">Netview</a></li>
+
+							<li><a href="#">Reports</a>
+							<ul>
+								<li><a class="{{ request.path|isactiveurl:"/reports/campaigns_stats" }}" href="/reports/campaigns_stats">Stats</a></li>
+								<li><a class="{{ request.path|isactiveurl:"/reports/endpoints" }}" href="/reports/endpoints">Endpoints</a></li>
+								<li><a class="{{ request.path|isactiveurl:"/reports/mitre" }}" href="/reports/mitre">Current MITRE coverage</a></li>
+								<li><a class="{{ request.path|isactiveurl:"/reports/missing_mitre" }}" href="/reports/missing_mitre">Missing MITRE mapping</a></li>
+							</ul>        
+							</li>
+
+							<li><a href="#">Tools</a>
+							<ul>
+								<li><a class="{{ request.path|isactiveurl:"/extensions/vthashchecker" }}" href="/extensions/vthashchecker">VirusTotal Hash Checker</a></li>
+								<li><a class="{{ request.path|isactiveurl:"/extensions/loldriverhashchecker" }}" href="/extensions/loldriverhashchecker">LOL Driver Hash Checker</a></li>
+								<li><a class="{{ request.path|isactiveurl:"/extensions/whois" }}" href="/extensions/whois">Whois</a></li>
+							</ul>        
+							</li>
+
+							<li><a href="#">Admin</a>
+							<ul>
+								<li><a class="{{ request.path|isactiveurl:"/admin" }}" href="/admin">Backend</a></li>
+								{% if request.user.is_superuser %}
+									<li><a class="{{ request.path|isactiveurl:"/debug" }}" href="/debug">Debug</a></li>
+								{% endif %}
+								<li><a href="/logout">Log out</a></li>
+							</ul> 
+							</li>
+
+							<li><a target="_blank" href="https://deephunter.readthedocs.io/en/latest/">Help</a></li>
+
+						</ul>
+					</nav>
+				</div>
+    		</div>
+		</div>
+    </div>
+</section>
+
+{% block body %}{% endblock %}
+</body>
+</html>

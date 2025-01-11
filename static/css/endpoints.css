@@ -1,0 +1,36 @@
+.w600 {
+	width:600px;
+}
+.w200 {
+	width:200px;
+}
+.acenter {
+	text-align: center;
+}
+
+.confidence_1 {
+    /*confidence low, yellow*/
+	width:50px;
+	text-align:center;
+    background:#ffff00;
+}
+.confidence_2 {
+	/* confidence medium, orange */
+	width:50px;
+	text-align:center;
+	background:#fca40a;
+}
+.confidence_3 {
+	/* confidence high, red */
+	width:50px;
+	text-align:center;
+	background:#ff0000;
+	color:#fff;
+}
+.confidence_4 {
+	/* confidence critical, dark blue */
+	width:50px;
+	text-align:center;
+	background:#3a3470;
+	color:#fff;
+}

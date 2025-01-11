@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/css/stats.css" />
+<script src="/static/jquery/jquery.min.js"></script>
+<script src="/static/canvasjs/jquery.canvasjs.min.js"></script>
+{% endblock %}
+
+{% block body %}
+<h1>Stats campaigns last 90 days</h1>
+
+<div id="chartContainer_count_analytics" class="chartcontainer"></div>
+<div id="chartContainer_duration" class="chartcontainer"></div>
+<div id="chartContainer_count_endpoints" class="chartcontainer"></div>
+
+<script nonce="fgd56sh1bc">
+window.onload = function () {
+
+var options_count_analytics = {
+	animationEnabled: true,
+	axisX:{
+		valueFormatString: "DD MMM"
+	},
+	toolTip:{
+		shared:true
+	},  
+	legend:{
+		cursor:"pointer",
+		verticalAlign: "bottom",
+		horizontalAlign: "left",
+		dockInsidePlotArea: true,
+		itemclick: toogleDataSeries
+	},
+	data: [
+	{
+		type: "line",
+		showInLegend: true,
+		name: "#analytics",
+		markerType: "square",
+		xValueFormatString: "DD MMM, YYYY",
+		color: "#2596be",
+		yValueFormatString: "#,##0",
+		dataPoints: [
+			{% for s in stats %}
+				{ x: new Date("{{ s.date|date:"Y-m-d" }}"), y: {{ s.count_analytics }} },
+			{% endfor %}
+		]
+	}
+	]
+};
+
+var options_duration = {
+	animationEnabled: true,
+	axisX:{
+		valueFormatString: "DD MMM"
+	},
+	toolTip:{
+		shared:true
+	},  
+	legend:{
+		cursor:"pointer",
+		verticalAlign: "bottom",
+		horizontalAlign: "left",
+		dockInsidePlotArea: true,
+		itemclick: toogleDataSeries
+	},
+	data: [
+	{
+		type: "line",
+		showInLegend: true,
+		name: "duration",
+		markerType: "square",
+		xValueFormatString: "DD MMM, YYYY",
+		color: "#2596be",
+		yValueFormatString: "#,##0",
+		dataPoints: [
+			{% for s in stats %}
+				{ x: new Date("{{ s.date|date:"Y-m-d" }}"), y: {{ s.duration }} },
+			{% endfor %}
+		]
+	}
+	]
+};
+
+var options_count_endpoints = {
+	animationEnabled: true,
+	axisX:{
+		valueFormatString: "DD MMM"
+	},
+	toolTip:{
+		shared:true
+	},  
+	legend:{
+		cursor:"pointer",
+		verticalAlign: "bottom",
+		horizontalAlign: "left",
+		dockInsidePlotArea: true,
+		itemclick: toogleDataSeries
+	},
+	data: [
+	{
+		type: "line",
+		showInLegend: true,
+		name: "#endpoints",
+		markerType: "square",
+		xValueFormatString: "DD MMM, YYYY",
+		color: "#2596be",
+		yValueFormatString: "#,##0",
+		dataPoints: [
+			{% for s in stats %}
+				{ x: new Date("{{ s.date|date:"Y-m-d" }}"), y: {{ s.count_endpoints }} },
+			{% endfor %}
+		]
+	}
+	]
+};
+
+$("#chartContainer_count_analytics").CanvasJSChart(options_count_analytics);
+$("#chartContainer_duration").CanvasJSChart(options_duration);
+$("#chartContainer_count_endpoints").CanvasJSChart(options_count_endpoints);
+
+function toogleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else{
+		e.dataSeries.visible = true;
+	}
+	e.chart.render();
+}
+
+}
+</script>
+{% endblock %}

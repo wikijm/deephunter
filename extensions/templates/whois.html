@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="margin10">
+<h1>Whois</h1>
+<p>This extension is performing a whois query from the whois.com online service</p>
+
+<form method="post" action="">
+	{% csrf_token %}
+	<label for="ip">IP address:</label>
+	<input type="text" id="ip" name="ip" value="{{ ip }}" />
+	<input type="submit" value="Whois" />
+</form>
+<p>&nbsp;</p>
+{% if output %}
+<pre>
+{{ output }}
+</pre>
+{% endif %}
+</div>
+{% endblock %}

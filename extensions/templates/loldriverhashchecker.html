@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="margin10">
+<h1>LOL Driver Hash Checker</h1>
+<p>This extension is checking a list of SHA256 hashes against the loldrivers.io website</p>
+
+<form method="post" action="">
+	{% csrf_token %}
+	<label for="hashes">List of SHA256 hashes (1 per line):</label>
+	<br /><textarea id="hashes" class="hash" name="hashes">{{ hashes }}</textarea>
+	<br /><input type="submit" value="Check hashes" />
+</form>
+<p>&nbsp;</p>
+{% if output %}
+<p>List of hashes found in the LOLDrivers database:</p>
+<ul>
+	{% for hash in output %}
+		<li class="hash">{{ hash }}</li>
+	{% endfor %}
+</ul>
+{% endif %}
+</div>
+{% endblock %}

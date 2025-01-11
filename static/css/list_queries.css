@@ -1,0 +1,258 @@
+.toggle-row .fa {
+  transition: all .4s ease;
+}
+.toggle-row.active .fa {
+  transform: rotate(90deg);
+}
+tr.row-summary td {
+	background: #e9e9e9;
+}
+
+table.tablesorter {
+	/*
+	width: 100%;
+	max-width: 100%;
+	*/
+}
+
+pre {
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+}
+
+div.description {
+  display: block;
+  padding: 5px;
+  margin: 5px 30px 0;
+  font-size: 13px;
+  line-height: 1.42857143;
+  color: #333;
+  word-break: break-all;
+  word-wrap: break-word;
+  width:1000px;
+  /*
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  */
+}
+
+h1 {
+	/*font-weight: bold;*/
+	font-size: 20px;
+	color: #417690; /*#21c488;*/
+}
+/* Used for markdown in description and threat hunting notes */
+h2 {
+	font-weight: bold;
+	font-size: 13px;
+	text-transform: uppercase;
+}
+
+.button {
+  font: bold 13px Arial;
+  text-decoration: none;
+  color: #417690; /*#21c488;*/
+  padding: 2px 6px 2px 6px;
+  border: solid 1px #417690; /*#21c488;*/
+	border-radius: 8px;
+}
+.buttonred {
+  font: bold 13px Arial;
+  text-decoration: none;
+  color: #ff0000;
+  padding: 2px 6px 2px 6px;
+  border: solid 1px #ff0000;
+	border-radius: 8px;
+}
+
+table.mitre {
+	border: solid 1px #ccc;
+}
+table.mitre td {
+	border: solid 1px #ccc;
+	padding: 5px;
+}
+table.mitre th {
+	background: #eee;
+	padding: 5px;
+}
+
+.float-container {
+    /*
+	border: 3px solid #fff;
+    */
+	padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row nowrap;
+
+}
+
+.float-child {
+    /*width: 50%;*/
+    float: left;
+    padding: 20px;
+    /*border: 2px solid red;*/
+}
+.float-child.menu {
+    /*margin-right: 100px;*/
+	/*width:350px;*/
+  flex: 0 1 20em;
+  padding-right: 1em;
+  /*outline: 1px solid red;*/
+}
+.float-child.content {
+	/*width:auto;*/
+  flex: 1 1 1%;
+  padding-left: 1em;
+  /*outline: 1px solid blue;*/
+}
+
+div.filter {
+	margin-top:5px;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+td.orange {
+	background:#fca40a;
+}
+td.red {
+	background:#ff0000;
+	color:#fff;
+}
+h4 {
+	margin-top:30px;
+}
+
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('/static/fontawesome/fontawesome-webfont.eot?v=4.7.0');
+	src: url('/static/fontawesome/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'), url('/static/fontawesome/fontawesome-webfont.woff2?v=4.7.0') format('woff2'), url('/static/fontawesome/fontawesome-webfont.woff?v=4.7.0') format('woff'), url('/static/fontawesome/fontawesome-webfont.ttf?v=4.7.0') format('truetype'), url('/static/fontawesome/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+.fa{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.fa-search:before{content:"\f002"}
+.fa-circle-xmark:before{content:"\f057"}
+
+.button_filter {
+	background-color: #57699e;
+	color: #ffffff;
+	border-radius: 8px;
+	margin-right:5px;
+	float:left;
+	border: 0;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top:3px;
+	padding-bottom:3px;
+	margin-bottom: 10px;
+}
+
+#divfilters {
+	clear:both;
+	padding:5px;
+}
+
+#search {
+	width:240px;
+}
+
+.floatleft {
+	float:left;
+}
+.floatrightpadding {
+	float:right;
+	padding-top:30px;
+}
+
+.confidence_1 {
+    /*confidence low, yellow*/
+	text-align:center;
+    background:#ffff00;
+}
+.confidence_2 {
+	/* confidence medium, orange */
+	text-align:center;
+	background:#fca40a;
+}
+.confidence_3 {
+	/* confidence high, red */
+	text-align:center;
+	background:#ff0000;
+	color:#fff;
+}
+.confidence_4 {
+	/* confidence critical, dark blue */
+	text-align:center;
+	background:#3a3470;
+	color:#fff;
+}
+
+.acenter {
+	text-align: center;
+}
+
+.aright {
+	text-align: right;
+}
+
+.alert_orange {
+	background:#fca40a;
+	font-weight: bold;
+}
+
+.alert_red {
+	background:#ff0000;
+	color: #fff;
+	font-weight: bold;
+}
+
+.m10 {
+	margin:10px;
+}
+
+.ml40 {
+	margin-left:40px;
+}
+
+.w1000 {
+	width; 1000px;
+	max-width: 1000px;
+}
+
+div.vuln {
+	float:left;
+	margin-left:10px;
+	padding-left:5px;
+	padding-right:5px;
+	background:{{ vulnerability.base_score|cvecolor }};
+}
+
+.cve_critical {
+    background: #8a8787;
+	color: #fff;
+}
+.cve_high {
+    background: #f76863;
+	color:#fff;
+}
+.cve_medium {
+    background: #f0b848;
+	color:#fff;
+}
+.cve_low {
+    background: #3dcc63;
+}
+.cve_none {
+    background: #eee;
+}
+
+div.progress {
+	float:right;
+}

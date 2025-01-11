@@ -1,0 +1,51 @@
+{% extends "admin/base_site.html" %}
+{% load qm_extras %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static "admin/css/login.css" %}">
+{{ form.media }}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} login{% endblock %}
+
+{% block usertools %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block nav-breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+<form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+  {% settings_value "SHOW_LOGIN_FORM" as SHOW_LOGIN_FORM %}
+  {% if SHOW_LOGIN_FORM %}
+	  <div class="form-row">
+		{{ form.username.errors }}
+		{{ form.username.label_tag }} {{ form.username }}
+	  </div>
+	  <div class="form-row">
+		{{ form.password.errors }}
+		{{ form.password.label_tag }} {{ form.password }}
+		<input type="hidden" name="next" value="{{ next }}">
+	  </div>
+	  {% url 'admin_password_reset' as password_reset_url %}
+	  {% if password_reset_url %}
+	  <div class="password-reset-link">
+		<a href="{{ password_reset_url }}">{% translate 'Forgotten your password or username?' %}</a>
+	  </div>
+	  {% endif %}
+  {% endif %}
+  <div class="submit-row">
+    {% if SHOW_LOGIN_FORM %}
+		<input type="submit" value="{% translate 'Log in' %}">
+	{% endif %}
+    &nbsp;&nbsp;&nbsp;<a href="/sso">Login using SSO &raquo;</a>
+  </div>
+</form>
+</div>
+{% endblock %}

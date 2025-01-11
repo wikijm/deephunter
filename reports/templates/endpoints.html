@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load qm_extras %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/bootstrap_table_expandable/bootstrap-table-expandable.css">
+<link rel="stylesheet" href="/static/css/endpoints.css">
+<script src="/static/jquery/jquery.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/bootstrap_table_expandable/bootstrap-table-expandable.js"></script>
+{% endblock %}
+{% block body %}
+<h1>Top 20 endpoints identified in today's campaign</h1>
+<table class="table table-hover table-expandable table-striped">
+	<thead>
+		<tr>
+			<th>Hostname</th>
+			<th>Weighted score</th>
+			<th># matching analytics</th>
+		</tr>
+    </thead>
+    <tbody>
+		{% for endpoint in endpoints %}
+		<tr>
+			<td>{{ endpoint.hostname }} ({{ endpoint.site }})</td>
+			<td>{{ endpoint.total }}</td>
+			<td>{{ endpoint.queries|length }}</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				[<a href="/timeline?hostname={{ endpoint.hostname }}" target="_blank">Send to Timeline</a>]
+				[<a href="/netview?hostname={{ endpoint.hostname }}" target="_blank">Send to Netview</a>]
+				<table>
+					<tr>
+						<th class="w600">Query</th>
+						<th class="w200">Confidence</th>
+						<th class="w200">Relevance</th>
+						<th class="w200">Actions</th>
+					</tr>
+					{% for query in endpoint.queries %}
+					<tr>
+						<td>{{ query.name }}</td>
+						<td class="acenter"><div class="confidence_{{ query.confidence }}">{{ query.confidence|confidencelabel }}</div></td>
+						<td class="acenter"><div class="confidence_{{ query.relevance }}">{{ query.relevance|confidencelabel }}</div></td>
+						<td class="acenter">
+							[<a href="{{ query.xdrlink }}" target="_blank">events</a>]
+							[<a href="/{{ query.queryid }}/trend/" target="_blank">trend</a>]
+							[<a href="/admin/qm/query/{{ query.queryid }}/change/" target="_blank">admin</a>]
+							</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</td>
+		</tr>
+		{% endfor %}
+    </tbody>
+</table>
+{% endblock %}

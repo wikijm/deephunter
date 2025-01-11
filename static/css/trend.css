@@ -1,0 +1,27 @@
+table, th, td {
+	border: solid 1px #ccc;
+	border-collapse: collapse;
+}
+td {
+	text-align:right;
+}
+td.red {
+	background:#f28563;
+	color:#fff;
+}
+.w25 {
+	float:left;
+	width:25%;
+}
+.m10 {
+	margin:10px;
+}
+.highlight_yellow {
+	background:#fffbb5;
+}
+
+#chartContainer_count, #chartContainer_endpoints, #chartContainer_c1, #chartContainer_c2, #chartContainer_c3 {
+	float:right;
+	height: 400px;
+	width:75%;
+}

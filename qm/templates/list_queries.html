@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+{% load qm_extras %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/bootstrap_table_expandable/bootstrap-table-expandable.css">
+<link rel="stylesheet" href="/static/jquery_table_sorter/theme.materialize.min.css" />
+<link rel="stylesheet" href="/static/jquery_table_sorter/theme.default.min.css" />
+<link rel="stylesheet" href="/static/fontawesome/font-awesome.min.css" />
+<link rel="stylesheet" href="/static/css/list_queries.css" />
+
+<script src="/static/jquery/jquery.min.js"></script>
+<script src="/static/jquery_table_sorter/jquery.tablesorter.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/bootstrap_table_expandable/bootstrap-table-expandable.js"></script>
+<script src="/static/jquery_sparkline/jquery.sparkline.min.js"></script>
+{% endblock %}
+
+{% block body %}
+<div class="float-container">
+
+<div class="float-child menu">
+	<form action="" method="post" id="form1">
+	{% csrf_token %}
+	<div>
+		<input type="text" placeholder="Search..." name="search" id="search" value="{{ posted_search }}" />
+		<button type="submit"><i class="fa fa-search"></i></button>
+	</div>
+	<div>Currently {{ queries.count }} threat hunting analytics</div>
+	
+	<div class="floatleft"><h4>FILTERS</h4></div>
+	<div class="floatrightpadding">{% if posted_search or posted_filters %}[<a href="/qm/">remove filters</a>]{% endif %}</div>
+	{% if posted_filters %}
+		<div id="divfilters">
+			{% if posted_filters.target_os %}
+				{% for v in posted_filters.target_os %}
+					<button class="button_filter" id="button_checkos_{{ v }}">OS:{{ v|osidtoname }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
+			{% endif %}
+			{% if posted_filters.actors %}
+				{% for v in posted_filters.actors %}
+					<button class="button_filter" id="button_checkactor_{{ v }}" title="{{ v|actoridtotitle }}">ACTOR:{{ v|actoridtoname }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
+			{% endif %}
+			{% if posted_filters.source_countries %}
+				{% for v in posted_filters.source_countries %}
+					<button class="button_filter" id="button_checksourcecountry_{{ v }}">SOURCE COUNTRY:{{ v|sourcecountryidtoname }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
+			{% endif %}
+			{% if posted_filters.threats %}
+				{% for v in posted_filters.threats %}
+					<button class="button_filter" id="button_checkthreat_{{ v }}" title="{{ v|threatidtotitle }}">THREAT:{{ v|threatidtoname }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
+			{% endif %}
+			{% if posted_filters.vulnerabilities %}
+				{% for v in posted_filters.vulnerabilities %}
+					<button class="button_filter" id="button_checkvuln_{{ v }}">VULN:{{ v|vulnidtoname }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
+			{% endif %}
+			{% if posted_filters.tags %}
+				{% for v in posted_filters.tags %}
+					<button class="button_filter" id="button_checktag_{{ v }}">TAG:{{ v|tagidtoname }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
+			{% endif %}
+			{% if posted_filters.mitre_tactics %}
+				{% for v in posted_filters.mitre_tactics %}
+					<button class="button_filter" id="button_checktactic_{{ v }}" title="{{ v|tacticidtotitle }}">TACTIC:{{ v|tacticidtoname }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
+			{% endif %}
+			{% if posted_filters.mitre_techniques %}
+				{% for v in posted_filters.mitre_techniques %}
+					<button class="button_filter" id="button_checktechnique_{{ v }}" title="{{ v|techniqueidtotitle }}">TECHNIQUE:{{ v|techniqueidtoname }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
+			{% endif %}
+			{% if posted_filters.confidence %}
+				{% for v in posted_filters.confidence %}
+					<button class="button_filter" id="button_checkconfidence_{{ v }}">CONFIDENCE:{{ v|confidencelabel }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
+			{% endif %}
+			{% if posted_filters.relevance %}
+				{% for v in posted_filters.relevance %}
+					<button class="button_filter" id="button_checkrelevance_{{ v }}">RELEVANCE:{{ v|confidencelabel }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
+			{% endif %}
+			{% if posted_filters.run_daily == 0 or posted_filters.run_daily == 1 %}
+				{% if posted_filters.run_daily|slugify == '1' %}
+					<button class="button_filter" id="button_checkrundaily_1">RUN_DAILY:yes&nbsp;&nbsp;<b>x</b></button>
+				{% else %}
+					<button class="button_filter" id="button_checkrundaily_0">RUN_DAILY:no&nbsp;&nbsp;<b>x</b></button>
+				{% endif %}
+			{% endif %}
+			{% if posted_filters.star_rule == 0 or posted_filters.star_rule == 1 %}
+				{% if posted_filters.star_rule|slugify == '1' %}
+					<button class="button_filter" id="button_checkstarrule_1">STAR_RULE:yes&nbsp;&nbsp;<b>x</b></button>
+				{% else %}
+					<button class="button_filter" id="button_checkstarrule_0">STAR_RULE:no&nbsp;&nbsp;<b>x</b></button>
+				{% endif %}
+			{% endif %}
+			{% if posted_filters.dynamic_query == 0 or posted_filters.dynamic_query == 1 %}
+				{% if posted_filters.dynamic_query|slugify == '1' %}
+					<button class="button_filter" id="button_checkdynamicquery_1">DYNAMIC_QUERY:yes&nbsp;&nbsp;<b>x</b></button>
+				{% else %}
+					<button class="button_filter" id="button_checkdynamicquery_0">DYNAMIC_QUERY:no&nbsp;&nbsp;<b>x</b></button>
+				{% endif %}
+			{% endif %}
+		</div>
+	{% endif %}
+	<table class="table table-expandable">
+	<tbody>
+	
+		<tr><td><div class="filter">Target OS</div></td></tr>
+		<tr><td>
+			{% for os in target_os %}
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkos{{ os.id }}" name="target_os" value="{{ os.id }}"
+					{% if os.id|slugify in posted_filters.target_os %} checked{% endif %}>
+				<label class="form-check-label" for="checkos{{ os.id }}">{{ os.name }}</label>
+			</div>
+			{% endfor %}
+		</td></tr>
+
+		<tr><td><div class="filter">Associated Threat Actors</div></td></tr>
+		<tr><td>
+			{% for actor in threat_actors %}
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkactor{{ actor.id }}" name="actors" value="{{ actor.id }}" 
+					{% if actor.id|slugify in posted_filters.actors %} checked{% endif %}>
+				<label class="form-check-label" for="checkactor{{ actor.id }}" title="{{ actor.aka_name }}">{{ actor.name }}</label>{% if actor.references %}{% for link in actor.references|links %} [<a href="{{ link }}" target="_blank">link</a>]{% endfor %}{% endif %}
+			</div>
+			{% endfor %}
+		</td></tr>
+
+		<tr><td><div class="filter">Source Countries</div></td></tr>
+		<tr><td>
+			{% for country in source_countries %}
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checksourcecountry{{ country.id }}" name="source_countries" value="{{ country.id }}" 
+					{% if country.id|slugify in posted_filters.source_countries %} checked{% endif %}>
+				<label class="form-check-label" for="checksourcecountry{{ country.id }}">{{ country.name }}</label>
+			</div>
+			{% endfor %}
+		</td></tr>
+
+		<tr><td><div class="filter">Associated Threats</div></td></tr>
+		<tr><td>
+			{% for threat in threat_names %}
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkthreat{{ threat.id }}" name="threats" value="{{ threat.id }}"
+					{% if threat.id|slugify in posted_filters.threats %} checked{% endif %}>
+				<label class="form-check-label" for="checkthreat{{ threat.id }}" title="{{ threat.aka_name }}">{{ threat.name }}</label>{% if threat.references %}{% for link in threat.references|links %} [<a href="{{ link }}" target="_blank">link</a>]{% endfor %}{% endif %}
+			</div>
+			{% endfor %}
+		</td></tr>
+
+		<tr><td><div class="filter">Vulnerabilities</div></td></tr>
+		<tr><td>
+			{% for vulnerability in vulnerabilities %}
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkvuln{{ vulnerability.id }}" name="vulnerabilities" value="{{ vulnerability.id }}"
+					{% if vulnerability.id|slugify in posted_filters.vulnerabilities %} checked{% endif %}>
+				<label class="form-check-label" for="checkvuln{{ vulnerability.id }}" title="{{ vulnerability.description }}">{{ vulnerability.name }}</label>{% if vulnerability.references %}{% for link in vulnerability.references|links %} [<a href="{{ link }}" target="_blank">link</a>]{% endfor %}{% endif %}
+			</div>
+			{% endfor %}
+		</td></tr>
+		
+		<tr><td><div class="filter">Tags</div></td></tr>
+		<tr><td>
+			{% for tag in tags %}
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checktag{{ tag.id }}" name="tags" value="{{ tag.id }}" 
+					{% if tag.id|slugify in posted_filters.tags %} checked{% endif %}>
+				<label class="form-check-label" for="checktag{{ tag.id }}">{{ tag.name }}</label>
+			</div>
+			{% endfor %}
+		</td></tr>
+
+		<tr><td><div class="filter">MITRE</div></td></tr>
+		<tr><td>
+			<h5>Tactics</h5>
+			{% for tactic in mitre_tactics %}
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checktactic{{ tactic.id }}" name="mitre_tactics" value="{{ tactic.id }}"
+					{% if tactic.id|slugify in posted_filters.mitre_tactics %} checked{% endif %}>
+				<label class="form-check-label" for="checktactic{{ tactic.id }}" title="{{ tactic.description }}">{{ tactic }}</label>
+			</div>
+			{% endfor %}
+
+			<br />
+			<h5>Techniques</h5>
+			{% for technique in mitre_techniques %}
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checktechnique{{ technique.id }}" name="mitre_techniques" value="{{ technique.id }}"
+					{% if technique.id|slugify in posted_filters.mitre_techniques %} checked{% endif %}>
+				<label class="form-check-label" for="checktechnique{{ technique.id }}" title="{{ technique.description }}">{{ technique }}</label>
+			</div>
+			{% endfor %}
+		</td></tr>
+
+		<tr><td><div class="filter">Confidence</div></td></tr>
+		<tr><td>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkconfidence1" name="confidence" value="1"
+					{% if '1'|slugify in posted_filters.confidence %} checked{% endif %}>
+				<label class="form-check-label" for="checkconfidence1">Low</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkconfidence2" name="confidence" value="2"
+					{% if '2'|slugify in posted_filters.confidence %} checked{% endif %}>
+				<label class="form-check-label" for="checkconfidence2">Medium</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkconfidence3" name="confidence" value="3"
+					{% if '3'|slugify in posted_filters.confidence %} checked{% endif %}>
+				<label class="form-check-label" for="checkconfidence3">High</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkconfidence4" name="confidence" value="4"
+					{% if '4'|slugify in posted_filters.confidence %} checked{% endif %}>
+				<label class="form-check-label" for="checkconfidence4">Critical</label>
+			</div>
+		</td></tr>
+		
+		<tr><td><div class="filter">Relevance</div></td></tr>
+		<tr><td>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkrelevance1" name="relevance" value="1"
+					{% if '1'|slugify in posted_filters.relevance %} checked{% endif %}>
+				<label class="form-check-label" for="checkrelevance1">Low</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkrelevance2" name="relevance" value="2"
+					{% if '2'|slugify in posted_filters.relevance %} checked{% endif %}>
+				<label class="form-check-label" for="checkrelevance2">Medium</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkrelevance3" name="relevance" value="3"
+					{% if '3'|slugify in posted_filters.relevance %} checked{% endif %}>
+				<label class="form-check-label" for="checkrelevance3">High</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkrelevance4" name="relevance" value="4"
+					{% if '4'|slugify in posted_filters.relevance %} checked{% endif %}>
+				<label class="form-check-label" for="checkrelevance4">Critical</label>
+			</div>
+		</td></tr>
+		
+		<tr><td><div class="filter">Flags</div></td></tr>
+		<tr><td>
+			<h5>Run daily</h5>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" id="checkrundaily1" name="run_daily" value="1"
+					{% if posted_filters.run_daily|slugify == '1' %} checked{% endif %} />
+				<label class="form-check-label" for="checkrundaily1">yes</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" id="checkrundaily0" name="run_daily" value="0"
+					{% if posted_filters.run_daily|slugify == '0' %} checked{% endif %} />
+				<label class="form-check-label" for="checkrundaily0">no</label>
+			</div>
+
+			<br />
+			<h5>STAR rule</h5>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" id="checkstarrule1" name="star_rule" value="1"
+					{% if posted_filters.star_rule|slugify == '1' %} checked{% endif %} />
+				<label class="form-check-label" for="checkstarrule1">yes</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" id="checkstarrule0" name="star_rule" value="0"
+					{% if posted_filters.star_rule|slugify == '0' %} checked{% endif %} />
+				<label class="form-check-label" for="checkstarrule0">no</label>
+			</div>
+
+			<br />
+			<h5>Dynamic query</h5>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" id="checkdynamicquery1" name="dynamic_query" value="1"
+					{% if posted_filters.dynamic_query|slugify == '1' %} checked{% endif %} />
+				<label class="form-check-label" for="checkdynamicquery1">yes</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" id="checkdynamicquery0" name="dynamic_query" value="0"
+					{% if posted_filters.dynamic_query|slugify == '0' %} checked{% endif %} />
+				<label class="form-check-label" for="checkdynamicquery0">no</label>
+			</div>
+
+		</td></tr>
+		
+	</tbody>
+	</table>
+	</form>
+
+</div>
+
+<div class="float-child content">
+
+<table id="myTable" class="tablesorter">
+  <thead>
+    <tr>
+      <th width="50px" data-sort="false"><!--toggle--></th>
+        <th>Name</th>
+		<th>Pub status</th>
+		<th>Confidence</th>
+		<th>Relevance</th>
+        <th>Run daily</th>
+        <th>STAR rule</th>
+        <th>Dyn. query</th>
+        <th>Trend</th>
+        <th>#Hits (24h)</th>
+		<th>#Hosts (24h)</th>
+		{% if custom_fields|length > 0 %}<th>#{{ custom_fields.0 }} (24h)</th>{% endif %}
+		{% if custom_fields|length > 1 %}<th>#{{ custom_fields.1 }} (24h)</th>{% endif %}
+		{% if custom_fields|length > 2 %}<th>#{{ custom_fields.2 }} (24h)</th>{% endif %}
+    </tr>
+  </thead>
+  <tbody>
+	  {% for q in queries %}
+    <tr class="row-summary"  data-row-number="{{ q.name }}">
+        <td><button id="b_{{ q.id }}" class="btn btn-default toggle-row"><i class="fa fa-chevron-right"></i></button></td>
+        <td>{{ q.name }}</td>
+        <td>{{ q.pub_status }}</td>
+        <td class="acenter"><div class="confidence_{{ q.confidence }}">{{ q.confidence|confidencelabel }}</div></td>
+        <td class="acenter"><div class="confidence_{{ q.relevance }}">{{ q.relevance|confidencelabel }}</div></td>
+		<td class="acenter">{% if q.run_daily %}<img src="/static/admin/img/icon-yes.svg" />{% else %}<img src="/static/admin/img/icon-no.svg" />{% endif %}</td>
+		<td class="acenter">{% if q.star_rule %}<img src="/static/admin/img/icon-yes.svg" />{% else %}<img src="/static/admin/img/icon-no.svg" />{% endif %}</td>
+		<td class="acenter">{% if q.dynamic_query %}<img src="/static/admin/img/icon-yes.svg" />{% else %}<img src="/static/admin/img/icon-no.svg" />{% endif %}</td>
+		<td class="acenter"><span id="sparkline_{{ q.id }}"></span></td>		
+        <td class="aright"><div{% if q.anomaly_alert_count %} class="alert_orange"{% endif %}>{{ q.hits_count }}</div></td>
+		<td class="aright"><div{% if q.anomaly_alert_endpoints %} class="alert_orange"{% endif %}>{{ q.hits_endpoints }}</div></td>
+		{% if custom_fields|length > 0 %}
+			<td class="aright"><div{% if q.hits_c1 > 0 %} class="alert_red"{% endif %}>{{ q.hits_c1 }}</div></td>
+		{% endif %}
+		{% if custom_fields|length > 1 %}
+			<td class="aright"><div{% if q.hits_c2 > 0 %} class="alert_red"{% endif %}>{{ q.hits_c2 }}</div></td>
+		{% endif %}
+		{% if custom_fields|length > 2 %}
+			<td class="aright"><div{% if q.hits_c3 > 0 %} class="alert_red"{% endif %}>{{ q.hits_c3 }}</div></td>
+		{% endif %}
+    </tr>
+    <tr class="collapse row-expanded panel" data-row-number="{{ q.name }}">
+        <td colspan="{{ custom_fields|length|add:11 }}">
+			<div id=d_{{ q.id }}></div>
+	    </td>
+      </tr>
+	  {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+<script src="/static/js/list_queries.js"></script>
+<script type="text/javascript" nonce="hf7hgo1ilm">
+$(function() {
+	{% for q in queries %}
+		$('#sparkline_{{ q.id }}').sparkline({{ q.sparkline }});
+	{% endfor %}
+});
+</script>
+{% endblock %}
