@@ -24,12 +24,6 @@ sudo systemctl stop apache2
 sudo systemctl stop celery
 sudo systemctl stop redis-server
 
-# Backup source
-echo "[INFO] Backup application..."
-rm -fR $TEMP_FOLDER/deephunter
-mkdir -p $TEMP_FOLDER
-mv $APP_PATH $TEMP_FOLDER
-
 # Backup DB (non encrypted)
 rm -fR $TEMP_FOLDER/DB
 mkdir -p $TEMP_FOLDER/DB
@@ -38,6 +32,12 @@ cd $APP_PATH
 $VENV_PATH/bin/python3 manage.py dbbackup -O $TEMP_FOLDER/DB
 #leave virtual env
 deactivate
+
+# Backup source
+echo "[INFO] Backup application..."
+rm -fR $TEMP_FOLDER/deephunter
+mkdir -p $TEMP_FOLDER
+mv $APP_PATH $TEMP_FOLDER
 
 read -p "About to download new version. Press <ENTER> to continue"
 # Download new version
