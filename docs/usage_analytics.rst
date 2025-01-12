@@ -8,7 +8,7 @@ Interface
 Refer to the objects number for details.
 
 .. image:: img/analytics_interface.jpg
-  :width: 1000
+  :width: 1500
   :alt: analytics interface
 
 1. `List of analytics <#list-of-threat-hunting-analytics>`_
