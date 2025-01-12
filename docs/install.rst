@@ -246,4 +246,4 @@ DeepHunter is shipped with some data (fixtures). To install them, run the follow
 	(venv) $ ./manage.py loaddata fixtures/targetos.json
 	(venv) $ ./manage.py loaddata fixtures/query.json
 
-Notice that you will need to populate some tables yourself (threat actors, threat names, vulnerabilities, etc.) depending on the future queries you will create in DeepHunter. Creating new queries in DeepHunter is explained in the `Usage:admin <usage_admin.html>``_ page.
+Notice that you will need to populate some tables yourself (threat actors, threat names, vulnerabilities, etc.) depending on the future queries you will create in DeepHunter. Creating new queries in DeepHunter is explained in the `Usage:admin <usage_admin.html>`_ page.
