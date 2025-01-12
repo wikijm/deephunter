@@ -28,6 +28,8 @@ To use PingID:
 
 Groups and Privileges
 *********************
+Use the `authgroup fixture <install.html#install-initial-data>`_ to create necessary groups.
+
 Users are intended to be assigned to one of these local groups:
 
 - **viewer**: read-only user (all of the ``can_view`` permissions of the ``qm`` model). You can change default permissions if needed.
