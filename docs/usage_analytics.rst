@@ -8,13 +8,14 @@ Interface
 Refer to the objects number for details.
 
 .. image:: img/analytics_interface.jpg
+  :width: 1000
   :alt: analytics interface
 
 1. `List of analytics <#list-of-threat-hunting-analytics>`_
-2. `Threat hunting analytic details <#threat-hunting-analytic-details>`_
-3. `Search form <#search-form>`_
-4. `Selected filters <#selected-filters>`_
-5. `Available filters <#available-filters>`_
+2. `Threat hunting analytic details <#id1>`_
+3. `Search form <#id3>`_
+4. `Selected filters <#id4>`_
+5. `Available filters <#id5>`_
 
 List of threat hunting analytics
 ********************************
@@ -46,28 +47,28 @@ Details of each analytic can be viewed by clicking on the arrow on the left of e
 
 **HEADER INFORMATION**
 
-- **top 10 endpoints + see all endpoints**: 
-- **Created on, last modified on, history**: 
-- **Tags**: 
+- **top 10 endpoints + see all endpoints**: Shows the list of top 10 endpoints identified by the last campaign. Clicking on an endpoint will open a new window, loaded with the `timeline <usage_timeline.html>`_ of the selected endpoint. If there are more than 10 endpoints, the `see all endpoints` link redirects to the backend to show the full list of endpoints.
+- **Created on, last modified on, history**: Date of creation and last modification. The `history` link shows all modifications, user and date for the analytic. It relies on the `django-simple-history` package.
+- **Tags**: list of selected tags for the threat hunting analytic.
 
 **SECTIONS**
 
-- **Description**: 
-- **Threat Hunting Notes**: 
-- **PowerQuery**: 
-- **Threat Coverage**: 
-- **MITRE Information**: 
-- **Emulation & Validation**: 
-- **References**: 
+- **Description**: This is the description of the threat hunting analytic. It uses the markdown syntax to format the text, and possibly add subsections (description, offensive tradecraft, examples, etc.)
+- **Threat Hunting Notes**: Shows the threat hunting notes to help threat hunters to triage matches. For example, it can be used to warn about known false positives, or describe some exclusions.
+- **PowerQuery**: The PowerQuery, including columns (the query and the columns are in 2 separate fields in the database).
+- **Threat Coverage**: shows the OS covered by the threat hunting analytic, vulnerabilities covered, associated threat actors and associated threats. 
+- **MITRE Information**: MITRE coverage (tactics, techniques and sub-techniques).
+- **Emulation & Validation**: Shows steps to emulate a behavior that will trigger the analytic.
+- **References**: a list of links to learn more about the threat hunting analytic.
 
 Search form
 ***********
-TO BE COMPLETED
+Search for a string in the threat hunting analytics names, descriptions and threat hunting notes.
 
 Selected filters
 ****************
-TO BE COMPLETED
+List of applied filters. Click on the cross sign to remove a specific filter.
 
 Available filters
 *****************
-TO BE COMPLETED
+The list of all possible filters, broken down into sections. Expand a section and select a filter. It will be immediately added to the list of selected filters nad the page will refresh. You can add as many filters as you want. Filters from the same section are applied as a list of values (for example, if you select "Windows" and "Linux" as "Target OS", it will show the list of threat hunting analytics that cover "Windows" or "Linux").
