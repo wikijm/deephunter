@@ -10,11 +10,11 @@ Refer to the objects number for details.
 .. image:: img/analytics_interface.jpg
   :alt: analytics interface
 
-1. List of analytics
-2. Threat hunting analytic details 
-3. Search form
-4. Selected filters
-5. Available filters
+1. `List of analytics <#list-of-threat-hunting-analytics>`_
+2. `Threat hunting analytic details <#threat-hunting-analytic-details>`_
+3. `Search form <#search-form>`_
+4. `Selected filters <#selected-filters>`_
+5. `Available filters <#available-filters>`_
 
 List of threat hunting analytics
 ********************************
