@@ -24,13 +24,11 @@ sudo systemctl stop apache2
 sudo systemctl stop celery
 sudo systemctl stop redis-server
 
-# Backup DB (non encrypted)
+# Backup DB (encrypted. Use the same as DB backup in crontab. Backup will be located in the same folder)
 echo "[INFO] Starting DB backup..."
-rm -fR $TEMP_FOLDER/DB
-mkdir -p $TEMP_FOLDER/DB
 source $VENV_PATH/bin/activate
 cd $APP_PATH
-$VENV_PATH/bin/python3 manage.py dumpdata > $TEMP_FOLDER/DB/dump.json
+$VENV_PATH/bin/python3 manage.py dbbackup --encrypt
 #leave virtual env
 deactivate
 
@@ -89,4 +87,3 @@ sudo systemctl restart redis-server
 sudo systemctl restart celery
 
 echo "[INFO] UPGRADE COMPLETE"
-echo "[INFO] /!\ Remember to remove the DB backup if no longer needed as it is unencrypted!"
