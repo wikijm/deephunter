@@ -9,8 +9,9 @@ Campaigns are cron jobs running every day at the same time. They execute the ana
 
 DeepHunter comes with several modules that are particularly useful for threat hunters and incident responders:
 
-- the timeline view shows the distribution of matches against analytics for a particular host. For each match, a box will be shown for the given date, and double clicking on it will replay the query directly in your EDR, for the selected date. Each day, campaigns will also gather the storylineID information (a special information collected by SentinelOne), which is used to highlight analytics with the same storylineID in the timeline.
-- the netview (network view) module shows the list of network outbound connections for a particular host. For each IP, the popularity (number of endpoints in your environment where this destination is contacted) is shown, and for public IPs, a whois information is available, as well as the VirusTotal IP reputation.
+- the `timeline view <usage_timeline.html>`_ shows the distribution of matches against analytics for a particular host. For each match, a box will be shown for the given date, and double clicking on it will replay the query directly in your EDR, for the selected date. Each day, campaigns will also gather the storylineID information (a special information collected by SentinelOne), which is used to highlight analytics with the same storylineID in the timeline.
+- the `trend analysis <usage_trend.html>`_ module is composed of graphs showing the distribution of the number of hits, and number of endpoints, with various filters (defined by the `CUSTOM_FIELDS` property) over time. It quickly allows the threat hunter understand how frequent a threat hunting analytic triggers. A mathematical model is applied to the series to highlight potential statistical anomalies.
+- the `netview (network view) <usage_netview.html>`_ module shows the list of network outbound connections for a particular host. For each IP, the popularity (number of endpoints in your environment where this destination is contacted) is shown, and for public IPs, a whois information is available, as well as the VirusTotal IP reputation.
 
 Besides the modules, there are also some tools, which list you may enrich:
 

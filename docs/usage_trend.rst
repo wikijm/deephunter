@@ -4,7 +4,7 @@ Usage: Trend
 Trend Analysis
 **************
 
-.. image:: ../img/trend_analysis.png
+.. image:: img/trend_analysis.png
   :width: 1500
   :alt: Trend Analysis
 
