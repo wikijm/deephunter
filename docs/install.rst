@@ -20,7 +20,7 @@ In Ubuntu 22.04, it seems that Apache can't acccess the directories, unless you 
 .. code-block:: sh
    
    $ chmod -R 755 /data/
-   $ chmod 777 /data/deephunter/campaigns.log
+   $ chmod 666 /data/deephunter/campaigns.log
 
 Install the database
 ********************
@@ -231,3 +231,18 @@ Reload services and enable the new service:
 	$ sudo systemctl enable celery.service
 	$ sudo systemctl start celery.service
 	$ sudo systemctl status celery.service
+
+Install initial data
+********************
+DeepHunter is shipped with some data (fixtures). To install them, run the following commands:
+
+.. code-block:: sh
+
+	$ source /data/venv/bin/activate
+	(venv) $ ./manage.py loaddata fixtures/mitretactic.json
+	(venv) $ ./manage.py loaddata fixtures/mitretechnique.json
+	(venv) $ ./manage.py loaddata fixtures/tag.json
+	(venv) $ ./manage.py loaddata fixtures/targetos.json
+	(venv) $ ./manage.py loaddata fixtures/query.json
+
+Notice that you will need to populate some tables yourself (threat actors, threat names, vulnerabilities, etc.) depending on the future queries you will create in DeepHunter. Creating new queries in DeepHunter is explained in the `Usage:admin <usage_admin.html>``_ page.
