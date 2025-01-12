@@ -1,4 +1,3 @@
-from django.conf import settings
 import requests
 import json
 from time import sleep
@@ -318,7 +317,7 @@ def querydetail(request, query_id):
 @login_required
 @permission_required("qm.delete_campaign")
 def debug(request):
-    f = open('{}/campaigns.log'.BASE_DIR, 'r', encoding='utf-8', errors='replace')
+    f = open('{}/campaigns.log'.format(BASE_DIR), 'r', encoding='utf-8', errors='replace')
     context = {'debug': f.read()}
     return render(request, 'debug.html', context)
 
