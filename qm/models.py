@@ -9,6 +9,7 @@ class Country(models.Model):
     
     class Meta:
         ordering = ['name']
+        verbose_name_plural = "countries"
 
 class MitreTactic(models.Model):
     mitre_id = models.CharField(max_length=15, unique=True)
@@ -63,6 +64,9 @@ class TargetOs(models.Model):
     
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name_plural = "target OS"
 
 class Vulnerability(models.Model):
     name = models.CharField(max_length=20, verbose_name="format: CVE-XXXX-XXXX", unique=True)
@@ -75,6 +79,7 @@ class Vulnerability(models.Model):
     
     class Meta:
         ordering = ['name']
+        verbose_name_plural = "vulnerabilities"
 
 class Tag(models.Model):
     name = models.CharField(max_length=20, unique=True)
@@ -134,6 +139,9 @@ class Query(models.Model):
     
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name_plural = "queries"
 
 class Campaign(models.Model):
     name = models.CharField(max_length=250, unique=True)
@@ -178,3 +186,6 @@ class CeleryStatus(models.Model):
 
     def __str__(self):
         return self.query.name
+    
+    class Meta:
+        verbose_name_plural = "celery status"
