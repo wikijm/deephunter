@@ -1,5 +1,6 @@
 import requests
 import json
+from django.conf import settings
 from time import sleep
 from ldap3 import Server, Connection, ALL
 from django.shortcuts import get_object_or_404, render
