@@ -16,12 +16,15 @@ XDR_PARAMS = settings.XDR_PARAMS
 # Params for MITRE JSON file
 STATIC_PATH = settings.STATIC_ROOT
 
+# DB retention
+DB_DATA_RETENTION = settings.DB_DATA_RETENTION
+
 @login_required
 def campaigns_stats(request):
     stats = []
     seconds_in_day = 24 * 60 * 60
     
-    for i in reversed(range(90)):
+    for i in reversed(range(DB_DATA_RETENTION)):
         d = date.today() - timedelta(days=i)
         try:
             campaign = Campaign.objects.get(
@@ -50,7 +53,8 @@ def campaigns_stats(request):
                 })
     
     context = {
-        'stats': stats
+        'stats': stats,
+        'db_retention': DB_DATA_RETENTION
         }
     
     return render(request, 'stats.html', context)

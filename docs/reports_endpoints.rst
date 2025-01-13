@@ -9,12 +9,15 @@ This report shows a list of the top 20 endpoints (highest weighted scores) ident
   :width: 1000
   :alt: img
 
-The weighted score is computed as follows:
+The weighted score is the sum of (relevance x [confidence/4]) of every threat hunting analytics involved for the endpoint, during the last campaign.
 
-.. code-block:: sh
-  
-  last analytic
-  for endpoint
-      ∑ (relevance x [confidence/4])
-  n = 1st analytic
-  for endpoint
+The column "matching analytics" shows the number of analytics matching the endpoint for the last `campaign <intro.html#campaigns>`_.
+
+Actions (links)
+***************
+- **Expand/collapse**: click on each row to expand or collapse the details.
+- **Send to timeline**: Send the endpoint to the `timeline <usage_timeline.html>`_ module.
+- **Send to Netview**: Send the endpoint to the `netview <usage_netview.html>`_ module.
+- **events**: Send the PowerQuery associated to the select threat hunting analytic to SentinelOne.
+- **trend**: Show the `trend <usage_trend.html>`_ graph for the selected threat hunting analytic.
+- **admin**: Open the selected threat hunting analytic in the admin backend for modification.

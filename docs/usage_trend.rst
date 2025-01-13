@@ -3,12 +3,11 @@ Usage: Trend
 
 Trend Analysis
 **************
+The trend analysis is a special component of threat hunting analytics, to help the threat hunter understand how frequent the analytic triggers. It shows graphs based on statistics collected daily by the campaigns cron job.
 
 .. image:: img/trend_analysis.png
   :width: 1500
   :alt: Trend Analysis
-
-The trend analysis is a special component of threat hunting analytics, to help the threat hunter understand how frequent the analytic triggers. It shows graphs based on statistics collected daily by the campaigns cron job.
 
 There is a minimum of 2 graphs: distribution of number of events, distribution of number of endpoints (unfiltered), followed by optional graphs (depending on the `CUSTOM_FIELDS property <settings.html#custom-fields>`_).
 
