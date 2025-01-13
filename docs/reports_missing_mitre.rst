@@ -1,18 +1,8 @@
-Usage: Reports
-##############
+Reports: Missing MITRE mapping
+##############################
 
-Stats
-*****
+Description
+***********
 
-.. image:: ../img/img.png
-  :width: 600
-  :alt: img
-
-Endpoints
-*********
-
-Current MITRE coverage
-**********************
-
-Missing MITRE mapping
-*********************
+.. image:: img/reports_missing_mitre.png
+  :alt: Reports missing MITRE mapping

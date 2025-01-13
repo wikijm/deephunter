@@ -1,18 +1,9 @@
-Usage: Reports
-##############
+Reports: Endpoints
+##################
 
-Stats
-*****
+Description
+***********
 
-.. image:: ../img/img.png
-  :width: 600
+.. image:: img/reports_endpoints.png
+  :width: 1000
   :alt: img
-
-Endpoints
-*********
-
-Current MITRE coverage
-**********************
-
-Missing MITRE mapping
-*********************
