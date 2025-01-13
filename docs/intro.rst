@@ -31,12 +31,6 @@ Who is DeepHunter for?
 **********************
 DeepHunter is an application developed by threat hunters for threat hunters. It is not intended to be a SIEM platform, but it can help incident responders and SOC analysts during investigations.
 
-Architecture
-************
-.. image:: img/deephunter_architecture.jpg
-  :width: 600
-  :alt: DeepHunter architecture diagram
-
 Static vs Dynamic analytics
 ***************************
 
@@ -45,3 +39,9 @@ By default, threat hunting analytics you will create in DeepHunter will be stati
 However, it may happen that part of hunting queries need to be dynamically generated. DeepHunter is shipped with an example (vulnerable_driver_name_detected_loldriver) of such a query. The query for this analytic is dynamically built from a script (``./qm/scripts/vulnerable_driver_name_detected_loldriver.py``) that runs prior to each campaign. This hunting query is built from an updated list of file names matching known vulnerable drivers, published on the LOLDriver website.
 
 Dynamic queries should have the flag "Dyn. query" enabled (which is just an indication, there is no control associated to this flag), to indicate that they should not be manually edited in DeepHunter. Modifications should be done through their corresponding scripts directly.
+
+Architecture
+************
+.. image:: img/deephunter_architecture.jpg
+  :width: 600
+  :alt: DeepHunter architecture diagram

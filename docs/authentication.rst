@@ -5,8 +5,8 @@ Authentication modes
 ********************
 DeepHunter currently supports 2 authentication modes:
 
-- local: this is the native Django authentication where usernames and passwords are stored in the local database.
-- PingID: this authentication relies on `PingIdentity Single Sign-On <https://www.pingidentity.com/en/platform/capabilities/single-sign-on.html>`_.
+- **local**: this is the native Django authentication where usernames and passwords are stored in the local database.
+- **PingID**: this authentication relies on `PingIdentity Single Sign-On <https://www.pingidentity.com/en/platform/capabilities/single-sign-on.html>`_.
 
 Local authentication
 ********************

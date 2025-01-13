@@ -1,8 +1,6 @@
 Reports: Stats
 ##############
 
-Description
-***********
 This report shows graphs that monitor the performance of DeepHunter.
 
 .. image:: img/reports_stats.png
