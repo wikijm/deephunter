@@ -23,7 +23,12 @@ DeepHunter is a Threat Hunting platform that automates the execution of queries 
    usage_trend
    usage_timeline
    usage_netview
-   usage_reports
-   usage_tools
-   usage_admin
+   reports_stats
+   reports_endpoints
+   reports_mitre_coverage
+   reports_missing_mitre
+   tools_lol_drivers_hash_checker
+   tools_vt_hash_checker
+   tools_whois
+   admin
    support
