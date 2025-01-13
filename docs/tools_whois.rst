@@ -1,16 +1,9 @@
-Usage: Tools
+Tools: Whois
 ############
 
-VirusTotal Hash Checker
-***********************
+Description
+***********
 
-.. image:: ../img/img.png
-  :width: 600
+.. image:: img/tools_whois.png
+  :width: 1000
   :alt: img
-
-LOL Driver Hash Checker
-***********************
-
-Whois
-**********************
-

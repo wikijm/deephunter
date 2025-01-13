@@ -1,16 +1,9 @@
-Usage: Tools
-############
+Tools: VirusTotal Hash Checker
+##############################
 
-VirusTotal Hash Checker
-***********************
+Description
+***********
 
-.. image:: ../img/img.png
-  :width: 600
+.. image:: img/tools_vt_hash_checker.png
+  :width: 1000
   :alt: img
-
-LOL Driver Hash Checker
-***********************
-
-Whois
-**********************
-

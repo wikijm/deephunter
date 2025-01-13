@@ -1,16 +1,9 @@
-Usage: Tools
-############
+Tools: LOL Driver Hash Checker
+##############################
 
-VirusTotal Hash Checker
-***********************
+Description
+***********
 
-.. image:: ../img/img.png
-  :width: 600
+.. image:: img/tools_lol_driver_hash_checker.png
+  :width: 1000
   :alt: img
-
-LOL Driver Hash Checker
-***********************
-
-Whois
-**********************
-
