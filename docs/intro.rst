@@ -11,6 +11,14 @@ The purpose of DeepHunter is to automate the execution of each threat hunting an
 
 Campaigns are cron jobs running every day at the same time. They execute the analytics, and collect statistics (number of matching events, number of endpoints, etc.) for each analytic every day for the last 24 hours, allowing to build a baseline (trend analysis) for each analytic. A model based on z-score is then applied to these statistics to identify statistical anomalies in the timeline.
 
+Statistics regeneration
+***********************
+It may happen that you modify a threat hunting query for various reasons (e.g., add a filter to exclude some results). When you do so, statistics for the updated query will change. If you want to apply the same logic to all past statistics, as if the query would have always been as you just changed it, you can regenerate the statistics for this threat hunting query. It will work on the background and show the percentage of completion as shown below.
+
+.. image:: img/analytics_regen_stats.png
+  :width: 1500
+  :alt: DeepHunter architecture diagram
+
 DeepHunter modules
 ******************
 DeepHunter comes with several modules that are particularly useful for threat hunters and incident responders:
