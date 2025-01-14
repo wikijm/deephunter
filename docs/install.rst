@@ -1,26 +1,24 @@
 Installation
 ############
 
+Compatibility
+*************
+DeepHunter has been designed to run on a Linux environment. Ubuntu Server or Debian are the recommended OS to install DeepHunter.
+
 Build the python virtual environment
 ************************************
 
-It is highly recommended that you install DeepHunter in a python virtual environment. There are several tools to do that (Conda, Poetry, etc). We'll use ``venv``.
+It is highly recommended that you install DeepHunter in a Python virtual environment. There are several tools to do that (Conda, Poetry, etc). We'll use ``venv``.
 
 We'll assume that you have created a ``/data`` directory and you have write access to it.
 
 .. code-block:: sh
       
-   $ sudo apt install python3-venv python3-wheel python3-dev default-libmysqlclient-dev build-essential
-   $ sudo apt install pkg-config
+   $ sudo apt install python3-venv python3-wheel python3-dev default-libmysqlclient-dev
+   $ sudo apt install build-essential pkg-config
    $ cd /data
-   $ python3 -m venv venv
-
-In Ubuntu 22.04, it seems that Apache can't acccess the directories, unless you give it proper privileges.
-
-.. code-block:: sh
-   
    $ chmod -R 755 /data/
-   $ chmod 666 /data/deephunter/campaigns.log
+   $ python3 -m venv venv
 
 Install the database
 ********************
@@ -38,7 +36,7 @@ Install the database
 Install the python dependencies
 *******************************
 
-Enter the virtual environment:
+Enter the virtual environment and install dependencies from the ``requirements.txt`` file:
 
 .. code-block:: sh
 	
@@ -56,9 +54,9 @@ To download DeepHunter, use the following git command:
 
 Initialization
 **************
-See the `settings <settings.html>`_ page.
+Make sure you configure all necessary `settings <settings.html>`_ for your environment.
 
-Initialize the database:
+Once done, initialize the database:
 
 .. code-block:: sh
 
@@ -66,16 +64,11 @@ Initialize the database:
 	(venv) $ ./manage makemigrations
 	(venv) $ ./manage migrate
 
-Load data:
-
-.. code-block:: sh
-
-	(venv) $ ./manage.py loaddata _docs/backup/qm.json
-
 Try to run ``./manage.py runserver`` on default port 8000 and confirm that there is no error
 
 Apache2 mod-wsgi
 ****************
+There are several ways of `running Django applications in production <https://docs.djangoproject.com/en/5.1/howto/deployment/>``. We'll user ``Apache2`` and ``mod-wsgi`` here.
 
 .. code-block:: sh
 
@@ -123,6 +116,7 @@ For details about the scripts, see the `scripts page <scripts.html>`_.
 
 Encrypted backups
 *****************
+To backup your database, it is recommended to use ``django-dbbackup`` and run the job via crontab.
 
 .. code-block:: sh
 
@@ -133,13 +127,13 @@ Generate a PGP key and set ``DBBACKUP_GPG_RECIPIENT`` to recipient in ``settings
 
 Import PGP keys, both public and private.
 
-Encrypt:
+Below is the command to make an encrypted backup:
 
 .. code-block:: sh
 
 	(venv) $ ./manage.py dbbackup --encrypt
 
-Restore from an encrypted backup:
+To restore from an encrypted backup, run the following command:
 
 .. code-block:: sh
 
@@ -149,6 +143,7 @@ Restore from an encrypted backup:
 
 Async tasks: Celery / Redis (message broker)
 ********************************************
+DeepHnter has a special feature to run commands in the background (i.e., regeneration of statistics). This relies on Celery and Redis. To install these services, run the following commands:
 
 Install the message broker:
 
@@ -194,6 +189,7 @@ Fix permissions:
 
 	$ chmod -R 755 /data
 	$ chmod 666 /data/deephunter/campaigns.log 
+	$ chmod 666 /data/deephunter/static/mitre.json 
 
 To start the Celery service automatically, you may want to create a file in ``/etc/systemd/system/celery.service`` as follows:
 
@@ -223,7 +219,7 @@ To start the Celery service automatically, you may want to create a file in ``/e
 	[Install]
 	WantedBy=multi-user.target
 
-Reload services and enable the new service:
+Reload services and enable them:
 
 .. code-block:: sh
 
@@ -246,7 +242,7 @@ DeepHunter is shipped with some data (fixtures). To install them, run the follow
 	(venv) $ ./manage.py loaddata fixtures/targetos.json
 	(venv) $ ./manage.py loaddata fixtures/query.json
 
-Notice that you will need to populate some tables yourself (threat actors, threat names, vulnerabilities, etc.) depending on the future queries you will create in DeepHunter. Creating new queries in DeepHunter is explained in the `Usage:admin <usage_admin.html>`_ page.
+Notice that you will need to populate some tables yourself (threat actors, threat names, vulnerabilities, etc.) depending on the future queries you will create in DeepHunter. Creating new queries in DeepHunter is explained `here <admin.html#create-modify-threat-hunting-analytics>`_.
 
 Upgrading DeepHunter
 ********************
@@ -255,4 +251,4 @@ When an update is available, you can upgrade DeepHunter as follows:
 .. code-block:: sh
 
 	$ cd /data
-	$ ./deephunter/qm/scripts/deploy.sh
+	$ ./deephunter/qm/scripts/upgrade.sh
