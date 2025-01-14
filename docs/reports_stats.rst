@@ -13,4 +13,4 @@ There are 3 graphs:
 - campaigns duration (in minutes)
 - total number of endpoints matched for each campaign
 
-Notice that the graphs rely on the database retention specified in the `DB_DATA_RETENION <settings.html#db-data-retention>`_ setting.
+Notice that the graphs rely on the database retention specified in the `DB_DATA_RETENTION <settings.html#db-data-retention>`_ setting.
