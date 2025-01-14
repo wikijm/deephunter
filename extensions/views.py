@@ -4,7 +4,6 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse, HttpResponseRedirect, FileResponse, JsonResponse
 from bs4 import BeautifulSoup
-import requests
 import re
 import vt
 
@@ -70,17 +69,20 @@ def whois(request):
     if request.method == "POST":
         ip = request.POST['ip']
         if is_valid_ip(ip):
-            response = requests.get(
-                'https://www.whois.com/whois/{}/'.format(ip),
-                proxies=PROXY
-                )
-            soup = BeautifulSoup(response.text, features="lxml")
-            elements = soup.find_all('pre', attrs={'id': 'registryData'})
-            whois = elements[0].text
+            try:
+                response = requests.get(
+                    'https://www.whois.com/whois/{}/'.format(ip),
+                    proxies=PROXY
+                    )
+                soup = BeautifulSoup(response.text, features="lxml")
+                elements = soup.find_all('pre', attrs={'id': 'registryData'})
+                whois = elements[0].text
+            except:
+                whois = 'Error. Please try to refresh the page.'
         else:
             whois = 'Invalid IP format'
     else:
-        whois = 'Provide an IP address in the form above'
+        whois = 'Provide an IP address in the above form.'
         
     context = {
         'ip': ip,
