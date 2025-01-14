@@ -3,13 +3,22 @@ Introduction
 
 What is DeepHunter?
 *******************
-DeepHunter is a platform that automates the execution of threat hunting analytics via daily campaigns. It has been initially developed to automate the execution of PowerQueries using the API of the SentinelOne EDR, but it may be used with other EDR (provided you adjust the code). Threat hunting analytics include a description, tags, threat hunting notes, a query (a PowerQuery in the case of SentinelOne EDR), the threat coverage (OS, vulnerabilities, threat actors, threats), the MITRE coverage, an emulation and validation plan and references (e.g., links to online resources). Having all this information for every threat hunting analytics allows to filter/group them into hunt packages. It can be useful to check how many analytics you have for a given threat actor or a particular MITRE technique, or a combination of several criteria.
+DeepHunter is a Threat Hunting platform that features:
+
+- Repository for your threat hunting analytics shown in a sortable table.
+- Search and filters (description, threat hunting notes, tags, query, OS coverage, vulnerabilities, threat actors, threat names, MITRE coverage, etc.) to find particular threat hunting analytics or group them into hunting packages.
+- Automated execution of threat hunting queries in daily campaigns and collection of daily statistics (number of matching events, number of matching endpoints, etc).
+- Trend analysis with automatic detection of statistical anomalies.
+- Timeline view of the distribution of threat hunting analytics for a given endpoint.
+- Network view module to analyze network activities from a host, with highlights on the destination popularity (based on your environment) and VirusTotal reputation.
+- Reports (Campaigns performance report, Top endpoints identified in the last campaign, MITRE coverage, List of analytics with missing MITRE coverage)
+- Tools (LOL Driver Hash Checker, VirusTotal Hash Checker, Whois).
 
 Campaigns
 *********
 The purpose of DeepHunter is to automate the execution of each threat hunting analytic (the ones with the `run_daily` flag set) each day. This is done through campaigns.
 
-Campaigns are cron jobs running every day at the same time. They execute the analytics, and collect statistics (number of matching events, number of endpoints, etc.) for each analytic every day for the last 24 hours, allowing to build a baseline (trend analysis) for each analytic. A model based on z-score is then applied to these statistics to identify statistical anomalies in the timeline.
+Campaigns are cron jobs running every day at the same time. They execute the analytics, and collect statistics (number of matching events, number of endpoints, etc.) for each analytic every day for the last 24 hours, creating a baseline (trend analysis) for each analytic. A model based on z-score is then applied to these statistics to identify statistical anomalies in the timeline.
 
 Statistics regeneration
 ***********************
