@@ -35,9 +35,11 @@ This shows the list of threat hunting analytics available in the DeepHunter data
 
 Threat hunting analytic details 
 *******************************
+
 Details of each analytic can be viewed by clicking on the arrow on the left of each analytic name.
 
-**ACTIONS BUTTONS**
+Actions buttons
+===============
 
 - **Run in PQ (all users)**: Plays the corresponding query in a new window (configured to run a PowerQuery in the SentinelOne EDR). Depending on the interface you use in SentinelOne (legacy or new frontend), you may want to change ``S1_URL`` in the `settings <settings.html#sentinelone-api>`_.
 - **Run in PQ (custom_filter)**: Same as the previous button, but with a custom filter, defined in the custom fields (see ``CUSTOM_FIELDS`` property in the `settings <settings.html#custom-fields>`_).
@@ -45,13 +47,15 @@ Details of each analytic can be viewed by clicking on the arrow on the left of e
 - **Edit in admin**: Opens the threat hunting in edit mode using the Django admin backend.
 - **Regen. all stats**: Regenerates the statistics for the entire retention for the threat hunting analytic. This process runs in the background using Celery/Redis. You can close the page, and the process will continue to run. A percentage of completion is shown in real time.
 
-**HEADER INFORMATION**
+Header Information
+==================
 
 - **top 10 endpoints + see all endpoints**: Shows the list of top 10 endpoints identified by the last campaign. Clicking on an endpoint will open a new window, loaded with the `timeline <usage_timeline.html>`_ of the selected endpoint. If there are more than 10 endpoints, the `see all endpoints` link redirects to the backend to show the full list of endpoints.
 - **Created on, last modified on, history**: Date of creation and last modification. The `history` link shows all modifications, user and date for the analytic. It relies on the `django-simple-history` package.
 - **Tags**: list of selected tags for the threat hunting analytic.
 
-**SECTIONS**
+Sections
+========
 
 - **Description**: This is the description of the threat hunting analytic. It uses the markdown syntax to format the text, and possibly add subsections (description, offensive tradecraft, examples, etc.)
 - **Threat Hunting Notes**: Shows the threat hunting notes to help threat hunters to triage matches. For example, it can be used to warn about known false positives, or describe some exclusions.
