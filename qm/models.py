@@ -15,12 +15,13 @@ class MitreTactic(models.Model):
     mitre_id = models.CharField(max_length=15, unique=True)
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
+    position = models.IntegerField(blank=False)
     
     def __str__(self):
         return '{} - {}'.format(self.mitre_id, self.name)
     
     class Meta:
-        ordering = ['mitre_id']
+        ordering = ['position']
 
 class MitreTechnique(models.Model):
     mitre_id = models.CharField(max_length=15, unique=True)
