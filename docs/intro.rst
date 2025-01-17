@@ -41,7 +41,7 @@ DeepHunter tools
 Besides the modules, there are also some tools, and it's easy to `develop your own <tools_develop_your_own.html>`_:
 
 - `VirusTotal Hash Checker <tools_vt_hash_checker.html>`_: takes a list of file hashes and compares each against the VirusTotal database.
-- `LOLDriver Hash Checker <tools_lol_drivers_hash_checker.html>`_: check a list of hashes agaist the LOLDriver database to confirm whether they correspond to vulnerable drivers.
+- `LOLDriver Hash Checker <tools_lol_drivers_hash_checker.html>`_: check a list of hashes against the LOLDriver database to confirm whether they correspond to vulnerable drivers.
 - `Whois <tools_whois.html>`_: Whois module developed in Python.
 
 Who is DeepHunter for?
