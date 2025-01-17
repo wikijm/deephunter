@@ -33,6 +33,15 @@ Install the database
 	mysql> grant all privileges on deephunter.* to deephunter@localhost;
 	mysql> \q
 
+Download DeepHunter
+*******************
+To download DeepHunter, use the following git command:
+
+.. code-block:: sh
+
+	$ cd /data/
+	$ git clone https://github.com/sebastiendamaye/deephunter.git
+
 Install the python dependencies
 *******************************
 
@@ -42,15 +51,6 @@ Enter the virtual environment and install dependencies from the ``requirements.t
 	
 	$ source /data/venv/bin/activate
 	(venv) $ pip install -r requirements.txt
-
-Download DeepHunter
-*******************
-To download DeepHunter, use the following git command:
-
-.. code-block:: sh
-
-	$ cd /data/
-	$ git clone https://github.com/sebastiendamaye/deephunter.git
 
 Initialization
 **************
