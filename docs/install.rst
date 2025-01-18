@@ -50,6 +50,7 @@ To download DeepHunter, use the following git command:
 .. code-block:: sh
 
 	$ cd /data/
+	$ sudo apt install git
 	$ git clone https://github.com/sebastiendamaye/deephunter.git
 
 Initialization
