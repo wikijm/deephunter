@@ -88,6 +88,8 @@ Enable mod headers
 
 Below line is mandatory because ``dhparam.pem`` is required in ``ssl-params.conf``. Improve your encryption by creating a strong DH Group, and enable Perfect Forward Secrecy.
 
+Note: Make sure ``/etc/apache2/conf-available/ssl-params.conf`` is present before executing ```sudo a2enconf ssl-params```.
+
 .. code-block:: sh
 
 	$ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
