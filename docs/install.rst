@@ -35,6 +35,17 @@ Install the database
 	mysql> grant all privileges on deephunter.* to deephunter@localhost;
 	mysql> \q
 
+Download DeepHunter
+*******************
+
+To download DeepHunter, use the following git command:
+
+.. code-block:: sh
+
+	$ sudo apt install git
+	$ cd /data/
+	$ git clone https://github.com/sebastiendamaye/deephunter.git
+
 Install the python dependencies
 *******************************
 
@@ -46,18 +57,9 @@ Enter the virtual environment and install dependencies from the ``requirements.t
 	$ cd /data/deephunter/
 	(venv) $ pip install -r requirements.txt
 
-Download DeepHunter
-*******************
-To download DeepHunter, use the following git command:
-
-.. code-block:: sh
-
-	$ sudo apt install git
-	$ cd /data/
-	$ git clone https://github.com/sebastiendamaye/deephunter.git
-
 Initialization
 **************
+
 Make sure you configure all necessary `settings <settings.html>`_ for your environment.
 
 Once done, initialize the database:
@@ -72,7 +74,8 @@ Try to run ``./manage.py runserver`` on default port 8000 and confirm that there
 
 Apache2 mod-wsgi
 ****************
-There are several ways of `running Django applications in production <https://docs.djangoproject.com/en/5.1/howto/deployment/>``. We'll use ``Apache2`` and ``mod-wsgi`` here.
+
+There are several ways of `running Django applications in production <https://docs.djangoproject.com/en/5.1/howto/deployment/>`_. We'll use ``Apache2`` and ``mod-wsgi`` here.
 
 .. code-block:: sh
 
