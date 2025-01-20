@@ -68,6 +68,9 @@ def regenerate_stats(query_id):
             'limit': CAMPAIGN_MAX_HOSTS_THRESHOLD
         }
         
+        # store current time (used to update snapshot runtime)
+        start_runtime = datetime.now()
+
         r = requests.post('{}/web/api/v2.1/dv/events/pq'.format(S1_URL),
             json=body,
             headers={'Authorization': 'ApiToken:{}'.format(S1_TOKEN)},
@@ -89,13 +92,17 @@ def regenerate_stats(query_id):
                 
                 sleep(1)
 
+            # store current time (used to update snapshot runtime)
+            end_runtime = datetime.now()
+            
             # Create snapshot. Necessary to have the object to link the detected assets.
             # Stats will be updated later to the snaptshot
             # the date of the snapshot is the day before the campaign (detection date)
             snapshot = Snapshot(
                 campaign=campaign,
                 query=query,
-                date=todate - timedelta(days=1)
+                date=todate - timedelta(days=1),
+                runtime = (end_runtime-start_runtime).total_seconds()
                 )
             snapshot.save()
                     

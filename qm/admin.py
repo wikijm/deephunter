@@ -18,7 +18,7 @@ class QueryHistoryAdmin(SimpleHistoryAdmin):
     history_list_display = ['query', 'columns']
 
 class SnapshotAdmin(admin.ModelAdmin):
-    list_display = ('get_campaign', 'query', 'date', 'hits_count', 'hits_endpoints',)
+    list_display = ('get_campaign', 'query', 'date', 'runtime', 'hits_count', 'hits_endpoints',)
     
     if CUSTOM_FIELDS['c1']:
         list_display += ('get_hits_c1',)

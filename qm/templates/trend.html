@@ -6,40 +6,78 @@
 <script src="/static/canvasjs/jquery.canvasjs.min.js"></script>
 </head>
 <body>
-<h1>Data for {{ query }}</h1>
-<div class="w25">
-	<div class="m10">
-		[<a href="/admin/qm/query/{{ query.id }}/change/" target="_blank">edit in admin</a>]
-		[<a href="/admin/qm/endpoint/?snapshot__query__name={{ query.name }}" target="_blank">see endpoints</a>]
-	</div>
-	<table>
-	<tr>
-		<th>Date</th>
-		<th>#hits</th>
-		<th><div>z-score #hits</div><div class="highlight_yellow">(threshold: {{ query.anomaly_threshold_count }})</div></th>
-		<th>#endpoints</th>
-		<th><div>z-score #endpoints</div><div class="highlight_yellow">(threshold: {{ query.anomaly_threshold_endpoints }})</div></th>
-	</tr>
-	{% for s in stats %}
-		<tr>
-			<td>{{ s.date|date:"Y-m-d" }}</td>
-			<td{% if s.anomaly_alert_count %} class="red"{% endif %}>{{ s.hits_count }}</td>
-			<td{% if s.anomaly_alert_count %} class="red"{% endif %}>{{ s.zscore_count|floatformat:5 }}</td>
-			<td{% if s.anomaly_alert_endpoints %} class="red"{% endif %}>{{ s.hits_endpoints }}</td>
-			<td{% if s.anomaly_alert_endpoints %} class="red"{% endif %}>{{ s.zscore_endpoints|floatformat:5 }}</td>
-		</tr>
-	{% endfor %}
-	</table>
-</div>
 
-<div id="chartContainer_count"></div>
-<div id="chartContainer_endpoints"></div>
-{% if c1_name %}<div id="chartContainer_c1"></div>{% endif %}
-{% if c2_name %}<div id="chartContainer_c2"></div>{% endif %}
-{% if c3_name %}<div id="chartContainer_c3"></div>{% endif %}
+<div class="charts_left">
+	<h1>Data for {{ query }}</h1>
+</div>
+<div class="charts_left">
+	<div>
+	[<a href="/admin/qm/query/{{ query.id }}/change/" target="_blank">edit in admin</a>]
+	[<a href="/admin/qm/endpoint/?snapshot__query__name={{ query.name }}" target="_blank">see endpoints</a>]
+	</div>
+	<div><b>#hits z-score threshold:</b> {{ query.anomaly_threshold_count }}</div>
+	<div><b>#endpoints z-score threshold:</b> {{ query.anomaly_threshold_endpoints }}</div>
+</div>
+<div class="clear"></div>
+
+<div class="charts_left">
+	<div id="chartContainer_runtime"></div>
+	<div id="chartContainer_count"></div>
+	<div id="chartContainer_endpoints"></div>
+</div>
+<div class="charts_right">
+	{% if c1_name %}<div id="chartContainer_c1"></div>{% endif %}
+	{% if c2_name %}<div id="chartContainer_c2"></div>{% endif %}
+	{% if c3_name %}<div id="chartContainer_c3"></div>{% endif %}
+</div>
 
 <script nonce="jvfd35kaz9">
 window.onload = function () {
+
+var options_runtime = {
+	animationEnabled: true,
+	axisX:{
+		valueFormatString: "DD MMM",
+		stripLines: [
+			{% for s in stats %}
+				{% if s.anomaly_alert_count %}
+					{
+						value:new Date("{{ s.date|date:"Y-m-d" }}"),
+						thickness: 50,
+						color:"#ff0000",
+						opacity: .3
+					},
+				{% endif %}
+			{% endfor %}
+		]
+	},
+	toolTip:{
+		shared:true
+	},  
+	legend:{
+		cursor:"pointer",
+		verticalAlign: "bottom",
+		horizontalAlign: "left",
+		dockInsidePlotArea: true,
+		itemclick: toogleDataSeries
+	},
+	data: [
+	{
+		type: "line",
+		showInLegend: true,
+		name: "runtime (sec)",
+		markerType: "square",
+		xValueFormatString: "DD MMM, YYYY",
+		color: "#2596be",
+		yValueFormatString: "#,##0",
+		dataPoints: [
+			{% for s in stats %}
+				{ x: new Date("{{ s.date|date:"Y-m-d" }}"), y: {{ s.runtime }} },
+			{% endfor %}
+		]
+	}
+	]
+};
 
 var options_count = {
 	animationEnabled: true,
@@ -236,6 +274,7 @@ var options_c3 = {
 };
 {% endif %}
 
+$("#chartContainer_runtime").CanvasJSChart(options_runtime);
 $("#chartContainer_count").CanvasJSChart(options_count);
 $("#chartContainer_endpoints").CanvasJSChart(options_endpoints);
 {% if c1_name %}$("#chartContainer_c1").CanvasJSChart(options_c1);{% endif %}

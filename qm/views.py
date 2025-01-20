@@ -175,6 +175,7 @@ def trend(request, query_id):
     
     stats_vals = []
     date = [snapshot.date for snapshot in snapshots]
+    runtime = [snapshot.runtime for snapshot in snapshots]
     a_count = np.array([snapshot.hits_count for snapshot in snapshots])
     z_count = stats.zscore(a_count)
     a_endpoints = np.array([snapshot.hits_endpoints for snapshot in snapshots])
@@ -202,6 +203,7 @@ def trend(request, query_id):
     for i,v in enumerate(a_count):
         stats_vals.append( {
             'date': date[i],
+            'runtime': runtime[i],
             'hits_count': a_count[i],
             'zscore_count': z_count[i],
             'hits_endpoints': a_endpoints[i],

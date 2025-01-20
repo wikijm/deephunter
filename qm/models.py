@@ -158,6 +158,7 @@ class Snapshot(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     query = models.ForeignKey(Query, on_delete=models.CASCADE)
     date = models.DateField()
+    runtime = models.FloatField()
     hits_count = models.IntegerField(default=0)
     hits_endpoints = models.IntegerField(default=0)
     hits_c1 = models.IntegerField(default=0)

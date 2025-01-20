@@ -20,8 +20,20 @@ td.red {
 	background:#fffbb5;
 }
 
-#chartContainer_count, #chartContainer_endpoints, #chartContainer_c1, #chartContainer_c2, #chartContainer_c3 {
+.charts_left {
+	float:left;
+	width:50%;
+}
+.charts_right {
 	float:right;
-	height: 400px;
-	width:75%;
+	width:50%;
+}
+.clear {
+	clear: both;
+}
+#chartContainer_runtime, #chartContainer_count, #chartContainer_endpoints {
+	height: 270px;
+}
+#chartContainer_c1, #chartContainer_c2, #chartContainer_c3 {
+	height: 270px;
 }
