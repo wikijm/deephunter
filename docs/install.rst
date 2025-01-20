@@ -60,7 +60,14 @@ Enter the virtual environment and install dependencies from the ``requirements.t
 Initialization
 **************
 
-Make sure you configure all necessary `settings <settings.html>`_ for your environment.
+Rename ``settings.github`` to ``settings.py``:
+
+.. code-block:: sh
+	
+	$ cd /data/deephunter/deephunter/
+	$ mv settings.github settings.py
+
+Now edit ``settings.py`` and make sure you configure all necessary `settings <settings.html>`_ for your environment.
 
 Once done, initialize the database:
 
