@@ -72,7 +72,7 @@ Try to run ``./manage.py runserver`` on default port 8000 and confirm that there
 
 Apache2 mod-wsgi
 ****************
-There are several ways of `running Django applications in production <https://docs.djangoproject.com/en/5.1/howto/deployment/>``. We'll user ``Apache2`` and ``mod-wsgi`` here.
+There are several ways of `running Django applications in production <https://docs.djangoproject.com/en/5.1/howto/deployment/>``. We'll use ``Apache2`` and ``mod-wsgi`` here.
 
 .. code-block:: sh
 
