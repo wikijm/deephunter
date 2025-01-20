@@ -10,14 +10,16 @@ Build the python virtual environment
 
 It is highly recommended that you install DeepHunter in a Python virtual environment. There are several tools to do that (Conda, Poetry, etc). We'll use ``venv``.
 
-We'll assume that you have created a ``/data`` directory and you have write access to it.
+We'll install DeepHunter in ``/data/deephunter/`` and the Python virtual environment in ``/data/venv/``. Adapt the procedure if you choose different folders.
 
 .. code-block:: sh
       
    $ sudo apt install python3-venv python3-wheel python3-dev default-libmysqlclient-dev
    $ sudo apt install build-essential pkg-config
-   $ cd /data
+   $ sudo mkdir /data
+   $ sudo chown -R $(id -nu):$(id -ng) /data
    $ chmod -R 755 /data/
+   $ cd /data
    $ python3 -m venv venv
 
 Install the database
@@ -49,6 +51,7 @@ To download DeepHunter, use the following git command:
 
 .. code-block:: sh
 
+    $ sudo apt install git
 	$ cd /data/
 	$ git clone https://github.com/sebastiendamaye/deephunter.git
 
