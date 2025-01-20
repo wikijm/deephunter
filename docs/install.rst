@@ -77,6 +77,8 @@ Apache2 mod-wsgi
 
 There are several ways of `running Django applications in production <https://docs.djangoproject.com/en/5.1/howto/deployment/>`_. We'll use ``Apache2`` and ``mod-wsgi`` here.
 
+Note: you'll find some configuration file examples in the ``install`` directory. Make sure you have all these files before running the below commands. You may need to customize them to fit with your environment.
+
 .. code-block:: sh
 
 	$ sudo apt install apache2 apache2-utils libapache2-mod-wsgi-py3
