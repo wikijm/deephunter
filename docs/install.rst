@@ -246,12 +246,13 @@ DeepHunter is shipped with some data (fixtures). To install them, run the follow
 .. code-block:: sh
 
 	$ source /data/venv/bin/activate
-	(venv) $ ./manage.py loaddata fixtures/authgroup.json
-	(venv) $ ./manage.py loaddata fixtures/mitretactic.json
-	(venv) $ ./manage.py loaddata fixtures/mitretechnique.json
-	(venv) $ ./manage.py loaddata fixtures/tag.json
-	(venv) $ ./manage.py loaddata fixtures/targetos.json
-	(venv) $ ./manage.py loaddata fixtures/query.json
+	(venv) $ cd /data/deeephunter/
+	(venv) $ ./manage.py loaddata install/fixtures/authgroup.json
+	(venv) $ ./manage.py loaddata install/fixtures/mitretactic.json
+	(venv) $ ./manage.py loaddata install/fixtures/mitretechnique.json
+	(venv) $ ./manage.py loaddata install/fixtures/tag.json
+	(venv) $ ./manage.py loaddata install/fixtures/targetos.json
+	(venv) $ ./manage.py loaddata install/fixtures/query.json
 
 Notice that you will need to populate some tables yourself (threat actors, threat names, vulnerabilities, etc.) depending on the future queries you will create in DeepHunter. Creating new queries in DeepHunter is explained `here <admin.html#create-modify-threat-hunting-analytics>`_.
 
