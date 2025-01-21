@@ -7,11 +7,12 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'DeepHunter'
-copyright = '2024, Sébastien Damaye'
+copyright = '2025, Sébastien Damaye'
 author = 'Sébastien Damaye'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+root_doc = 'intro'
 
 extensions = []
 
