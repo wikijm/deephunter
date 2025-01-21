@@ -20,10 +20,10 @@ DeepHunter is a Threat Hunting platform that features:
 - Tools (`LOL Driver Hash Checker <tools_lol_drivers_hash_checker.html>`_, `VirusTotal Hash Checker <tools_vt_hash_checker.html>`_, `Whois <tools_whois.html>`_).
 
 .. image:: img/deephunter_analytics.png
-  :width: 400
+  :width: 600
   :alt: DeepHunter Analytics
 .. image:: img/trend_analysis.png
-  :width: 400
+  :width: 600
   :alt: DeepHunter Trend Analysis
 .. image:: img/timeline.png
   :height: 220
