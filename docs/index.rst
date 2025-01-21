@@ -52,6 +52,12 @@ DeepHunter is an application developed by threat hunters for threat hunters, in 
 - **SOC analysts**: DeepHunter timeline module can help you triage incidents, or correlate a reported incident with other artifacts.
 - **Incident Responder/Analyst**: DeepHunter timeline can show you since when a particular behavior exists, whether it has been identified as a threat by your EDR, whether it could be linked to an installed application, etc..
 
+What EDR are supported?
+***********************
+DeepHunter has been designed to connect to the **`SentinelOne <https://www.sentinelone.com/>`_ EDR**, and queries associated to the analytics are expected to be using the **PowerQuery** language.
+
+However, DeepHunter may be able to connect to other EDR, provided you adapt the code. You are very welcome to contribute.
+
 Architecture
 ************
 .. image:: img/deephunter_architecture.jpg
