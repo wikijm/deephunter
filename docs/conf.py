@@ -12,8 +12,6 @@ author = 'Sébastien Damaye'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
-root_doc = 'intro'
-
 extensions = []
 
 templates_path = ['_templates']
