@@ -27,7 +27,7 @@ This shows the list of threat hunting analytics available in the DeepHunter data
 - **Relevance**: The relevance (CRIT, HIGH, MED, LOW) tells how bad it is for your organization if events match the threat hunting analytic, independantly from the confidence. Understand it as the "impact". It may happen that you have an analytic that matches many events, only some of which are interesting/relevant. However, you may still want to keep this rule as matches may indicate a sign of compromise. In this case, the rule may have a low confidence, with a critical relevance.
 - **Run daily**: Flag indicating if the analytic is run daily (via the campaigns cron job). Remember that DeepHunter is a repository storing all threat hunting analytics, but not all of them may need to be automated.
 - **STAR rule**: Flag indicating if the analytic has a matching STAR rule in SentinelOne. When you modify an analytic in DeepHunter, always check if this flag is set, as you may also want to reflect the change in the corresponding STAR rule (DeepHunter analytic and STAR rules are not automatically synchronized).
-- **Dyn query**: Flag that indicates if the analytic is `static or dynamic <index.html#static-vs-dynamic-analytics>`_.
+- **Dyn query**: Flag that indicates if the analytic is `static or dynamic <intro.html#static-vs-dynamic-analytics>`_.
 - **Trend**: sparkline showing the trend (based on statistics collected by the campaigns) for the last 20 days.
 - **Hits (24h)**: Number of matching events for the last 24h, according to the last campaign.
 - **Hosts (24h)**: Number of matching unique endpoints for the last 24h, according to the last campaign.
