@@ -11,7 +11,7 @@ This report shows a list of the top 20 endpoints (highest weighted scores) ident
 
 The weighted score is the sum of (relevance x [confidence/4]) of every threat hunting analytics involved for the endpoint, during the last campaign.
 
-The column "matching analytics" shows the number of analytics matching the endpoint for the last `campaign <intro.html#campaigns>`_.
+The column "matching analytics" shows the number of analytics matching the endpoint for the last `campaign <index.html#campaigns>`_.
 
 Actions (links)
 ***************

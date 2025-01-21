@@ -15,7 +15,7 @@ The database model
 
 * **Qm**
 
-  * **Campaigns**: List of `campaigns <intro.html#campaigns>`_ (daily jobs) and `stats regeneration jobs <usage_analytics.html#actions-buttons>`_.
+  * **Campaigns**: List of `campaigns <index.html#campaigns>`_ (daily jobs) and `stats regeneration jobs <usage_analytics.html#actions-buttons>`_.
   * **Celery status**: 	Table used to monitor background celery jobs (when a user regenerates statistics).
   * **Countries**: List of countries, associated to threat actors.
   * **Endpoints**: List of endpoints matching threat hunting queries ran by campaigns.
