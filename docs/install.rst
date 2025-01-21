@@ -101,11 +101,8 @@ Enable mod headers
 
 	$ sudo a2enmod headers
 
-Enable SSL
-==========
-
 Certificate
------------
+===========
 
 You first need to generate a certificate for Apache2.
 
@@ -124,7 +121,7 @@ This will generate the SSL certificate and key files for the specified domain.
 Note: ``localtest.me`` is a public domain that resolves to ``127.0.0.1`` (IPv4) and ``::1`` (IPv6).
 
 SSL and enforcement
--------------------
+===================
 
 Now, we'll make sure DeepHunter is served on port 443 via HTTPS.
 
@@ -140,8 +137,8 @@ Now, we'll make sure DeepHunter is served on port 443 via HTTPS.
 	$ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 	$ sudo a2enconf ssl-params
 
-HTTPS
------
+Enable HTTPS
+============
 
 Now, run the following commands to enable DeepHunter in HTTPS:
 
@@ -152,7 +149,7 @@ Now, run the following commands to enable DeepHunter in HTTPS:
 	$ sudo a2ensite deephunter-ssl
 
 Restart Apache2
----------------
+===============
 
 Now, restart Apache2:
 
