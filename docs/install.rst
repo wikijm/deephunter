@@ -105,12 +105,30 @@ Enable mod headers
 Below line is mandatory because ``dhparam.pem`` is required in ``ssl-params.conf``. Improve your encryption by creating a strong DH Group, and enable Perfect Forward Secrecy.
 
 Note: Make sure ``/etc/apache2/conf-available/ssl-params.conf`` is present before executing ``sudo a2enconf ssl-params``.
+      An example file is present inside https://github.com/sebastiendamaye/deephunter/tree/main/install/etc/apache2/conf-available.
+      You can use ``sudo cp /data/deephunter/install/etc/apache2/conf-available/ssl-params.conf /etc/apache2/conf-available/`` to copy repo example.
 
 .. code-block:: sh
 
 	$ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 	$ sudo a2enconf ssl-params
+	$ sudo cp /data/deephunter/install/etc/apache2/sites-available/deephunter-ssl.conf /etc/apache2/sites-available/
+	$ sudo nano -c /etc/apache2/sites-enabled/deephunter-ssl.conf
 	$ sudo a2ensite deephunter-ssl
+
+For testing purpose only - Create self-signed certificate
+
+You can use the script ``/data/deephunter/install/self-certificate/generate_deephunter_self_cert.sh`` to generate a self-signed SSL certificate (deephunter.cer) and a private key (deephunter.key) for the deephunter-ssl.conf configuration file.
+
+To use this script, give it execute permissions with ``chmod +x /data/deephunter/install/self-certificate/generate_deephunter_self_cert.sh``, and run it with the domain as a parameter:
+
+.. code-block:: sh
+	$ cd /data/deephunter/install/self-certificate/
+	$ chmod +x ./generate_deephunter_self_cert.sh
+	$ ./generate_deephunter_self_cert.sh deephunter.localtest.me
+
+This will generate the SSL certificate and key files for the specified domain.
+Note: ``localtest.me`` is a public domain that resolves to 127.0.0.1 (IPv4) and ::1 (IPv6).
 
 Restart apache2:
 
