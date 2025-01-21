@@ -1,5 +1,5 @@
-Usage: Analytic
-###############
+Usage: Analytics
+################
 
 The analytics page is where you will first land once successfully logged in to DeepHunter. This is the main dashboard that shows the list of threat hunting analytics available in DeepHunter. There are many actions you can do from this screen and you can also navigate to other modules.
 
