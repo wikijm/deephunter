@@ -182,7 +182,37 @@ To backup your database, it is recommended to use ``django-dbbackup`` and run th
 
 Generate a PGP key and set ``DBBACKUP_GPG_RECIPIENT`` to recipient in ``settings.py``.
 
-Import PGP keys, both public and private.
+Generating a PGP key on Linux is a straightforward process. Here's a step-by-step guide to help you get started:
+
+a) Install GnuPG: First, ensure you have GnuPG installed. You can install it using your package manager. For example, on Debian-based systems like Ubuntu, you can use:
+
+.. code-block:: sh
+
+	sudo apt-get install gnupg
+
+b) Generate the Key: Open your terminal and run the following command to generate a new PGP key:
+
+.. code-block:: sh
+
+	gpg --full-generate-key
+
+
+c) Follow the Prompts: You'll be prompted to choose the type of key you want. The default option (RSA and RSA) is usually fine. Then, you'll need to specify the key size (2048 bits is a good choice) and the key's expiration date.
+
+d) Enter Your Details: You'll be asked to enter your name, email address, and an optional comment. This information will be associated with your key.
+
+e) Set a Passphrase: Choose a strong passphrase to protect your private key.
+
+f) Key Generation: GnuPG will generate your key pair. This might take a few moments.
+
+g) Verify Your Key: You can list your keys to verify that the new key has been created:
+
+.. code-block:: sh
+
+	ggpg --list-keys
+
+h) Import PGP keys, both public and private.
+
 
 Below is the command to make an encrypted backup:
 
