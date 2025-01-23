@@ -173,24 +173,68 @@ For details about the scripts, see the `scripts page <scripts.html>`_.
 
 Encrypted backups
 *****************
-To backup your database, it is recommended to use ``django-dbbackup`` and run the job via crontab.
+
+Install django-dbbackup
+=======================
+
+To backup your database, it is recommended to use ``django-dbbackup`` and run the job via crontab. It is also recommended to encrypt database backups (encryption works with PGP/GPG).
 
 .. code-block:: sh
 
-	(venv) $ pip install django-dbbackup
 	(venv) $ pip install python-gnupg>=0.5.0
+	(venv) $ pip install django-dbbackup
 
-Generate a PGP key and set ``DBBACKUP_GPG_RECIPIENT`` to recipient in ``settings.py``.
+Generate PGP keys
+=================
 
-Import PGP keys, both public and private.
+Generating a PGP key on Linux is a straightforward process. Here's a step-by-step guide to help you get started:
 
-Below is the command to make an encrypted backup:
+- First, make sure you have GnuPG installed. On Debian-based OS (e.g., Ubuntu), you can run the below command:
+
+.. code-block:: sh
+	
+	sudo apt-get install gnupg
+
+- Generate a new PGP key:
+
+.. code-block:: sh
+
+	gpg --full-generate-key
+
+- You'll be prompted to choose the type of key you want. The default option (RSA) is usually fine. Then, you'll need to specify the key size (2048 bits should be sufficient for most use cases, balancing security and performance) and the key's expiration date.
+
+- Enter the details: You'll be asked to enter your name, email address, and an optional comment. This information will be associated with your key.
+
+- Set a Passphrase: Choose a strong passphrase to protect your private key.
+
+- Key Generation: GnuPG will generate your key pair. This might take a few moments.
+
+- Verify Your Key: You can list your keys to verify that the new key has been created:
+
+.. code-block:: sh
+
+	gpg --list-keys
+
+Configure dbbackup
+==================
+
+Make sure you set `DBBACKUP_GPG_RECIPIENT <settings.html#dbbackup>`_ to the correct recipient (email address) in ``settings.py``.
+
+Backup and restore commands
+===========================
+- Make sure both your private and public keys are listed by running the below command:
+
+.. code-block:: sh
+	
+	gpg --list-keys
+
+To make an encrypted backup, run the below command:
 
 .. code-block:: sh
 
 	(venv) $ ./manage.py dbbackup --encrypt
 
-To restore from an encrypted backup, run the following command:
+To restore the database from an encrypted backup, run the following command:
 
 .. code-block:: sh
 

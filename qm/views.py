@@ -375,18 +375,22 @@ def timeline(request):
         
         for threat in threats:
             if threat['threatInfo']:
-                if threat['threatInfo']['analystVerdict'] != 'false_positive':
-                    detectedat = threat['threatInfo']['identifiedAt']
-                    items.append({
-                        'id': iid,
-                        'group': gid,
-                        'start': datetime.strptime(detectedat, '%Y-%m-%dT%H:%M:%S.%fZ'),
-                        'end': datetime.strptime(detectedat, '%Y-%m-%dT%H:%M:%S.%fZ')+timedelta(days=1),
-                        'description': '{} ({})'.format(threat['threatInfo']['threatName'], threat['threatInfo']['confidenceLevel']),
-                        'storylineid': 'StorylineID: {}'.format(threat['threatInfo']['storyline'])
-                        })
-                    storylineid_json[iid] = [threat['threatInfo']['storyline']]
-                    iid += 1
+                #if threat['threatInfo']['analystVerdict'] != 'false_positive':
+                detectedat = threat['threatInfo']['identifiedAt']
+                items.append({
+                    'id': iid,
+                    'group': gid,
+                    'start': datetime.strptime(detectedat, '%Y-%m-%dT%H:%M:%S.%fZ'),
+                    'end': datetime.strptime(detectedat, '%Y-%m-%dT%H:%M:%S.%fZ')+timedelta(days=1),
+                    'description': '{} [{}] [{}]'.format(
+                        threat['threatInfo']['threatName'],
+                        threat['threatInfo']['analystVerdict'],
+                        threat['threatInfo']['confidenceLevel']
+                        ),
+                    'storylineid': 'StorylineID: {}'.format(threat['threatInfo']['storyline'])
+                    })
+                storylineid_json[iid] = [threat['threatInfo']['storyline']]
+                iid += 1
 
         # Populate applications (group ID = 998 for easy identification in template)
         gid = 998
