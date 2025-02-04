@@ -25,6 +25,7 @@ S1_TOKEN = settings.S1_TOKEN
 PROXY = settings.PROXY
 XDR_URL = settings.XDR_URL
 XDR_PARAMS = settings.XDR_PARAMS
+S1_THREATS_URL = settings.S1_THREATS_URL
 
 # Params for LDAP3 calls
 LDAP_SERVER = settings.LDAP_SERVER
@@ -473,8 +474,9 @@ def timeline(request):
         job_title = ''
         business_unit = ''
         location = ''
-    
+        
     context = {
+        'S1_THREATS_URL': S1_THREATS_URL.format(hostname),
         'hostname': hostname,
         'username': username,
         'machinedetails': machinedetails,

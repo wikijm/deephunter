@@ -272,13 +272,18 @@ SentinelOne frontend URL
 - **Example**: 
 
 .. code-block:: py
-
+	
 	### Legacy frontend
 	XDR_URL = 'https://xdr.eu1.sentinelone.net'
 	XDR_PARAMS = 'view=edr'
 	### New frontend
 	#XDR_URL = 'https://tenant.sentinelone.net'
 	#XDR_PARAMS = '_categoryId=eventSearch'
+	
+	### Legacy URL for threats
+	#S1_THREATS_URL = #'https://tenant.sentinelone.net/incidents/threats?filter={"computerName__contains":"{{ hostname }}","timeTitle":"Last%203%20Months"}'
+	### New URL for threats
+	S1_THREATS_URL = 'https://tenant.sentinelone.net/incidents/unified-alerts?_scopeLevel=global&_categoryId=threatsAndAlerts&uamAlertsTable.filters=assetName__FULLTEXT%3D{{ hostname }}&uamAlertsTable.timeRange=LAST_3_MONTHS'
 
 LOGIN_URL
 *********

@@ -193,6 +193,11 @@ XDR_PARAMS = 'view=edr'
 #XDR_URL = S1_URL
 #XDR_PARAMS = '_categoryId=eventSearch'
 
+### Legacy URL for threats
+#S1_THREATS_URL = #'https://se-prod.sentinelone.net/incidents/threats?filter={"computerName__contains":"{{ hostname }}","timeTitle":"Last%203%20Months"}'
+### New URL for threats
+S1_THREATS_URL = 'https://se-prod.sentinelone.net/incidents/unified-alerts?_scopeLevel=global&_categoryId=threatsAndAlerts&uamAlertsTable.filters=assetName__FULLTEXT%3D{{ hostname }}&uamAlertsTable.timeRange=LAST_3_MONTHS'
+
 LOGIN_URL = '/admin/login/'
 
 ### dbbackup settings (encrypted backups)
