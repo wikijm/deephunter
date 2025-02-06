@@ -329,6 +329,8 @@ Reload services and enable them:
 	$ sudo systemctl start celery.service
 	$ sudo systemctl status celery.service
 
+Note: If you have difficulties to start the service, check if directory ``/var/log/celery`` is present. If not, create it with ``sudo mkdir /var/log/celery/``
+
 Install initial data
 ********************
 DeepHunter is shipped with some data (fixtures). To install them, run the following commands:
