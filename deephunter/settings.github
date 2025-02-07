@@ -28,8 +28,11 @@ USER_GROUP = "user:group"
 # GitHub URL used by the deploy.sh script to clone the repo
 GITHUB_URL = "https://github.com/sebastiendamaye/deephunter.git"
 
-# LDAP3 settings
+# LDAP3 settings (used by timeline view to get additional info on user)
+# Set LDAP_SERVER as an empty string to disable AD connection
 LDAP_SERVER = 'gc.domain.com'
+LDAP_PORT = 636
+LDAP_SSL = True
 LDAP_USER = 'SRVXXXXX@gad.domain.com'
 LDAP_PWD = '***************************'
 LDAP_SEARCH_BASE = 'DC=gad,DC=domain,DC=com'

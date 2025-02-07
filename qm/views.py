@@ -29,6 +29,8 @@ S1_THREATS_URL = settings.S1_THREATS_URL
 
 # Params for LDAP3 calls
 LDAP_SERVER = settings.LDAP_SERVER
+LDAP_PORT = settings.LDAP_PORT
+LDAP_SSL = settings.LDAP_SSL
 LDAP_USER = settings.LDAP_USER
 LDAP_PWD = settings.LDAP_PWD
 LDAP_SEARCH_BASE = settings.LDAP_SEARCH_BASE
@@ -440,30 +442,30 @@ def timeline(request):
                         iid += 1
             
             # Get user info from AD
-            server = Server(LDAP_SERVER, port = 636, use_ssl = True, get_info=ALL)
-            conn = Connection(server, LDAP_USER, LDAP_PWD, auto_bind=True)
-            conn.search(
-                LDAP_SEARCH_BASE,
-                '(sAMAccountName={})'.format(username),
-                attributes=[
-                    LDAP_ATTRIBUTES['USER_NAME'],
-                    LDAP_ATTRIBUTES['JOB_TITLE'],
-                    LDAP_ATTRIBUTES['BUSINESS_UNIT'],
-                    LDAP_ATTRIBUTES['OFFICE'],
-                    LDAP_ATTRIBUTES['COUNTRY']
-                    ]
-                )
-            if conn.entries:
-                entry = conn.entries[0]
-                user_name = entry.displayName
-                job_title = entry.title
-                business_unit = entry.division
-                location = "{}, {}".format(entry.physicalDeliveryOfficeName, entry.co)
-            else:
-                user_name = 'N/A'
-                job_title = 'N/A'
-                business_unit = 'N/A'
-                location = 'N/A'
+            user_name = 'N/A'
+            job_title = 'N/A'
+            business_unit = 'N/A'
+            location = 'N/A'
+            if LDAP_SERVER:
+                server = Server(LDAP_SERVER, port=LDAP_PORT, use_ssl=LDAP_SSL, get_info=ALL)
+                conn = Connection(server, LDAP_USER, LDAP_PWD, auto_bind=True)
+                conn.search(
+                    LDAP_SEARCH_BASE,
+                    '(sAMAccountName={})'.format(username),
+                    attributes=[
+                        LDAP_ATTRIBUTES['USER_NAME'],
+                        LDAP_ATTRIBUTES['JOB_TITLE'],
+                        LDAP_ATTRIBUTES['BUSINESS_UNIT'],
+                        LDAP_ATTRIBUTES['OFFICE'],
+                        LDAP_ATTRIBUTES['COUNTRY']
+                        ]
+                    )
+                if conn.entries:
+                    entry = conn.entries[0]
+                    user_name = entry.displayName
+                    job_title = entry.title
+                    business_unit = entry.division
+                    location = "{}, {}".format(entry.physicalDeliveryOfficeName, entry.co)
             
     else:
         hostname = ''

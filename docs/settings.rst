@@ -57,18 +57,41 @@ GITHUB_URL
 LDAP_SERVER
 ***********
 - **Type**: string
-- **Description**: LDAP server. Used to connect to the LDAP to gather additional information about a user based on a machine name, in the timeline view.
+- **Description**: LDAP server. Used to connect to the LDAP to gather additional information about a user based on a username (previously gathered by S1 using last logged in user), in the timeline view. To ignore the LDAP connection, set ``LDAP_SERVER`` to an empty string.
 - **Example**:
 
 .. code-block:: py
 
+	# Set to empty string if you don't want to get additional user info from AD
+	# LDAP_SERVER = ''
 	LDAP_SERVER = 'gc.domain.com'
 	
+LDAP_PORT
+*********
+- **Type**: integer
+- **Description**: LDAP port. Used to connect to the LDAP to gather additional information about a user based on a username (previously gathered by S1 using last logged in user), in the timeline view.
+- **Example**:
+
+.. code-block:: py
+	
+	LDAP_PORT = 636
+
+LDAP_SSL
+*********
+- **Type**: boolean
+- **Possible values**: ``True`` or ``False``
+- **Description**: Force the LDAP connection to use SSL. Used to connect to the LDAP to gather additional information about a user based on a username (previously gathered by S1 using last logged in user), in the timeline view.
+- **Example**:
+
+.. code-block:: py
+	
+	LDAP_SSL = True
+
 LDAP_USER
 *********
 - **Type**: string
 - **Format**: ``user@domain``
-- **Description**: LDAP user (e.g., a service account). Used to connect to the LDAP to gather additional information about a user based on a machine name, in the timeline view.
+- **Description**: LDAP user (e.g., a service account). Used to connect to the LDAP to gather additional information about a username (previously gathered by S1 using last logged in user), in the timeline view.
 - **Example**:
 
 .. code-block:: py
