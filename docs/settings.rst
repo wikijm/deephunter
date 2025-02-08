@@ -364,16 +364,19 @@ LOGGING
 		},
 	}
 
-SESSION EXPIRATION
-******************
-- **Type**: integer (``SESSION_EXPIRE_SECONDS``) and boolean (``SESSION_EXPIRE_AFTER_LAST_ACTIVITY``)
-- **Description**: Used for session expiration (recommended). In case of inactivity, your session should auto-expire and you should be automatically disconnected after some time (defined in seconds with the ``SESSION_EXPIRE_SECONDS`` parameter).
+AUTO_LOGOUT
+***********
+- **Type**: dictionary
+- **Description**: Used for session expiration (recommended). In case of inactivity, your session should auto-expire and you should be automatically disconnected after some time (defined in minutes with the ``IDLE_TIME`` parameter).
 - **Example**: 
 
 .. code-block:: py
-
-	SESSION_EXPIRE_SECONDS = 3600  # 1 hour
-	SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+	
+	# Logout automatically after 1 hour
+	AUTO_LOGOUT = {
+		'IDLE_TIME': timedelta(minutes=60),
+		'REDIRECT_TO_LOGIN_IMMEDIATELY': True,
+	}
 
 CELERY
 ******
