@@ -57,6 +57,14 @@ Enter the virtual environment and install dependencies from the ``requirements.t
 	$ cd /data/deephunter/
 	(venv) $ pip install -r requirements.txt
 
+NOTE: To manage the session timeout, DeepHunter relies on the `django-auto-logout <https://pypi.org/project/django-auto-logout/>`_ package, that is not `CSP <https://content-security-policy.com/>`_ compliant. If you care about CSP compliance, use the following patch (notice that you will need to patch the file each time the package will be updated). Also make sure you use the same ID in your `/etc/apache2/conf-available/security.conf` file.
+
+.. code-block:: sh
+        
+        $ VENV_PATH="/data/venv"
+        $ LIB_PATH=$(find $VENV_PATH -type d -name django_auto_logout 2>/dev/null)
+        $ sed -i "s/<script>/<script nonce=\"kj5fcv07a2\">/" $LIB_PATH/context_processors.py
+
 Initialization
 **************
 
