@@ -230,36 +230,16 @@ def trend(request, query_id):
 @login_required
 def pq(request, query_id, site):
     query = get_object_or_404(Query, pk=query_id)
-    if site == 1:
-        # site = 1 means 1st custom field (C1)
-        if '| parse' in query.query or '| let' in query.query or '| filter' in query.query:
-            # if there are embedded functions like "| parse", "| filter", etc... end of parenthesis should be
-            # placed before the "| parse" statement, instead of at the very end of the query.
-            customized_query = "{} and (\n{}".format(CUSTOM_FIELDS['c1']['filter'], query.query)
-            # replace only the first occurence, not all where pipe is detected
-            customized_query = customized_query.replace("| ", ")\n| ", 1)
-        else:
-            customized_query = "{} and (\n{}\n)".format(CUSTOM_FIELDS['c1']['filter'], query.query)
-    elif site == 2:
-        # site = 2 means 2nd custom field (C2)
-        if '| parse' in query.query or '| let' in query.query or '| filter' in query.query:
-            # if there are embedded functions like "| parse", "| filter", etc... end of parenthesis should be
-            # placed before the "| parse" statement, instead of at the very end of the query.
-            customized_query = "{} and (\n{}".format(CUSTOM_FIELDS['c2']['filter'], query.query)
-            # replace only the first occurence, not all where pipe is detected
-            customized_query = customized_query.replace("| ", ")\n| ", 1)
-        else:
-            customized_query = "{} and (\n{}\n)".format(CUSTOM_FIELDS['c2']['filter'], query.query)
-    elif site == 3:
-        # site = 3 means 3rd custom field (C3)
-        if '| parse' in query.query or '| let' in query.query or '| filter' in query.query:
-            # if there are embedded functions like "| parse", "| filter", etc... end of parenthesis should be
-            # placed before the "| parse" statement, instead of at the very end of the query.
-            customized_query = "{} and (\n{}".format(CUSTOM_FIELDS['c3']['filter'], query.query)
-            # replace only the first occurence, not all where pipe is detected
-            customized_query = customized_query.replace("| ", ")\n| ", 1)
-        else:
-            customized_query = "{} and (\n{}\n)".format(CUSTOM_FIELDS['c3']['filter'], query.query)
+    if site==1 or site==2 or site==3:
+        # site=1 means 1st custom field (C1), site=2 means 2nd custom field (C2), etc
+        if site==1:
+            custom_field = CUSTOM_FIELDS['c1']['filter']
+        elif site==2:
+            custom_field = CUSTOM_FIELDS['c2']['filter']
+        elif site==3:
+            custom_field = CUSTOM_FIELDS['c3']['filter']
+        
+        customized_query = "{} \n| filter {}".format(query.query, custom_field)
     else:
         customized_query = query.query
     
@@ -498,16 +478,7 @@ def timeline(request):
 @login_required
 def events(request, endpointname, queryname, eventdate):    
     query = get_object_or_404(Query, name=queryname)
-    customized_query = "endpoint.name='{}' and (\n{}\n)".format(endpointname, query.query)
-
-    if '| parse' in query.query or '| let' in query.query or '| filter' in query.query:
-        # if there are embedded functions like "| parse", "| filter", etc... end of parenthesis should be
-        # placed before the "| parse" statement, instead of at the very end of the query.
-        customized_query = "endpoint.name='{}' and (\n{}".format(endpointname, query.query)
-        # replace only the first occurence, not all where pipe is detected
-        customized_query = customized_query.replace("| ", ")\n| ", 1)
-    else:
-        customized_query = "endpoint.name='{}' and (\n{}\n)".format(endpointname, query.query)
+    customized_query = "{} \n| filter endpoint.name='{}'".format(query.query, endpointname)
 
     if query.columns:
         q = quote('{}\n{}'.format(customized_query, query.columns))
