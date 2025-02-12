@@ -16,6 +16,7 @@ class QueryHistoryAdmin(SimpleHistoryAdmin):
     search_fields = ['name', 'description', 'notes', 'emulation_validation']
     filter_horizontal = ('mitre_techniques', 'threats', 'actors', 'target_os', 'vulnerabilities', 'tags')
     history_list_display = ['query', 'columns']
+    save_as = True
 
 class SnapshotAdmin(admin.ModelAdmin):
     list_display = ('get_campaign', 'query', 'date', 'runtime', 'hits_count', 'hits_endpoints',)

@@ -57,3 +57,5 @@ Fields should be quite explicit, and it shouldn't be too complicated for you to 
 - **Markdown syntax**: Some fields (e.g., description, notes, emulation validation) use the markdown syntax.
 - The **reference** field accepts URL directly (1 URL per line)
 - You can create threat actors, threat names or vulnerabilities directly from a threat hunting analytic, by using the ``+`` icon on the right side of these fields.
+
+To clone an analytic, just edit the analytic you wish to clone, change its name, and click the "Save as new" button.

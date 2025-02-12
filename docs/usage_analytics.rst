@@ -82,3 +82,7 @@ The list of all possible filters, broken down into sections. Expand a section an
 
 .. image:: img/analytics_filters_available.png
   :alt: analytics filters available
+
+Create/Modify/Clone analytics
+*****************************
+Refere to `this page <admin.html#create-modify-threat-hunting-analytics>`_.
