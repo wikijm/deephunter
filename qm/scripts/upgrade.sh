@@ -75,15 +75,15 @@ echo "[INFO] DB migrations complete"
 
 # Restore permissions
 echo "[INFO] Restoring permissions..."
-chmod -R 755 $APP_PATH
+chmod -R 775 $APP_PATH
 touch $APP_PATH/campaigns.log
-chmod 666 $APP_PATH/campaigns.log
+chmod 664 $APP_PATH/campaigns.log
 touch $APP_PATH/static/mitre.json
-chmod 666 $APP_PATH/static/mitre.json
+chmod 664 $APP_PATH/static/mitre.json
 touch $APP_PATH/static/tokendate.txt
-chmod 666 $APP_PATH/static/tokendate.txt
+chmod 664 $APP_PATH/static/tokendate.txt
 chown -R $USER $VENV_PATH
-chmod -R 755 $VENV_PATH
+chmod -R 775 $VENV_PATH
 
 # Restart apache2
 echo "[INFO] Restarting services..."
