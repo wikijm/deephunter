@@ -333,7 +333,7 @@ def timeline(request):
     storylineid_json = {}
     
     if request.GET:
-        hostname = request.GET['hostname']
+        hostname = request.GET['hostname'].strip()
         endpoints = Endpoint.objects.filter(hostname=hostname).order_by('snapshot__date')
         for e in endpoints:
             # search if group already exists
@@ -401,68 +401,77 @@ def timeline(request):
             headers={'Authorization': 'ApiToken:{}'.format(S1_TOKEN)},
             proxies=PROXY
             )
-        machinedetails = r.json()['data'][0]
-        id = r.json()['data'][0]['id']
-        username = ''
+        try:
+            machinedetails = r.json()['data'][0]
+            id = r.json()['data'][0]['id']
+            username = ''
 
-        if id:
-            # Get username
-            r = requests.get(
-                '{}/web/api/v2.1/agents?ids={}'.format(S1_URL, id),
-                headers={'Authorization': 'ApiToken:{}'.format(S1_TOKEN)},
-                proxies=PROXY
-                )
-            username = r.json()['data'][0]['lastLoggedInUserName']
-        
-            groups.append({'id':gid, 'content':'Apps install (S1)'})
-            
-            createdat = (datetime.today()-timedelta(days=90))
-            # Get applications
-            
-            r = requests.get(
-                '{}/web/api/v2.1/agents/applications?ids={}'.format(S1_URL, id),
-                headers={'Authorization': 'ApiToken:{}'.format(S1_TOKEN)},
-                proxies=PROXY
-                )
-            apps = r.json()['data']
-            
-            for app in apps:
-                if app['installedDate']:
-                    if datetime.strptime(app['installedDate'][:10], '%Y-%m-%d') >= createdat:
-                        items.append({
-                            'id': iid,
-                            'group': gid,
-                            'start':  datetime.strptime(app['installedDate'][:10], '%Y-%m-%d'),
-                            'end': datetime.strptime(app['installedDate'][:10], '%Y-%m-%d')+timedelta(days=1),
-                            'description': '{} ({})'.format(app['name'], app['publisher'])
-                            })
-                        iid += 1
-            
-            # Get user info from AD
-            user_name = 'N/A'
-            job_title = 'N/A'
-            business_unit = 'N/A'
-            location = 'N/A'
-            if LDAP_SERVER:
-                server = Server(LDAP_SERVER, port=LDAP_PORT, use_ssl=LDAP_SSL, get_info=ALL)
-                conn = Connection(server, LDAP_USER, LDAP_PWD, auto_bind=True)
-                conn.search(
-                    LDAP_SEARCH_BASE,
-                    '(sAMAccountName={})'.format(username),
-                    attributes=[
-                        LDAP_ATTRIBUTES['USER_NAME'],
-                        LDAP_ATTRIBUTES['JOB_TITLE'],
-                        LDAP_ATTRIBUTES['BUSINESS_UNIT'],
-                        LDAP_ATTRIBUTES['OFFICE'],
-                        LDAP_ATTRIBUTES['COUNTRY']
-                        ]
+            if id:
+                # Get username
+                r = requests.get(
+                    '{}/web/api/v2.1/agents?ids={}'.format(S1_URL, id),
+                    headers={'Authorization': 'ApiToken:{}'.format(S1_TOKEN)},
+                    proxies=PROXY
                     )
-                if conn.entries:
-                    entry = conn.entries[0]
-                    user_name = entry.displayName
-                    job_title = entry.title
-                    business_unit = entry.division
-                    location = "{}, {}".format(entry.physicalDeliveryOfficeName, entry.co)
+                username = r.json()['data'][0]['lastLoggedInUserName']
+            
+                groups.append({'id':gid, 'content':'Apps install (S1)'})
+                
+                createdat = (datetime.today()-timedelta(days=90))
+                # Get applications
+                
+                r = requests.get(
+                    '{}/web/api/v2.1/agents/applications?ids={}'.format(S1_URL, id),
+                    headers={'Authorization': 'ApiToken:{}'.format(S1_TOKEN)},
+                    proxies=PROXY
+                    )
+                apps = r.json()['data']
+                
+                for app in apps:
+                    if app['installedDate']:
+                        if datetime.strptime(app['installedDate'][:10], '%Y-%m-%d') >= createdat:
+                            items.append({
+                                'id': iid,
+                                'group': gid,
+                                'start':  datetime.strptime(app['installedDate'][:10], '%Y-%m-%d'),
+                                'end': datetime.strptime(app['installedDate'][:10], '%Y-%m-%d')+timedelta(days=1),
+                                'description': '{} ({})'.format(app['name'], app['publisher'])
+                                })
+                            iid += 1
+                
+                # Get user info from AD
+                user_name = 'N/A'
+                job_title = 'N/A'
+                business_unit = 'N/A'
+                location = 'N/A'
+                if LDAP_SERVER:
+                    server = Server(LDAP_SERVER, port=LDAP_PORT, use_ssl=LDAP_SSL, get_info=ALL)
+                    conn = Connection(server, LDAP_USER, LDAP_PWD, auto_bind=True)
+                    conn.search(
+                        LDAP_SEARCH_BASE,
+                        '(sAMAccountName={})'.format(username),
+                        attributes=[
+                            LDAP_ATTRIBUTES['USER_NAME'],
+                            LDAP_ATTRIBUTES['JOB_TITLE'],
+                            LDAP_ATTRIBUTES['BUSINESS_UNIT'],
+                            LDAP_ATTRIBUTES['OFFICE'],
+                            LDAP_ATTRIBUTES['COUNTRY']
+                            ]
+                        )
+                    if conn.entries:
+                        entry = conn.entries[0]
+                        user_name = entry.displayName
+                        job_title = entry.title
+                        business_unit = entry.division
+                        location = "{}, {}".format(entry.physicalDeliveryOfficeName, entry.co)
+        except:
+            username = ''
+            machinedetails = ''
+            apps = ''
+            user_name = ''
+            job_title = ''
+            business_unit = ''
+            location = ''
             
     else:
         hostname = ''
