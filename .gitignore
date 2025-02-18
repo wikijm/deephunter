@@ -5,3 +5,4 @@ _docs/*
 campaigns.log
 settings.py
 static/mitre.json
+static/tokendate.txt
