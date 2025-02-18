@@ -14,6 +14,7 @@ from scipy import stats
 from .models import Country, Query, Snapshot, Campaign, TargetOs, Vulnerability, ThreatActor, ThreatName, MitreTactic, MitreTechnique, Endpoint, Tag, CeleryStatus
 from .tasks import regenerate_stats
 import ipaddress
+import re
 
 VT_API_KEY = settings.VT_API_KEY
 CUSTOM_FIELDS = settings.CUSTOM_FIELDS
@@ -35,6 +36,10 @@ LDAP_USER = settings.LDAP_USER
 LDAP_PWD = settings.LDAP_PWD
 LDAP_SEARCH_BASE = settings.LDAP_SEARCH_BASE
 LDAP_ATTRIBUTES = settings.LDAP_ATTRIBUTES
+
+# Params for S1 TOKEN
+STATIC_PATH = settings.STATIC_ROOT
+S1_TOKEN_EXPIRATION = settings.S1_TOKEN_EXPIRATION
 
 @login_required
 def index(request):
@@ -154,6 +159,17 @@ def index(request):
     if CUSTOM_FIELDS['c3']:
         custom_fields.append(CUSTOM_FIELDS['c3']['name'])
     
+    # Check if token is about to expire
+    tokenexpires = 1000
+    try:
+        with open('{}/tokendate.txt'.format(STATIC_PATH), 'r') as f:
+            d = re.search('\d{4}-\d{2}-\d{2}', f.readline())
+            tokendate = datetime.strptime(d.group(), "%Y-%m-%d")
+            tokenelapseddays = (datetime.today() - tokendate).days
+            tokenexpires = S1_TOKEN_EXPIRATION - tokenelapseddays
+    except:
+        tokenexpires = 1000
+        
     context = {
         'queries': queries,
         'target_os': TargetOs.objects.all(),
@@ -166,7 +182,8 @@ def index(request):
         'mitre_techniques': MitreTechnique.objects.all(),
         'posted_search': posted_search,
         'posted_filters': posted_filters,
-        'custom_fields': custom_fields
+        'custom_fields': custom_fields,
+        'tokenexpires': tokenexpires
     }
     return render(request, 'list_queries.html', context)
     

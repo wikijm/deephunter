@@ -267,12 +267,13 @@ STATIC_URL
 SentinelOne API
 ***************
 - **Type**: string
-- **Description**: ``S1_URL`` is the SentinelOne URL for your tenant and is used for any API call to SentinelOne. ``S1_TOKEN`` is the token associated to your API. Notice that tokens expire every month and the new token value should be updated in the settings file regularly.
+- **Description**: ``S1_URL`` is the SentinelOne URL for your tenant and is used for any API call to SentinelOne. ``S1_TOKEN`` is the token associated to your API. Notice that tokens expire every month (``S1_TOKEN_EXPIRATION`` is set to 30 days by default) and the new token value should be updated (please use the ``update_s1_token.sh`` script to update your token, because it will take care of updating the renewal date).
 - **Example**: 
 
 .. code-block:: py
 
 	S1_URL = 'https://yourtenant.sentinelone.net'
+	S1_TOKEN_EXPIRATION = 30
 	S1_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
 
 PROXY

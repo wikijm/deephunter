@@ -299,6 +299,7 @@ Fix permissions:
 	$ chmod -R 755 /data
 	$ chmod 666 /data/deephunter/campaigns.log 
 	$ chmod 666 /data/deephunter/static/mitre.json 
+	$ chmod 666 /data/deephunter/static/tokendate.txt
 
 To start the Celery service automatically, you may want to create a file in ``/etc/systemd/system/celery.service`` as follows:
 

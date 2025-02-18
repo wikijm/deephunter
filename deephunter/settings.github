@@ -184,6 +184,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # SentinelOne API
 S1_URL = 'https://my_tenant.sentinelone.net'
+S1_TOKEN_EXPIRATION = 30
 S1_TOKEN = '***************************************************'
 
 PROXY = {

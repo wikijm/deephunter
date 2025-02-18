@@ -77,6 +77,8 @@ touch $APP_PATH/campaigns.log
 chmod 666 $APP_PATH/campaigns.log
 touch $APP_PATH/static/mitre.json
 chmod 666 $APP_PATH/static/mitre.json
+touch $APP_PATH/static/tokendate.json
+chmod 666 $APP_PATH/static/tokendate.json
 chown -R $USER $VENV_PATH
 chmod -R 755 $VENV_PATH
 
