@@ -53,7 +53,10 @@ for app in ${APPS[@]}
 do
     cp -R $TEMP_FOLDER/deephunter/$app/migrations/ $APP_PATH/$app/
 done
+# Restore settings
 cp $TEMP_FOLDER/deephunter/deephunter/settings.py $APP_PATH/deephunter/
+# Restore token renewal date
+cp $TEMP_FOLDER/deephunter/static/tokendate.txt $APP_PATH/static/
 
 # Migrate
 read -p "About to start DB migrations. Press <ENTER> to continue"
