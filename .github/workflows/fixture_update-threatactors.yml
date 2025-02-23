@@ -1,0 +1,71 @@
+name: Update Threat Actors
+
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  update_threat_actors:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas requests pyyaml
+
+    - name: Run update script
+      run: |
+        python - <<'EOF'
+        import pandas as pd
+        import requests
+        import yaml
+        import os
+
+        url_xlsx = "https://attack.mitre.org/docs/enterprise-attack-v16.1/enterprise-attack-v16.1-groups.xlsx"
+        response = requests.get(url_xlsx)
+        with open("enterprise-attack-v16.1-groups.xlsx", "wb") as file:
+            file.write(response.content)
+
+        groups_df = pd.read_excel("enterprise-attack-v16.1-groups.xlsx")
+
+        with open("deephunter/install/fixtures/threatactors.yml", "r") as file:
+            threat_actor_data = yaml.safe_load(file)
+
+        next_pk = max(entry['pk'] for entry in threat_actor_data) + 1
+
+        for _, group in groups_df.iterrows():
+            exists = any(entry['fields']['name'].lower() == group['name'].lower() for entry in threat_actor_data)
+            if not exists:
+                new_entry = {
+                    'model': 'qm.threatactor',
+                    'pk': next_pk,
+                    'fields': {
+                        'name': group['name'],
+                        'aka_name': group['associated groups'] if pd.notnull(group['associated groups']) else '',
+                        'source_country': 1,
+                        'references': group['url']
+                    }
+                }
+                threat_actor_data.append(new_entry)
+                next_pk += 1
+
+        with open("deephunter/install/fixtures/threatactors.yml", "w") as file:
+            yaml.dump(threat_actor_data, file, default_flow_style=False, sort_keys=False)
+
+        os.remove("enterprise-attack-v16.1-groups.xlsx")
+
+        print("Updated YAML file created successfully and Excel file removed.")
+        EOF
