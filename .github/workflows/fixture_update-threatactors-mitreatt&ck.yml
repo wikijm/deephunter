@@ -26,6 +26,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install pandas requests pyyaml openpyxl
 
+    - name: Create file if it doesn't exist
+      run: |
+        mkdir -p ${{ github.workspace }}/install/fixtures
+        if [ ! -f ${{ github.workspace }}/install/fixtures/threatactors-mitreatt&ck.yml ]; then
+          touch ${{ github.workspace }}/install/fixtures/threatactors-mitreatt&ck.yml
+          echo "[]" > ${{ github.workspace }}/install/fixtures/threatactors-mitreatt&ck.yml
+        fi
+
     - name: Run update script
       run: |
         python - <<'EOF'
@@ -41,7 +49,7 @@ jobs:
 
         groups_df = pd.read_excel("enterprise-attack-v16.1-groups.xlsx")
 
-        with open("${{ github.workspace }}/install/fixtures/threatactors-mitreatt&ck.yml", "r") as file:
+        with open("deephunter/install/fixtures/threatactors-mitreatt&ck.yml", "r") as file:
             threat_actor_data = yaml.safe_load(file)
 
         next_pk = max(entry['pk'] for entry in threat_actor_data) + 1
@@ -62,7 +70,7 @@ jobs:
                 threat_actor_data.append(new_entry)
                 next_pk += 1
 
-        with open("deephunter/install/fixtures/threatactors.yml", "w") as file:
+        with open("deephunter/install/fixtures/threatactors-mitreatt&ck.yml", "w") as file:
             yaml.dump(threat_actor_data, file, default_flow_style=False, sort_keys=False)
 
         os.remove("enterprise-attack-v16.1-groups.xlsx")
@@ -75,5 +83,5 @@ jobs:
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
         git add deephunter/install/fixtures/threatactors-mitreatt&ck.yml
-        git commit -m 'Update threatactors-mitreatt&ck.yml with new data from MITRE ATT&CK'
+        git commit -m 'Update threatactors.yml with new data from MITRE ATT&CK'
         git push origin HEAD:main
