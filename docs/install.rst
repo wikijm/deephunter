@@ -83,6 +83,7 @@ Once done, initialize the database:
 
 	$ source /data/venv/bin/activate
 	(venv) $ ./manage.py makemigrations
+        (venv) $ ./manage.py makemigrations qm
 	(venv) $ ./manage.py migrate
 
 Try to run ``./manage.py runserver`` on default port 8000 and confirm that there is no error
