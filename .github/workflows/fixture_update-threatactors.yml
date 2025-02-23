@@ -75,5 +75,5 @@ jobs:
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
         git add deephunter/install/fixtures/threatactors-mitreatt&ck.yml
-        git commit -m 'Update threatactors.yml with new data from MITRE ATT&CK'
+        git commit -m 'Update threatactors-mitreatt&ck.yml with new data from MITRE ATT&CK'
         git push origin HEAD:main
