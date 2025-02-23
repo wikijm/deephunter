@@ -353,6 +353,10 @@ DeepHunter is shipped with some data (fixtures). To install them, run the follow
 	$ source /data/venv/bin/activate
 	(venv) $ cd /data/deephunter/
 	(venv) $ ./manage.py loaddata install/fixtures/authgroup.json
+	(venv) $ ./manage.py loaddata install/fixtures/country.json
+	(venv) $ ./manage.py loaddata install/fixtures/threatactor.json
+	(venv) $ ./manage.py loaddata install/fixtures/threatname.json
+	(venv) $ ./manage.py loaddata install/fixtures/vulnerability.json
 	(venv) $ ./manage.py loaddata install/fixtures/mitretactic.json
 	(venv) $ ./manage.py loaddata install/fixtures/mitretechnique.json
 	(venv) $ ./manage.py loaddata install/fixtures/tag.json
