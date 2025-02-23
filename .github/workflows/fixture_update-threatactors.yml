@@ -41,7 +41,7 @@ jobs:
 
         groups_df = pd.read_excel("enterprise-attack-v16.1-groups.xlsx")
 
-        with open("deephunter/install/fixtures/threatactors-mitreatt&ck.yml", "r") as file:
+        with open("${{ github.workspace }}/install/fixtures/threatactors-mitreatt&ck.yml", "r") as file:
             threat_actor_data = yaml.safe_load(file)
 
         next_pk = max(entry['pk'] for entry in threat_actor_data) + 1
