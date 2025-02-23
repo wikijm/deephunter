@@ -1,4 +1,4 @@
-name: Update Threat Actors
+name: Update Threat Actors by MITRE ATT&CK
 
 on: 
   push:
@@ -41,7 +41,7 @@ jobs:
 
         groups_df = pd.read_excel("enterprise-attack-v16.1-groups.xlsx")
 
-        with open("deephunter/install/fixtures/threatactors.yml", "r") as file:
+        with open("${{ github.workspace }}/install/fixtures/threatactors-mitreatt&ck.yml", "r") as file:
             threat_actor_data = yaml.safe_load(file)
 
         next_pk = max(entry['pk'] for entry in threat_actor_data) + 1
@@ -69,3 +69,6 @@ jobs:
 
         print("Updated YAML file created successfully and Excel file removed.")
         EOF
+
+    # Commit updated data to repo
+    - uses: stefanzweifel/git-auto-commit-action@v5.0.1
