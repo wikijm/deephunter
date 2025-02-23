@@ -208,7 +208,7 @@ LOGIN_URL = '/admin/login/'
 
 ### dbbackup settings (encrypted backups)
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
-DBBACKUP_GPG_RECIPIENT = 'sebastien.damaye@se.com'
+DBBACKUP_GPG_RECIPIENT = 'email@domain.com'
 
 LOGGING = {
     # The version number of our log
