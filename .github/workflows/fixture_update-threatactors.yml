@@ -1,4 +1,4 @@
-name: Update Threat Actors by MITRE ATT&CK
+name: Update Threat Actors by MITRTE ATT&CK
 
 on: 
   push:
@@ -24,7 +24,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pandas requests pyyaml openpyxl
+        pip install pandas requests pyyaml
 
     - name: Run update script
       run: |
@@ -41,7 +41,7 @@ jobs:
 
         groups_df = pd.read_excel("enterprise-attack-v16.1-groups.xlsx")
 
-        with open("${{ github.workspace }}/install/fixtures/threatactors-mitreatt&ck.yml", "r") as file:
+        with open("deephunter/install/fixtures/threatactors-mitreatt&ck.yml", "r") as file:
             threat_actor_data = yaml.safe_load(file)
 
         next_pk = max(entry['pk'] for entry in threat_actor_data) + 1
@@ -70,5 +70,10 @@ jobs:
         print("Updated YAML file created successfully and Excel file removed.")
         EOF
 
-    # Commit updated data to repo
-    - uses: stefanzweifel/git-auto-commit-action@v5.0.1
+    - name: Commit changes
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add deephunter/install/fixtures/threatactors-mitreatt&ck.yml
+        git commit -m 'Update threatactors.yml with new data from MITRE ATT&CK'
+        git push origin HEAD:main
