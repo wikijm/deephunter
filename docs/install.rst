@@ -115,13 +115,13 @@ Certificate
 
 You first need to generate a certificate for Apache2.
 
-For a development environment or for testing purposes, you may use a self-signed certificate. You can use the script ``/data/deephunter/install/self-certificate/generate_deephunter_self_cert.sh`` to generate a self-signed SSL certificate (``deephunter.cer``) and a private key (``deephunter.key``) for the ``deephunter-ssl.conf`` configuration file.
+For a development environment or for testing purposes, you may use a self-signed certificate. You can use the script ``/data/deephunter/install/scripts/generate_deephunter_self_cert.sh`` to generate a self-signed SSL certificate (``deephunter.cer``) and a private key (``deephunter.key``) for the ``deephunter-ssl.conf`` configuration file.
 
 Make the script executable and run it with the domain as a parameter (``deephunter.localtest.me`` used below as example):
 
 .. code-block:: sh
 	
-	$ cd /data/deephunter/install/self-certificate/
+	$ cd /data/deephunter/install/scripts/
 	$ chmod +x ./generate_deephunter_self_cert.sh
 	$ ./generate_deephunter_self_cert.sh deephunter.localtest.me
 
@@ -346,24 +346,11 @@ Note: If you have difficulties to start the service, check if directory ``/var/l
 
 Install initial data
 ********************
-DeepHunter is shipped with some data (fixtures). To install them, run the following commands:
+DeepHunter is shipped with some data (fixtures). To install them, use the ``load_initial_data.sh`` script:
 
 .. code-block:: sh
 
-	$ source /data/venv/bin/activate
-	(venv) $ cd /data/deephunter/
-	(venv) $ ./manage.py loaddata install/fixtures/authgroup.json
-	(venv) $ ./manage.py loaddata install/fixtures/country.json
-	(venv) $ ./manage.py loaddata install/fixtures/threatactor.json
-	(venv) $ ./manage.py loaddata install/fixtures/threatname.json
-	(venv) $ ./manage.py loaddata install/fixtures/vulnerability.json
-	(venv) $ ./manage.py loaddata install/fixtures/mitretactic.json
-	(venv) $ ./manage.py loaddata install/fixtures/mitretechnique.json
-	(venv) $ ./manage.py loaddata install/fixtures/tag.json
-	(venv) $ ./manage.py loaddata install/fixtures/targetos.json
-	(venv) $ ./manage.py loaddata install/fixtures/query.json
-
-Notice that you will need to populate some tables yourself (threat actors, threat names, vulnerabilities, etc.) depending on the future queries you will create in DeepHunter. Creating new queries in DeepHunter is explained `here <admin.html#create-modify-threat-hunting-analytics>`_.
+	$ /data/deephunter/install/scripts/load_initial_data.sh
 
 Upgrading DeepHunter
 ********************
