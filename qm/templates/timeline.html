@@ -199,7 +199,7 @@ timeline.on('doubleClick', function (properties) {
 		// Double click not available for apps group
 		return false;
 	} else if (properties['group'] == '999') {
-		window.open('{{ S1_THREATS_URL }}', '_blank');
+		window.open('{{ S1_THREATS_URL|safe }}', '_blank');
 	} else {
 		window.open('/events/{{hostname}}/'+mygroups[properties['group']]+'/'+formatDate(properties['time'])+'/', '_blank');
 	}
