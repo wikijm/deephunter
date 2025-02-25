@@ -292,7 +292,7 @@ PROXY
 SentinelOne frontend URL
 ************************
 - **Type**: string
-- **Description**: Address and parameters to use to point to SentinelOne frontend from the timeline view. Depending on the interface you have enabled (legacy frontend of new frontend), the URL and parameters are different. Make sure to uncomment the correct settings and comment out the ones to ignore.
+- **Description**: Address and parameters to use to point to SentinelOne frontend from the timeline view. Depending on the interface you have enabled (legacy frontend of new frontend), the URL and parameters are different. Make sure to uncomment the correct settings and comment out the ones to ignore. Notice that ``S1_THREATS_URL`` is dnyamically rendered by the Django view using ``format`` to evaluate the correct hostname. This is why the ``{}`` string appears in the URL.
 - **Example**: 
 
 .. code-block:: py
@@ -305,9 +305,9 @@ SentinelOne frontend URL
 	#XDR_PARAMS = '_categoryId=eventSearch'
 	
 	### Legacy URL for threats
-	#S1_THREATS_URL = #'https://tenant.sentinelone.net/incidents/threats?filter={"computerName__contains":"{{ hostname }}","timeTitle":"Last%203%20Months"}'
+	#S1_THREATS_URL = #'https://tenant.sentinelone.net/incidents/threats?filter={"computerName__contains":"{}","timeTitle":"Last%203%20Months"}'
 	### New URL for threats
-	S1_THREATS_URL = 'https://tenant.sentinelone.net/incidents/unified-alerts?_scopeLevel=global&_categoryId=threatsAndAlerts&uamAlertsTable.filters=assetName__FULLTEXT%3D{{ hostname }}&uamAlertsTable.timeRange=LAST_3_MONTHS'
+	S1_THREATS_URL = 'https://tenant.sentinelone.net/incidents/unified-alerts?_scopeLevel=global&_categoryId=threatsAndAlerts&uamAlertsTable.filters=assetName__FULLTEXT%3D{}&uamAlertsTable.timeRange=LAST_3_MONTHS'
 
 LOGIN_URL
 *********
