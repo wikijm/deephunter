@@ -86,6 +86,11 @@
 					<button class="button_filter" id="button_checkrelevance_{{ v }}">RELEVANCE:{{ v|confidencelabel }}&nbsp;&nbsp;<b>x</b></button>
 				{% endfor %}
 			{% endif %}
+			{% if posted_filters.status %}
+				{% for v in posted_filters.status %}
+					<button class="button_filter" id="button_checkstatus_{{ v }}">STATUS:{{ v|statuslabel }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
+			{% endif %}
 			{% if posted_filters.run_daily == 0 or posted_filters.run_daily == 1 %}
 				{% if posted_filters.run_daily|slugify == '1' %}
 					<button class="button_filter" id="button_checkrundaily_1">RUN_DAILY:yes&nbsp;&nbsp;<b>x</b></button>
@@ -105,6 +110,13 @@
 					<button class="button_filter" id="button_checkdynamicquery_1">DYNAMIC_QUERY:yes&nbsp;&nbsp;<b>x</b></button>
 				{% else %}
 					<button class="button_filter" id="button_checkdynamicquery_0">DYNAMIC_QUERY:no&nbsp;&nbsp;<b>x</b></button>
+				{% endif %}
+			{% endif %}
+			{% if posted_filters.hits == 0 or posted_filters.hits == 1 %}
+				{% if posted_filters.hits|slugify == '1' %}
+					<button class="button_filter" id="button_checkhits_1">HITS:yes&nbsp;&nbsp;<b>x</b></button>
+				{% else %}
+					<button class="button_filter" id="button_checkhits_0">HITS:no&nbsp;&nbsp;<b>x</b></button>
 				{% endif %}
 			{% endif %}
 		</div>
@@ -247,6 +259,20 @@
 				<label class="form-check-label" for="checkrelevance4">Critical</label>
 			</div>
 		</td></tr>
+
+		<tr><td><div class="filter">Status</div></td></tr>
+		<tr><td>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkstatusDRAFT" name="status" value="DRAFT"
+					{% if 'DRAFT' in posted_filters.status %} checked{% endif %}>
+				<label class="form-check-label" for="checkstatusDRAFT">Draft</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkstatusDIST" name="status" value="DIST"
+					{% if 'DIST' in posted_filters.status %} checked{% endif %}>
+				<label class="form-check-label" for="checkstatusDIST">Dist</label>
+			</div>
+		</td></tr>
 		
 		<tr><td><div class="filter">Flags</div></td></tr>
 		<tr><td>
@@ -288,6 +314,19 @@
 				<label class="form-check-label" for="checkdynamicquery0">no</label>
 			</div>
 
+			<br />
+			<h5>Hits for last campaign</h5>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" id="checkhits1" name="hits" value="1"
+					{% if posted_filters.hits|slugify == '1' %} checked{% endif %} />
+				<label class="form-check-label" for="checkhits1">yes</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" id="checkhits0" name="hits" value="0"
+					{% if posted_filters.hits|slugify == '0' %} checked{% endif %} />
+				<label class="form-check-label" for="checkhits0">no</label>
+			</div>
+
 		</td></tr>
 		
 	</tbody>
@@ -310,11 +349,11 @@
         <th>STAR rule</th>
         <th>Dyn. query</th>
         <th>Trend</th>
-        <th>#Hits (24h)</th>
-		<th>#Hosts (24h)</th>
-		{% if custom_fields|length > 0 %}<th>#{{ custom_fields.0 }} (24h)</th>{% endif %}
-		{% if custom_fields|length > 1 %}<th>#{{ custom_fields.1 }} (24h)</th>{% endif %}
-		{% if custom_fields|length > 2 %}<th>#{{ custom_fields.2 }} (24h)</th>{% endif %}
+        <th class="aright">#Hits (24h)</th>
+		<th class="aright">#Hosts (24h)</th>
+		{% if custom_fields|length > 0 %}<th class="aright">#{{ custom_fields.0 }} (24h)</th>{% endif %}
+		{% if custom_fields|length > 1 %}<th class="aright">#{{ custom_fields.1 }} (24h)</th>{% endif %}
+		{% if custom_fields|length > 2 %}<th class="aright">#{{ custom_fields.2 }} (24h)</th>{% endif %}
     </tr>
   </thead>
   <tbody>

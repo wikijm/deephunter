@@ -49,7 +49,7 @@ DeepHunter is an application developed by threat hunters for threat hunters, in 
 
 What EDR are supported?
 ***********************
-DeepHunter has been designed to connect to the **`SentinelOne <https://www.sentinelone.com/>` EDR**, and queries associated to the analytics are expected to be using the **PowerQuery** language.
+DeepHunter has been designed to connect to the `SentinelOne <https://www.sentinelone.com/>`_ EDR, and queries associated to the analytics are expected to be using the **PowerQuery** language.
 
 However, DeepHunter may be able to connect to other EDR, provided you adapt the code. You are very welcome to contribute.
 

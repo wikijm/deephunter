@@ -124,6 +124,15 @@ def confidencelabel(confidence):
     return label
 
 @register.filter
+def statuslabel(status):
+    if status == 'DRAFT':
+        label = 'Draft'
+    elif status == 'DIST':
+        label = 'Dist'
+    
+    return label
+
+@register.filter
 def isactiveurl(currenturl, compurl):
     if currenturl == compurl:
         return 'active'

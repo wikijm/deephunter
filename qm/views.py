@@ -103,6 +103,10 @@ def index(request):
         if 'relevance' in request.POST:
             queries = queries.filter(relevance__in=request.POST.getlist('relevance'))
             posted_filters['relevance'] = request.POST.getlist('relevance')
+
+        if 'status' in request.POST:
+            queries = queries.filter(pub_status__in=request.POST.getlist('status'))
+            posted_filters['status'] = request.POST.getlist('status')
             
         if 'run_daily' in request.POST:
             if request.POST['run_daily'] == '1':
@@ -127,6 +131,26 @@ def index(request):
             else:
                 queries = queries.filter(dynamic_query=False)
                 posted_filters['dynamic_query'] = 0
+
+        if 'hits' in request.POST:
+            # Get yesterday's date
+            yesterday = datetime.now() - timedelta(days=1)
+            yesterday_date = yesterday.date()  # Get the date part
+
+            if request.POST['hits'] == '1':
+                # Filter queries where related Snapshot has hits_count > 0 and date is yesterday
+                queries = queries.filter(
+                    snapshot__hits_count__gt=0,
+                    snapshot__date=yesterday_date
+                ).distinct()
+                posted_filters['hits'] = 1
+            else:
+                # Filter queries where related Snapshot has hits_count = 0 and date is yesterday
+                queries = queries.filter(
+                    snapshot__hits_count=0,
+                    snapshot__date=yesterday_date
+                ).distinct()
+                posted_filters['hits'] = 0
     
     for query in queries:
         #snapshot = Snapshot.objects.filter(query=query, date__gt=datetime.today()-timedelta(days=1)).order_by('date')
