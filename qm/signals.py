@@ -17,7 +17,7 @@ def post_save_handler(sender, instance, created, **kwargs):
     if instance.star_rule:
 
         # filter "tenant=true" is to apply rule to scope "global"
-        body = {
+        body_new = {
             "data": {
                 "queryLang": "2.0",
                 "severity": "High",
@@ -32,11 +32,11 @@ def post_save_handler(sender, instance, created, **kwargs):
                 "tenant": "true"
             }
         }
-
+                
         # For newly created analytic
         if created:
             r = requests.post(f'{S1_URL}/web/api/v2.1/cloud-detection/rules',
-                json=body,
+                json=body_new,
                 headers={'Authorization': f'ApiToken:{S1_TOKEN}'},
                 proxies=PROXY
                 )
@@ -48,18 +48,53 @@ def post_save_handler(sender, instance, created, **kwargs):
                 headers={'Authorization': f'ApiToken:{S1_TOKEN}'},
                 proxies=PROXY
                 )
-            if 'data' in r.json():
-                # if it exists, update it
+            if r.json()['data']:
+                # if it exists, update it, but preserve severity and expiration              
                 rule_id = r.json()['data'][0]['id']
+                severity = r.json()['data'][0]['severity']
+                expirationMode = r.json()['data'][0]['expirationMode']
+
+                if expirationMode == 'Permanent':
+                    body_update = {
+                        "data": {
+                            "queryLang": "2.0",
+                            "severity": severity,
+                            "s1ql": instance.query,
+                            "name": instance.name,
+                            "queryType": "events",
+                            "expirationMode": "Permanent",
+                            "status": "Active"
+                        },
+                        "filter": {
+                            "tenant": "true"
+                        }
+                    }
+                else:
+                    body_update = {
+                        "data": {
+                            "queryLang": "2.0",
+                            "severity": severity,
+                            "s1ql": instance.query,
+                            "name": instance.name,
+                            "queryType": "events",
+                            "expirationMode": "Temporary",
+                            "expiration": r.json()['data'][0]['expiration'],
+                            "status": "Active"
+                        },
+                        "filter": {
+                            "tenant": "true"
+                        }
+                    }
+                    
                 r = requests.put(f'{S1_URL}/web/api/v2.1/cloud-detection/rules/{rule_id}',
-                    json=body,
+                    json=body_update,
                     headers={'Authorization': f'ApiToken:{S1_TOKEN}'},
                     proxies=PROXY
-                    )                
+                    )
             else:
                 # if it does not exist (STAR rule flag was not set), create it
                 r = requests.post(f'{S1_URL}/web/api/v2.1/cloud-detection/rules',
-                    json=body,
+                    json=body_new,
                     headers={'Authorization': f'ApiToken:{S1_TOKEN}'},
                     proxies=PROXY
                     )
