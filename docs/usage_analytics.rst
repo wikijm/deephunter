@@ -78,10 +78,44 @@ List of applied filters. Click on the cross sign to remove a specific filter.
 
 Available filters
 *****************
-The list of all possible filters, broken down into sections. Expand a section and select a filter. It will be immediately added to the list of selected filters nad the page will refresh. You can add as many filters as you want. Filters from the same section are applied as a list of values (for example, if you select "Windows" and "Linux" as "Target OS", it will show the list of threat hunting analytics that cover "Windows" or "Linux").
+The list of all possible filters, broken down into sections. Expand a section and select a filter. It will be immediately added to the list of selected filters and the page will refresh. You can add as many filters as you want. Filters from the same section are applied as a list of values (for example, if you select "Windows" and "Linux" as "Target OS", it will show the list of threat hunting analytics that cover "Windows" or "Linux").
 
 .. image:: img/analytics_filters_available.png
   :alt: analytics filters available
+
+Star rules synchronization
+**************************
+DeepHunter synchronizes the query of threat hunting analytics with STAR rules in SentinelOne, when the STAR rule flag is set.
+
+STAR rules are created with the following default properties:
+
+.. list-table::
+   :widths: 25 50 50
+   :header-rows: 1
+
+   * - 
+     - Creation
+     - Update
+   * - PowerQuery version
+     - 2.0
+     - 2.0
+   * - Severity
+     - High
+     - (existing value preserved)
+   * - Description
+     - Rule sync from DeeHunter
+     - (existing value preserved)
+   * - Rule Type
+     - Single Event
+     - Single Event
+
+The following logic is applied:
+
+- if a new threat hunting analytic is created with the STAR rule flag set in DeepHunter, a STAR rule will be created in SentinelOne
+- if a threat hunting analytic with the STAR rule flag set is deleted in DeepHunter, the associated STAR rule will be deleted in SentinelOne
+- if a threat hunting analytic is updated in DeepHunter, with the STAR rule flag newly set, a corresponding STAR rule will be created in SentinelOne
+- if a threat hunting analytic is updated in DeepHunter, with the STAR rule flag removed (previously set), the associated STAR rule will be deleted in SentinelOne
+- if a threat hunting analytic is updated in DeepHunter, with the STAR rule flag set (previously set), the associated STAR rule will be updated in SentinelOne (see above table for updated fields)
 
 Create/Modify/Clone analytics
 *****************************
