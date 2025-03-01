@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import pre_save, post_save, post_delete
 from django.dispatch import receiver
 from django.conf import settings
 from .models import Query
@@ -9,6 +9,32 @@ import json
 S1_URL = settings.S1_URL
 S1_TOKEN = settings.S1_TOKEN
 PROXY = settings.PROXY
+
+@receiver(pre_save, sender=Query)
+def check_initial_value(sender, instance, **kwargs):
+    # Check if the instance is being updated (i.e., it's not a new object)
+    if instance.pk:
+        # Retrieve the current value of the field from the database
+        original_instance = Query.objects.get(pk=instance.pk)
+        
+        # Get the value of the STAR rule flag before threat hunting analytic is saved
+        # and compare with updated value
+        old_value = original_instance.star_rule
+        new_value = instance.star_rule
+        
+        # If STAR rule flag was initially set, and has been removed with the update
+        # we need to delete the STAR rule in S1
+        if old_value and not new_value:
+            body = {
+                "filter": {
+                    "name__contains": instance.name
+                }
+            }
+            r = requests.delete(f'{S1_URL}/web/api/v2.1/cloud-detection/rules',
+                json=body,
+                headers={'Authorization': f'ApiToken:{S1_TOKEN}'},
+                proxies=PROXY
+                )
 
 # This handler is triggered after an object is saved (created or updated)
 @receiver(post_save, sender=Query)
