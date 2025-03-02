@@ -136,7 +136,7 @@ LDAP_ATTRIBUTES
 
 CUSTOM_FIELDS
 *************
-- **Type**: dictionnary
+- **Type**: dictionary
 - **Description**: The main dashboard of DeepHunter shows a table with statistics from the last campaign (number of matching events, number of machines, etc.). It is possible to add custom fields (additional columns), that are filtered values to make a break down of the number of matching hosts. For example, if you have defined a specific population for VP in your SentinelOne EDR, you may want to display the corresponding number in a dedicated column. There are up to 3 custom fields. For each, you define a ``name``, a ``description`` and the ``filter`` to apply to the query.
 - **Example**:
 
@@ -224,7 +224,7 @@ ROOT_URLCONF
 
 DATABASES
 *********
-- **Type**: dictionnary
+- **Type**: dictionary
 - **Description**: Database settings. By default, configured to be used with MySQL/MariaDB. Refer to the Django documentation to use other backends.
 - **Example**: 
 
@@ -278,7 +278,7 @@ SentinelOne API
 
 PROXY
 *****
-- **Type**: dictionnary
+- **Type**: dictionary
 - **Description**: Proxy settings for any Internet communication from DeepHunter, including API calls to S1.
 - **Example**: 
 
@@ -321,7 +321,7 @@ LOGIN_URL
 
 DBBACKUP
 ********
-- **Type**: dictionnary (``DBBACKUP_STORAGE_OPTIONS``) and string (``DBBACKUP_STORAGE`` and ``DBBACKUP_GPG_RECIPIENT``)
+- **Type**: dictionary (``DBBACKUP_STORAGE_OPTIONS``) and string (``DBBACKUP_STORAGE`` and ``DBBACKUP_GPG_RECIPIENT``)
 - **Description**: ``DBBACKUP_STORAGE_OPTIONS`` is to specify the location of your backups. ``DBBACKUP_GPG_RECIPIENT`` should be the email address used by GPG for the encryption of the backups. Used by the ``./qm/scripts/backup.sh`` script.
 - **Example**: 
 
@@ -334,7 +334,7 @@ DBBACKUP
 
 LOGGING
 *******
-- **Type**: dictionnary
+- **Type**: dictionary
 - **Description**: Used to specify the file used for debugging information (``campaigns.log`` by default).
 - **Example**: 
 
@@ -389,3 +389,47 @@ CELERY
 
 	CELERY_BROKER_URL = "redis://localhost:6379"
 	CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+STAR rules sync
+***************
+
+SYNC_STAR_RULES
+===============
+
+- **Type**: Boolean
+- **Possible values**: ``True`` or ``False``
+- **Description**: if ``SYNC_STAR_RULES`` is set to ``True``, STAR rules will be synchronized in SentinelOne when the STAR rule flag is set in DeepHunter queries and threat hunting analytics are created, updated or deleted. It can be set to ``False`` if you only want to use this flag in DeepHunter as information.
+- **Example**: 
+
+.. code-block:: py
+	
+	SYNC_STAR_RULES = True # True|False
+
+STAR_RULES_PREFIX
+=================
+
+- **Type**: string
+- **Description**: Prefix used to name STAR rules in SentinelOne. For example, if the prefix is ``TH_`` and you create a threat hunting analytic in DeepHunter named ``test_threat_hunting``, the STAR rule in SentinelOne will be named ``TH_test_threat_hunting``.
+- **Example**: 
+
+.. code-block:: py
+	
+	STAR_RULES_PREFIX = '' # example: "TH_"
+
+STAR_RULES_DEFAULTS
+===================
+
+- **Type**: dictionary of strings.
+- **Description**: default values for the creation of STAR rules. Notice that modifications about severity, expiration, cool off settings and response actions you may have applied to STAR rules in SentinelOne are preserved when threat hunting analytics are updated.
+- **Example**: 
+
+.. code-block:: py
+	
+	STAR_RULES_DEFAULTS = {
+		'severity': 'High', # Low|Medium|High|Critical
+		'status': 'Active', # Active|Draft
+		'expiration': '', # String. Expiration in days. Only if expirationMode set to 'Temporary'. Empty string to ignore
+		'coolOffPeriod': '', # String. Cool Off Period (in minutes). Empty string to ignore
+		'treatAsThreat': '', # Undefined(or empty)|Suspicious|Malicious.
+		'networkQuarantine': 'false' # true|false
+	}

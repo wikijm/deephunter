@@ -243,3 +243,15 @@ AUTO_LOGOUT = {
 
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+# STAR rules
+SYNC_STAR_RULES = True # True|False
+STAR_RULES_PREFIX = '' # example: "TH_"
+STAR_RULES_DEFAULTS = {
+    'severity': 'High', # Low|Medium|High|Critical
+    'status': 'Active', # Active|Draft
+    'expiration': '10', # String. Expiration in days. Only if expirationMode set to 'Temporary'. Empty string to ignore
+    'coolOffPeriod': '5', # String. Cool Off Period (in minutes). Empty string to ignore
+    'treatAsThreat': 'Malicious', # Undefined(or empty)|Suspicious|Malicious.
+    'networkQuarantine': 'true' # true|false
+}
