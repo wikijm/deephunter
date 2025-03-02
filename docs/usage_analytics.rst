@@ -96,6 +96,9 @@ STAR rules are created with the following default properties:
    * - 
      - Creation
      - Update
+   * - Scope
+     - Global
+     - Global
    * - PowerQuery version
      - 2.0
      - 2.0
@@ -108,6 +111,18 @@ STAR rules are created with the following default properties:
    * - Rule Type
      - Single Event
      - Single Event
+   * - expirationMode
+     - Permanent
+     - (existing value preserved)
+   * - Cool Off Period
+     - (Undefined)
+     - (Undefined)
+   * - treatAsThreat
+     - (Undefined)
+     - (existing value preserved)
+   * - Network Quarantine
+     - (Undefined)
+     - (existing value preserved)
 
 The following logic is applied:
 
@@ -116,6 +131,8 @@ The following logic is applied:
 - if a threat hunting analytic is updated in DeepHunter, with the STAR rule flag newly set, a corresponding STAR rule will be created in SentinelOne
 - if a threat hunting analytic is updated in DeepHunter, with the STAR rule flag removed (previously set), the associated STAR rule will be deleted in SentinelOne
 - if a threat hunting analytic is updated in DeepHunter, with the STAR rule flag set (previously set), the associated STAR rule will be updated in SentinelOne (see above table for updated fields)
+
+By default, STAR rules are created without a response plan associated. It's up to you to modify it in SentinelOne, once the rule is propagated. This response plan will be preserved if the corresponding threat hunting analytic is modified in DeepHunter.
 
 Create/Modify/Clone analytics
 *****************************
