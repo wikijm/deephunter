@@ -111,16 +111,19 @@ STAR rules are created with the following default properties:
    * - Rule Type
      - Single Event
      - Single Event
+   * - Status
+     - Active
+     - Active
    * - expirationMode
      - Permanent
      - (existing value preserved)
-   * - Cool Off Period
+   * - coolOffSettings
      - (Undefined)
      - (Undefined)
    * - treatAsThreat
      - (Undefined)
      - (existing value preserved)
-   * - Network Quarantine
+   * - networkQuarantine
      - (Undefined)
      - (existing value preserved)
 
