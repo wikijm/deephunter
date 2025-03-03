@@ -193,7 +193,25 @@ def index(request):
             tokenexpires = S1_TOKEN_EXPIRATION - tokenelapseddays
     except:
         tokenexpires = 1000
-        
+
+    # Check if new version available
+    try:
+        update_available = False
+        # remote version
+        r = requests.get(
+            'https://api.github.com/repos/sebastiendamaye/deephunter/releases/latest',
+            proxies=PROXY
+            )
+        remote_ver = r.json()['name']
+        # local version
+        with open(f'{STATIC_PATH}/VERSION', 'r') as f:
+            local_ver = f.readline().strip()
+        # compare
+        if local_ver != remote_ver:
+            update_available = True
+    except:
+        update_available = False
+
     context = {
         'queries': queries,
         'target_os': TargetOs.objects.all(),
@@ -207,7 +225,8 @@ def index(request):
         'posted_search': posted_search,
         'posted_filters': posted_filters,
         'custom_fields': custom_fields,
-        'tokenexpires': tokenexpires
+        'tokenexpires': tokenexpires,
+        'update_available': update_available
     }
     return render(request, 'list_queries.html', context)
     
