@@ -119,7 +119,7 @@ STAR rules are created with the following default properties:
      - (existing value preserved)
    * - coolOffSettings
      - Defined in the settings
-     - (Undefined)
+     - (existing value preserved)
    * - treatAsThreat
      - Defined in the settings
      - (existing value preserved)
