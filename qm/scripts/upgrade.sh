@@ -73,7 +73,7 @@ else
 fi
 # Checking that user has sudo
 user_groups=$(groups $(whoami))
-if echo "$user_groups" | grep -qw "sudo"; then
+if echo "$user_groups" | grep -qw "sudo" || echo "$user_groups" | grep -qw "admin"; then
 	echo -e "  User has sudo access ................................. [\033[32mOK\033[0m]"
 else
 	echo -e "  User has sudo access ................................. [\033[31mfailed\033[0m]"
