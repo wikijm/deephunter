@@ -10,6 +10,40 @@ DEBUG
 - **Description**: Used to display debug information. Can be set to ``True`` in development environement, but always to ``False`` in a production environment.
 - **Example**: ``DEBUG = True``
 
+UPDATE_ON
+*********
+
+- **Type**: String
+- **Description**: Choose how you should be notified about updates and what repository should be considered for updates. If you select ``commit``, you will be notified each time there is a new commit, and the upgrade script will download the very latest version of DeepHunter. If you select ``release``, you will only be notified about updates when a new version is released, and the upgrade script will download the latest release, instead of the latest commited code.
+- **Possible values**: ``commit`` or ``release``
+- **Example**:
+
+.. code-block:: py
+
+	UPDATE_ON = "release"
+
+TEMP_FOLDER
+***********
+
+- **Type**: String
+- **Description**: Used by the upgrade script. This is a temporary location where the current version of deephunter will be saved before upgrading. This can be used for easy rollback in case of error during the update process.
+- **Example**:
+
+.. code-block:: py
+
+	TEMP_FOLDER = "/data/tmp"
+
+VENV_PATH
+*********
+
+- **Type**: String
+- **Description**: Used by the update script. This is your python virtual path.
+- **Example**:
+
+.. code-block:: py
+
+	VENV_PATH = "/data/venv"
+
 SHOW_LOGIN_FORM
 ***************
 - **Type**: Boolean

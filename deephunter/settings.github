@@ -9,6 +9,11 @@ SECRET_KEY = '*****************************************************************'
 
 DEBUG = False
 
+# Update settings
+UPDATE_ON = "release" # Possible values: commit|release
+TEMP_FOLDER = "/data/tmp"
+VENV_PATH = "/data/venv"
+
 SHOW_LOGIN_FORM = False
 
 ALLOWED_HOSTS = ['deephunter.domain.com']

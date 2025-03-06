@@ -12,4 +12,5 @@ urlpatterns = [
     path('<int:query_id>/regen/', views.regen, name='regen'),
     path('<int:query_id>/progress/', views.progress, name='progress'),
     path('netview', views.netview, name='netview'),
+    path('about', views.about, name='about'),
 ]

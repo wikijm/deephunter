@@ -19,6 +19,7 @@ import re
 VT_API_KEY = settings.VT_API_KEY
 CUSTOM_FIELDS = settings.CUSTOM_FIELDS
 BASE_DIR = settings.BASE_DIR
+UPDATE_ON = settings.UPDATE_ON
 
 # Params for requests API calls
 S1_URL = settings.S1_URL
@@ -187,7 +188,7 @@ def index(request):
     tokenexpires = 1000
     try:
         with open('{}/tokendate.txt'.format(STATIC_PATH), 'r') as f:
-            d = re.search('\d{4}-\d{2}-\d{2}', f.readline())
+            d = re.search(r'\d{4}-\d{2}-\d{2}', f.readline())
             tokendate = datetime.strptime(d.group(), "%Y-%m-%d")
             tokenelapseddays = (datetime.today() - tokendate).days
             tokenexpires = S1_TOKEN_EXPIRATION - tokenelapseddays
@@ -197,18 +198,30 @@ def index(request):
     # Check if new version available
     try:
         update_available = False
+        
         # remote version
-        r = requests.get(
-            'https://api.github.com/repos/sebastiendamaye/deephunter/releases/latest',
-            proxies=PROXY
-            )
-        remote_ver = r.json()['name']
+        # update on new release only
+        if UPDATE_ON == 'release':
+            r = requests.get(
+                'https://api.github.com/repos/sebastiendamaye/deephunter/releases/latest',
+                proxies=PROXY
+                )
+            remote_ver = r.json()['name']
+        else:
+            # update on every new commit
+            r = requests.get(
+                'https://raw.githubusercontent.com/sebastiendamaye/deephunter/refs/heads/main/static/VERSION',
+                proxies=PROXY
+                )
+            remote_ver = r.text.strip()
+            
         # local version
         with open(f'{STATIC_PATH}/VERSION', 'r') as f:
             local_ver = f.readline().strip()
         # compare
         if local_ver != remote_ver:
             update_available = True
+            
     except:
         update_available = False
 
@@ -689,3 +702,15 @@ and dst.ip.address != '127.0.0.1'
         'debug': debug
         }
     return render(request, 'netview.html', context)
+
+@login_required
+def about(request):
+    
+    # local version
+    with open(f'{STATIC_PATH}/VERSION', 'r') as f:
+        version = f.readline().strip()
+    
+    context = {
+        'version': version
+        }
+    return render(request, 'about.html', context)
