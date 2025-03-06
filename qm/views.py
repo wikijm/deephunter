@@ -207,17 +207,20 @@ def index(request):
                 proxies=PROXY
                 )
             remote_ver = r.json()['name']
+            # local version
+            with open(f'{STATIC_PATH}/VERSION', 'r') as f:
+                local_ver = f.readline().strip()
         else:
             # update on every new commit
             r = requests.get(
-                'https://raw.githubusercontent.com/sebastiendamaye/deephunter/refs/heads/main/static/VERSION',
+                'https://raw.githubusercontent.com/sebastiendamaye/deephunter/refs/heads/main/static/commit_id.txt',
                 proxies=PROXY
                 )
             remote_ver = r.text.strip()
+            # local version
+            with open(f'{STATIC_PATH}/commit_id.txt', 'r') as f:
+                local_ver = f.readline().strip()
             
-        # local version
-        with open(f'{STATIC_PATH}/VERSION', 'r') as f:
-            local_ver = f.readline().strip()
         # compare
         if local_ver != remote_ver:
             update_available = True

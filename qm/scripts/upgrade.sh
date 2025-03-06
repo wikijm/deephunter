@@ -278,6 +278,8 @@ touch $APP_PATH/static/mitre.json
 chmod 666 $APP_PATH/static/mitre.json
 touch $APP_PATH/static/tokendate.txt
 chmod 666 $APP_PATH/static/tokendate.txt
+chmod 664 $APP_PATH/static/VERSION
+chmod 664 $APP_PATH/static/commit_id.txt
 chown -R $USER $VENV_PATH
 chmod -R 775 $VENV_PATH
 echo -e "[\033[32mdone\033[0m]"
