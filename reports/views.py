@@ -242,3 +242,24 @@ def missing_mitre(request):
         }
     
     return render(request, 'missing_mitre.html', context)
+
+@login_required
+def analytics_perfs(request):
+    yesterday = datetime.now() - timedelta(days=1)
+    snapshots = Snapshot.objects.filter(date=yesterday).order_by('-runtime')
+    queries = []
+    
+    for snapshot in snapshots:
+        query_snapshots = Snapshot.objects.filter(query=snapshot.query, date__gt=datetime.today()-timedelta(days=20)).order_by('date')
+        queries.append({
+                'id': snapshot.query.id,
+                'name': snapshot.query.name,
+                'runtime': snapshot.runtime,
+                'sparkline': [query_snapshot.runtime for query_snapshot in query_snapshots]
+            })
+    
+    context = {
+        'queries': queries
+        }
+    
+    return render(request, 'perfs.html', context)

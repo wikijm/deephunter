@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/css/list_queries.css" />
+<script src="/static/jquery/jquery.min.js"></script>
+<script src="/static/jquery_sparkline/jquery.sparkline.min.js"></script>
+{% endblock %}
+
+{% block body %}
+<h1>Threat Hunting Analytics Performance</h1>
+
+<table>
+	<tr>
+		<th>Runtime</th>
+		<th>Trend</th>
+		<th>Admin/Stats</th>
+		<th>Analytic</th>
+	</tr>
+{% for query in queries %}
+	<tr>
+		<td class="acenter">{{ query.runtime|floatformat }} sec</td>
+		<td><span id="sparkline_{{ query.id }}"></span></td>
+		<td>
+			[<a target="_blank" href="/admin/qm/query/{{ query.id }}/change/">admin</a>]
+			[<a target="_blank" href="/{{ query.id }}/trend/">stats</a>]
+		</td>
+		<td>{{ query.name }}</td>
+	</tr>	
+{% endfor %}
+</table>
+<script type="text/javascript" nonce="hf7hgo1ilm">
+$(function() {
+	{% for query in queries %}
+		$('#sparkline_{{ query.id }}').sparkline({{ query.sparkline }});
+	{% endfor %}
+});
+</script>
+
+{% endblock %}
