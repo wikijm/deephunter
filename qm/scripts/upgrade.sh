@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ######################################
 # FUNCTIONS
@@ -93,45 +93,70 @@ fi
 # Search for the settings file on disk
 # (assuming it is in the following relative path ./deephunter/deephunter/settings.py)
 echo -n -e "[\033[90mINFO\033[0m] LOOKING FOR THE SETTINGS.PY FILE ................ "
-SETTINGS_PATH=$(find / -type f -path "*/deephunter/deephunter/*" -name "settings.py" 2>/dev/null)
-if [ -z "${SETTINGS_PATH}" ]; then
+SETTINGS_PATHS=$(find / -type f -path "*/deephunter/deephunter/*" -name "settings.py" 2>/dev/null)
+if [ -z "${SETTINGS_PATHS}" ]; then
 	echo -e "[\033[31mnot found\033[0m]"
 	exit 1
 else
 	echo -e "[\033[32mfound\033[0m]"
 fi
 
-# Confirm settings path is correct
-echo -n -e "[\033[34mCONFIRM\033[0m] "
-read -p "Settings file found in \"$SETTINGS_PATH\". Is it correct (Y/n)? " response
-# If no input is provided (just Enter), set response to 'Y'
-response=${response:-Y}
-# Convert the response to uppercase to handle both 'y' and 'Y'
-response=$(echo "$response" | tr '[:lower:]' '[:upper:]')
-# Check the response
-if [[ "$response" == "Y" || "$response" == "YES" ]]; then
-	# Extract variables from settings.py
-	APP_PATH=$(dirname "$SETTINGS_PATH" | sed 's:/deephunter$::')
-	# Remove all comments from settings and save a copy in tmp
-	# This is a necessary prerequisite in order to avoid duplicates during extraction
-	grep -v '^#' $APP_PATH/deephunter/settings.py > /tmp/settings.py
-	TEMP_FOLDER=$(grep -oP 'TEMP_FOLDER\s?=\s?"\K[^"]+' /tmp/settings.py)
-	check_empty "TEMP_FOLDER" "$TEMP_FOLDER"
-	VENV_PATH=$(grep -oP 'VENV_PATH\s?=\s?"\K[^"]+' /tmp/settings.py)
-	check_empty "VENV_PATH" "$VENV_PATH"
-	UPDATE_ON=$(grep -oP 'UPDATE_ON\s?=\s?"\K[^"]+' /tmp/settings.py)
-	check_empty "UPDATE_ON" "$UPDATE_ON"
-	USER=$(grep -oP 'USER_GROUP\s?=\s?"\K[^"]+' /tmp/settings.py)
-	check_empty "USER" "$USER"
-	GITHUB_URL=$(grep -oP 'GITHUB_URL\s?=\s?"\K[^"]+' /tmp/settings.py)
-	check_empty "GITHUB_URL" "$GITHUB_URL"
-	# List of django apps for migrations
-	APPS=(qm extensions reports)
-elif [[ "$response" == "N" || "$response" == "NO" ]]; then
-    exit 1
-else
-    echo "Invalid response. Please enter Y, YES, N, or NO."
+# Count the number of settings.py files found
+NUM_PATHS=$(echo "$SETTINGS_PATHS" | wc -l)
+
+# If only one settings.py found...
+if [ "$NUM_PATHS" -eq 1 ]; then
+	# Confirm settings path is correct
+	while true; do
+		echo -n -e "[\033[34mCONFIRM\033[0m] "
+		read -p "Settings file found in \"$SETTINGS_PATHS\". Is it correct (Y/n)? " response
+		# If no input is provided (just Enter), set response to 'Y'
+		response=${response:-Y}
+		# Convert the response to uppercase to handle both 'y' and 'Y'
+		response=$(echo "$response" | tr '[:lower:]' '[:upper:]')
+
+		if [[ "$response" == "Y" || "$response" == "YES" ]]; then
+			SETTINGS_PATH=$SETTINGS_PATHS
+			break
+		elif [[ "$response" == "N" || "$response" == "NO" ]]; then
+			exit 1
+		else
+			echo "Invalid response. Please enter Y, YES, N, or NO."
+		fi
+	done
 fi
+
+# If multiple files are found, prompt the user to select one
+if [ "$NUM_PATHS" -gt 1 ]; then
+    # Display the paths with a number
+	echo -e "[\033[34mCONFIRM\033[0m] Please select the correct settings.py file by number"
+    PS3="Selection: "
+    select SETTINGS_PATH in $SETTINGS_PATHS; do
+        if [ -n "$SETTINGS_PATH" ]; then
+            break
+        else
+            echo "Invalid selection. Please try again."
+        fi
+    done
+fi
+
+# Extract variables from settings.py
+APP_PATH=$(dirname "$SETTINGS_PATH" | sed 's:/deephunter$::')
+# Remove all comments from settings and save a copy in tmp
+# This is a necessary prerequisite in order to avoid duplicates during extraction
+grep -v '^#' $APP_PATH/deephunter/settings.py > /tmp/settings.py
+TEMP_FOLDER=$(grep -oP 'TEMP_FOLDER\s?=\s?"\K[^"]+' /tmp/settings.py)
+check_empty "TEMP_FOLDER" "$TEMP_FOLDER"
+VENV_PATH=$(grep -oP 'VENV_PATH\s?=\s?"\K[^"]+' /tmp/settings.py)
+check_empty "VENV_PATH" "$VENV_PATH"
+UPDATE_ON=$(grep -oP 'UPDATE_ON\s?=\s?"\K[^"]+' /tmp/settings.py)
+check_empty "UPDATE_ON" "$UPDATE_ON"
+USER=$(grep -oP 'USER_GROUP\s?=\s?"\K[^"]+' /tmp/settings.py)
+check_empty "USER" "$USER"
+GITHUB_URL=$(grep -oP 'GITHUB_URL\s?=\s?"\K[^"]+' /tmp/settings.py)
+check_empty "GITHUB_URL" "$GITHUB_URL"
+# List of django apps for migrations
+APPS=(qm extensions reports)
 
 
 ######################################
@@ -211,63 +236,70 @@ cp -R $APP_PATH $TEMP_FOLDER
 echo -e "[\033[32mdone\033[0m]"
 
 # Installation of the update
-echo -n -e "[\033[34mCONFIRM\033[0m] "
-read -p "Proceed with installation of the new version (Y/n)? " response
-# If no input is provided (just Enter), set response to 'Y'
-response=${response:-Y}
-# Convert the response to uppercase to handle both 'y' and 'Y'
-response=$(echo "$response" | tr '[:lower:]' '[:upper:]')
-# Check the response
-if [[ "$response" == "Y" || "$response" == "YES" ]]; then
-    echo -n -e "[\033[90mINFO\033[0m] INSTALLING UPDATE ............................... "
-	rm -fR $APP_PATH
-	cp -R /tmp/deephunter $APP_PATH
-	echo -e "[\033[32mdone\033[0m]"
-	
-	echo -n -e "[\033[90mINFO\033[0m] RESTORING MIGRATIONS FOLDERS AND SETTINGS ....... "
-	for app in ${APPS[@]}
-	do
-		cp -R $TEMP_FOLDER/deephunter/$app/migrations/ $APP_PATH/$app/ 2>/dev/null
-	done
-	# Restore settings
-	cp $TEMP_FOLDER/deephunter/deephunter/settings.py $APP_PATH/deephunter/
-	# Restore token renewal date
-	cp $TEMP_FOLDER/deephunter/static/tokendate.txt $APP_PATH/static/
-	echo -e "[\033[32mdone\033[0m]"
+while true; do
+	echo -n -e "[\033[34mCONFIRM\033[0m] "
+	read -p "Proceed with installation of the new version (Y/n)? " response
+	# If no input is provided (just Enter), set response to 'Y'
+	response=${response:-Y}
+	# Convert the response to uppercase to handle both 'y' and 'Y'
+	response=$(echo "$response" | tr '[:lower:]' '[:upper:]')
+	# Check the response
+	if [[ "$response" == "Y" || "$response" == "YES" ]]; then
+		break
+	elif [[ "$response" == "N" || "$response" == "NO" ]]; then
+		exit 0
+	else
+		echo "Invalid response. Please enter Y, YES, N, or NO."
+	fi
+done
 
-elif [[ "$response" == "N" || "$response" == "NO" ]]; then
-    exit 0
-else
-	echo "Invalid response. Please enter Y, YES, N, or NO."
-fi
+echo -n -e "[\033[90mINFO\033[0m] INSTALLING UPDATE ............................... "
+rm -fR $APP_PATH
+cp -R /tmp/deephunter $APP_PATH
+echo -e "[\033[32mdone\033[0m]"
+
+echo -n -e "[\033[90mINFO\033[0m] RESTORING MIGRATIONS FOLDERS AND SETTINGS ....... "
+for app in ${APPS[@]}
+do
+	cp -R $TEMP_FOLDER/deephunter/$app/migrations/ $APP_PATH/$app/ 2>/dev/null
+done
+# Restore settings
+cp $TEMP_FOLDER/deephunter/deephunter/settings.py $APP_PATH/deephunter/
+# Restore token renewal date
+cp $TEMP_FOLDER/deephunter/static/tokendate.txt $APP_PATH/static/
+echo -e "[\033[32mdone\033[0m]"
 
 # DB Migrations
-echo -n -e "[\033[34mCONFIRM\033[0m] "
-read -p "Proceed with DB migrations (Y/n)? " response
-# If no input is provided (just Enter), set response to 'Y'
-response=${response:-Y}
-# Convert the response to uppercase to handle both 'y' and 'Y'
-response=$(echo "$response" | tr '[:lower:]' '[:upper:]')
-# Check the response
-if [[ "$response" == "Y" || "$response" == "YES" ]]; then
-    echo -e "[\033[90mINFO\033[0m] PERFORMING DB MIGRATIONS ........................ "
-	source $VENV_PATH/bin/activate
-	cd $APP_PATH/
-	for app in ${APPS[@]}
-	do
-		./manage.py makemigrations $app
-	done
-	./manage.py migrate
+while true; do
+	echo -n -e "[\033[34mCONFIRM\033[0m] "
+	read -p "Proceed with DB migrations (Y/n)? " response
+	# If no input is provided (just Enter), set response to 'Y'
+	response=${response:-Y}
+	# Convert the response to uppercase to handle both 'y' and 'Y'
+	response=$(echo "$response" | tr '[:lower:]' '[:upper:]')
+	# Check the response
+	if [[ "$response" == "Y" || "$response" == "YES" ]]; then
+		break
+	elif [[ "$response" == "N" || "$response" == "NO" ]]; then
+		exit 0
+	else
+		echo "Invalid response. Please enter Y, YES, N, or NO."
+	fi
+done
 
-	# Leave python virtual env
-	deactivate
-	echo -e "[\033[90mINFO\033[0m] DB MIGRATIONS COMPLETE"
+echo -e "[\033[90mINFO\033[0m] PERFORMING DB MIGRATIONS ........................ "
+source $VENV_PATH/bin/activate
+cd $APP_PATH/
+for app in ${APPS[@]}
+do
+	./manage.py makemigrations $app
+done
 
-elif [[ "$response" == "N" || "$response" == "NO" ]]; then
-    exit 0
-else
-	echo "Invalid response. Please enter Y, YES, N, or NO."
-fi
+./manage.py migrate
+# Leave python virtual env
+deactivate
+echo -e "[\033[90mINFO\033[0m] DB MIGRATIONS COMPLETE"
+
 
 # Restore permissions
 echo -n -e "[\033[90mINFO\033[0m] RESTORING PERMISSIONS ........................... "
@@ -292,8 +324,15 @@ sudo systemctl restart celery
 echo -e "[\033[32mdone\033[0m]"
 
 # cleaning /tmp
-echo -n -e "[\033[90mINFO\033[0m] CLEANING TMP DIR ................................ "
+echo -n -e "[\033[90mINFO\033[0m] CLEANING /TMP DIR ............................... "
 rm -fR /tmp/deephunter* /tmp/settings.py
 echo -e "[\033[32mdone\033[0m]"
+
+echo ""
+echo "****************************************************************************************"
+echo "* Your DATA_TEMP folder has not been removed and keeps a copy of your old installation *"
+echo "* If the update went well, you should manually remove any content in this directory.   *"
+echo "****************************************************************************************"
+echo ""
 
 echo -e "[\033[90mINFO\033[0m] UPGRADE COMPLETE"
