@@ -60,6 +60,7 @@ Contents
    usage_timeline
    usage_netview
    reports_stats
+   reports_perfs
    reports_endpoints
    reports_mitre_coverage
    reports_missing_mitre

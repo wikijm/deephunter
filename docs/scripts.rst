@@ -9,5 +9,5 @@ DeepHunter is shipped with some scripts, located under the ``./qm/scripts/`` fol
 - **optimize_db.sh**: Script to optimize the database after the ``run_campaign.sh`` script is executed.
 - **run_campaign.sh**: Launcher for running "dynamic" threat hunting analytics and daily campaigns script.
 - **update_s1_token.sh**: Script to update the S1 token in the settings and restart necessary services. It will also update the renewal date in the ``static/tokendate.txt`` file.
-- **upgrade.sh**: Script that you can use to upgrade DeepHunter when a new version is available on GitHub.
+- **upgrade.sh**: Script to upgrade DeepHunter when a new version is available on GitHub.
 - **vulnerable_driver_name_detected_loldriver.py**: Script of the dynamic threat hunting analytic called ``vulnerable_driver_name_detected_loldriver.py``. It relies on the ``runscript`` command of the ``django-extensions`` package.
