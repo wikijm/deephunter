@@ -166,6 +166,12 @@ var items = new vis.DataSet([
 
   // create visualization
 var container = document.getElementById('visualization');
+
+var	dt_start = new Date({{ mindate|date:"Y" }},{{ mindate|date:"n-1" }},{{ mindate|date:"j" }});
+dt_start.setDate(dt_start.getDate() - 1);
+var	dt_end = new Date({{ maxdate|date:"Y" }},{{ maxdate|date:"n-1" }},{{ maxdate|date:"j" }});
+dt_end.setDate(dt_end.getDate() + 1);
+
 var options = {
 	// option groupOrder can be a property name or a sort function
 	// the sort function must compare two groups and return a value
@@ -178,10 +184,10 @@ var options = {
 	editable: false,
 	stack: true,
 	zoomable: false,
-	start: new Date({{ mindate|date:"Y" }},{{ mindate|date:"n-1" }},{{ mindate|date:"j" }}),
-	end: new Date({{ maxdate|date:"Y" }},{{ maxdate|date:"n-1" }},{{ maxdate|date:"j" }}),
-	min: new Date({{ mindate|date:"Y" }},{{ mindate|date:"n-1" }},{{ mindate|date:"j" }}),
-	max: new Date({{ maxdate|date:"Y" }},{{ maxdate|date:"n-1" }},{{ maxdate|date:"j" }})
+	start: dt_start,
+	end: dt_end,
+	min: dt_start,
+	max: dt_end
 };
 
 var timeline = new vis.Timeline(container);
