@@ -35,16 +35,17 @@
 	<div id="fclear"></div>
 </form>
 
-
 {% if hostname %}
-<div id="visualization"></div>
-
 <div id="tabs">
   <ul>
+    <li><a href="#timeline"><span>TIMELINE</span></a></li>
     <li><a href="#hostuser"><span>HOST/USER</span></a></li>
     <li><a href="#activedirectory"><span>ACTIVE DIRECTORY</span></a></li>
     <li><a href="#appinventory"><span>APP INVENTORY</span></a></li>
   </ul>
+  <div id="timeline">
+	<div id="visualization"></div>
+  </div>
   <div id="hostuser">
 	<ul>
 		<li><b>Hostname:</b> {{ machinedetails.computerName }}</li>
@@ -176,6 +177,9 @@ var options = {
 	},
 	editable: false,
 	stack: true,
+	zoomable: false,
+	start: new Date({{ mindate|date:"Y" }},{{ mindate|date:"n-1" }},{{ mindate|date:"j" }}),
+	end: new Date({{ maxdate|date:"Y" }},{{ maxdate|date:"n-1" }},{{ maxdate|date:"j" }}),
 	min: new Date({{ mindate|date:"Y" }},{{ mindate|date:"n-1" }},{{ mindate|date:"j" }}),
 	max: new Date({{ maxdate|date:"Y" }},{{ maxdate|date:"n-1" }},{{ maxdate|date:"j" }})
 };
