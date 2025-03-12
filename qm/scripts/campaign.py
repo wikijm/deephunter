@@ -27,7 +27,9 @@ def run():
     # Cleanup all campaigns older than DB_DATA_RETENTION (90 days by default). Will automatically cascade delete snapshots and endpoints
     # Date of campaign is when the script runs (today) while snapshot date is the day before (detection date)
     Campaign.objects.filter(date_start__lt=datetime.today()-timedelta(days=DB_DATA_RETENTION)).delete()
-    
+    # Make sure remaining old Snapshots/Endpoitns are also deleted (when regen stats is used, campaign date is today, while 1st stats are 3 months old)
+    Snapshot.objects.filter(date__lt=datetime.today()-timedelta(days=DB_DATA_RETENTION)).delete()
+
     # Create Campaign
     campaign = Campaign(
         name='daily_cron_{}'.format(datetime.now().strftime("%Y-%m-%d")),
