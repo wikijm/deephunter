@@ -12,6 +12,7 @@ The timeline shows the distribution of threat hunting analytics available in Dee
 The timeline module contains a lot of useful information for threat hunters and incident responders:
 
 - **List of matching threat hunting analytics**: By simply looking at the list of threat hunting analytics, the threat hunter can estimate risks and build hypothesis. 
+- **Weighted score**: the graph on top shows the evolution of the weighted score (cumulated weighted scores, involving relevance and confidence of each threat hunting analytics).
 - **Distribution over time**: Each blue "box" represents events that match the threat hunting analytic on the header row. Having a visual representation of this distribution is useful to build hypothesis (possible correlation of events).
 - **Storyline highlights**: Mouse over a "box" to display the storylineID (SentinelOne EDR information) associated to the events matching the threat hunting analytic. All nodes with the same storylineID will be highligthed in red, as shown on the above screenshot.
 - **Threats**: Threats (detected by SentinelOne) are shown on a dedicated line. Mouse over threats-related nodes to show the details (threat name, analyst verdict, and confidence level). The storylineID is also gathered for threats.
