@@ -16,24 +16,27 @@
 	{% csrf_token %}
 	<div id="fsearch">
 		<input name="hostname" type="text" placeholder="Endpoint name" value="{{ hostname }}">
+		{% if machinedetails.computerName %}
 		<br />
 		<input type="checkbox" id="compactview">
 		<label for="compactview">Compact view</label>
-		{% if hostname %}
 		<br />
 		[<a href="/netview?hostname={{ hostname }}" target="_blank">Send to Netview</a>]
 		{% endif %}
 	</div>
+	{% if machinedetails.computerName %}
 	<div id="fhelp">
 		<ul>
 			<li>Click on item to highlight related analytics (based on storyline ID)</li>
 			<li>Double click to open related events or threats (new window)</li>
 		</ul>
 	</div>
+	{% endif %}
 	<div id="fclear"></div>
 </form>
 
 {% if hostname %}
+{% if machinedetails.computerName %}
 <div id="tabs">
   <ul>
     <li><a href="#timeline"><span>TIMELINE</span></a></li>
@@ -331,5 +334,9 @@ else {
 	$("#visualization .vis-labelset .vis-label").width(w1+"px");
 }
 </script>
+{% else %}
+<p></p>
+<p><b>The endpoint hasn't been found.</b></p>
+{% endif %}
 {% endif %}
 {% endblock %}
