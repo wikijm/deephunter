@@ -42,7 +42,12 @@
     <li><a href="#appinventory"><span>APP INVENTORY</span></a></li>
   </ul>
   <div id="timeline">
-	<div id="visualization"></div>
+	  <div class="outer-top-row">
+		<div id="visualization2"></div>
+	  </div>
+	  <div class="outer-bottom-row">
+		<div id="visualization"></div>
+	  </div>
   </div>
   <div id="hostuser">
 	<ul>
@@ -162,7 +167,7 @@ var items = new vis.DataSet([
 {% endfor %}
 ]);
 
-  // create visualization
+// create visualization
 var container = document.getElementById('visualization');
 
 var	dt_start = new Date({{ mindate|date:"Y" }},{{ mindate|date:"n-1" }},{{ mindate|date:"j" }});
@@ -192,6 +197,40 @@ var timeline = new vis.Timeline(container);
 timeline.setOptions(options);
 timeline.setGroups(groups);
 timeline.setItems(items);
+
+
+/* Vis 2 */
+var items2 = new vis.DataSet([
+{% for item2 in items2 %}
+	{
+		x: new Date({{ item2.snapshot__date|date:"Y" }},{{ item2.snapshot__date|date:"n-1" }},{{ item2.snapshot__date|date:"j" }}),
+		y: {{ item2.cumulative_score }},
+		label: "DATE: {{ item2.snapshot__date|date:"Y-n-j" }}<br />{{ item2.cumulative_score }}"
+	},
+{% endfor %}
+]);
+var container2 = document.getElementById('visualization2');
+var options2 = {
+	style:'bar',
+	barChart: {width:12, align:'right'},
+	dataAxis: {
+		left: {
+			title: {
+				text:'Weighted Score'
+			},
+			/*textOrientation:'horizontal' <-- it doesn't work*/
+		}
+	},
+	drawPoints: false,
+	height: '100%',
+	zoomable: false,
+	start: dt_start,
+	end: dt_end,
+	min: dt_start,
+	max: dt_end
+};
+var graph2d = new vis.Graph2d(container2, items2, options2);
+
 
 function formatDate(date) {
   const year = date.getFullYear();
@@ -276,6 +315,21 @@ $("#compactview").click(function() {
 		toggle = !toggle;
 });
 
+// Apply same size to the 2 visualizations so that graph aligns with timeline nodes
+// Credits: https://stackoverflow.com/questions/33596816/how-to-draw-line-graph-on-timeline-using-visjs
+var ylabel_width = $("#visualization .vis-labelset .vis-label").width() + "px";
+
+var w1 = $("#visualization2 .vis-content .vis-data-axis").width();
+var w2 = $("#visualization .vis-labelset .vis-label").width();
+
+$("#visualization2")[0].childNodes[0].childNodes[2].style.display = 'none';
+
+if (w2 > w1) {
+	$("#visualization2 .vis-content")[1].style.width = ylabel_width;
+}
+else {
+	$("#visualization .vis-labelset .vis-label").width(w1+"px");
+}
 </script>
 {% endif %}
 {% endblock %}

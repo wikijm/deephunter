@@ -387,6 +387,7 @@ def debug(request):
 def timeline(request):
     groups = []
     items = []
+    items2 = []
     gid = 0 # group id
     iid = 0 # item id
     storylineid_json = {}
@@ -523,6 +524,7 @@ def timeline(request):
                         job_title = entry.title
                         business_unit = entry.division
                         location = "{}, {}".format(entry.physicalDeliveryOfficeName, entry.co)
+                    
         except:
             username = ''
             machinedetails = ''
@@ -531,7 +533,13 @@ def timeline(request):
             job_title = ''
             business_unit = ''
             location = ''
-            
+
+        # Visualization #2 (graph)
+        items2 = Endpoint.objects.filter(hostname=hostname) \
+            .values('snapshot__date') \
+            .annotate(cumulative_score=Sum('snapshot__query__weighted_relevance')) \
+            .order_by('snapshot__date')
+
     else:
         hostname = ''
         username = ''
@@ -541,7 +549,9 @@ def timeline(request):
         job_title = ''
         business_unit = ''
         location = ''
-        
+    
+    
+    
     context = {
         'S1_THREATS_URL': S1_THREATS_URL.format(hostname),
         'hostname': hostname,
@@ -550,6 +560,7 @@ def timeline(request):
         'apps': apps,
         'groups': groups,
         'items': items,
+        'items2': items2,
         'mindate': datetime.today()-timedelta(days=91),
         'maxdate': datetime.today()+timedelta(days=1),
         'user_name': user_name,

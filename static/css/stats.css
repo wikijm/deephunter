@@ -47,3 +47,15 @@ table, th, td {
 	background-color: red;
 	border-color: darkred;
 }
+#visualization, #visualization2 {
+	height: 100%;
+}
+.outer-top-row {
+	height: 120px;
+}
+#visualization2 .vis-panel.vis-bottom {
+	display: none;
+}
+#visualization2 .vis-timeline{
+	border-bottom: none;
+}
