@@ -11,6 +11,7 @@ urlpatterns = [
     path('timeline', views.timeline, name='timeline'),
     path('<int:query_id>/regen/', views.regen, name='regen'),
     path('<int:query_id>/progress/', views.progress, name='progress'),
+    path('<int:query_id>/deletestats/', views.deletestats, name='deletestats'),
     path('netview', views.netview, name='netview'),
     path('about', views.about, name='about'),
 ]

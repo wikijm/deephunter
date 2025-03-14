@@ -598,7 +598,14 @@ def progress(request, query_id):
         celery_status = get_object_or_404(CeleryStatus, query=query)
         return HttpResponse('<span><b>Task progress:</b> {}%</span>'.format(round(celery_status.progress)))
     except:
-        return HttpResponse('<a href="{}/regen/" target="_blank" class="buttonred">Regen. all stats</a>'.format(query_id))
+        return HttpResponse('<a href="{}/regen/" target="_blank" class="buttonred">Regenerate stats</a>'.format(query_id))
+
+@login_required
+@permission_required("qm.delete_campaign")
+def deletestats(request, query_id):
+    query = get_object_or_404(Query, pk=query_id)
+    Snapshot.objects.filter(query=query).delete()
+    return HttpResponseRedirect('/')
 
 @login_required
 def netview(request):

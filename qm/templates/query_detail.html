@@ -8,7 +8,8 @@
 	<a href="{{ q.id }}/trend/" target="_blank" class="button">See trend</a>
 	<a href="/admin/qm/query/{{ q.id }}/change/" target="_blank" class="button">Edit in admin</a></li>
 	{% if perms.qm.delete_campaign %}
-		<div id="progress_{{ q.id }}" class="progress">...</div>
+		<div id="progress_{{ q.id }}" class="progress">...</div>&nbsp;
+		<div class="progress"><a href="{{ q.id }}/deletestats/" target="_blank" class="buttonred">Delete stats</a></div>
 	{% endif %}
 </div>
 

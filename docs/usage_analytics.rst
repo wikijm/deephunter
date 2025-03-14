@@ -45,7 +45,8 @@ Actions buttons
 - **Run in PQ (custom_filter)**: Same as the previous button, but with a custom filter, defined in the custom fields (see ``CUSTOM_FIELDS`` property in the `settings <settings.html#custom-fields>`_).
 - **See trend**: Opens the `trend analysis page <usage_trend.html>`_.
 - **Edit in admin**: Opens the threat hunting in edit mode using the Django admin backend.
-- **Regen. all stats**: Regenerates the statistics for the entire retention for the threat hunting analytic. This process runs in the background using Celery/Redis. You can close the page, and the process will continue to run. A percentage of completion is shown in real time.
+- **Delete stats**: Deletes the statistics of the selected threat hunting analytic for the entire retention. This can be used when the analytic is not relevant enough to be scheduled in the campaigns, but existing statistics are present in the database (from previous campaigns).
+- **Regenerate stats**: Regenerates the statistics for the entire retention for the threat hunting analytic. This process runs in the background using Celery/Redis. You can close the page, and the process will continue to run. A percentage of completion is shown in real time.
 
 Header Information
 ==================
