@@ -275,3 +275,12 @@ def disabled_analytics(request):
         }
     
     return render(request, 'disabled_analytics.html', context)
+
+@login_required
+def query_error(request):
+    queries = Query.objects.filter(query_error = True)
+    context = {
+        'queries': queries
+        }
+    
+    return render(request, 'query_error.html', context)

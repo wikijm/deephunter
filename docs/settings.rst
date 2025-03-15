@@ -227,6 +227,17 @@ ON_MAXHOSTS_REACHED
 		"DELETE_STATS": False
 	}
 
+DISABLE_RUN_DAILY_ON_ERROR
+**************************
+
+- **Type**: boolean.
+- **Description**: Automatically remove analytic from future campaigns if it failed during a campaign or statistics regeneration process.
+- **Example**: 
+
+.. code-block:: py
+
+	DISABLE_RUN_DAILY_ON_ERROR = True
+
 VT_API_KEY
 **********
 - **Type**: string

@@ -266,3 +266,14 @@ div.tokenexpired {
 	color: #fff;
 	text-align: center;
 }
+div.errormsg {
+	font-weight: bold;
+	color:#ff0000;
+	padding-left: 40px;
+	padding-bottom: 5px;
+}
+div.errorquery {
+	/*color:#ff0000;*/
+	border-left: solid 5px #ff0000;
+	padding-left: 8px;
+}

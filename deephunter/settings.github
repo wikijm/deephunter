@@ -77,6 +77,8 @@ ON_MAXHOSTS_REACHED = {
     "DISABLE_RUN_DAILY": True,
     "DELETE_STATS": False
 }
+# Automatically remove analytic from future campaigns if it failed
+DISABLE_RUN_DAILY_ON_ERROR = True
 
 # VirusTotal API key
 VT_API_KEY = '*******************************************'

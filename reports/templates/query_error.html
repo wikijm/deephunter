@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/css/list_queries.css" />
+{% endblock %}
+
+{% block body %}
+<h1>Threat Hunting Analytics with errors</h1>
+<p>This report shows the list of Threat Hunting Analytics that have failed due to errors.</p>
+<table class="mitre">
+	<tr>
+		<th>Admin/Stats</th>
+		<th>Analytic</th>
+		<th>Query</th>
+		<th>Error message</th>
+	</tr>
+{% for query in queries %}
+	<tr>
+		<td>
+			[<a target="_blank" href="/admin/qm/query/{{ query.id }}/change/">admin</a>]
+			[<a target="_blank" href="/{{ query.id }}/trend/">stats</a>]
+		</td>
+		<td>{{ query.name }}</td>
+		<td><pre>{{ query.query }}</pre></td>
+		<td><pre>{{ query.query_error_message }}</pre></td>
+	</tr>	
+{% endfor %}
+</table>
+{% endblock %}

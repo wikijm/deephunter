@@ -18,6 +18,7 @@ DB_DATA_RETENTION = settings.DB_DATA_RETENTION
 CAMPAIGN_MAX_HOSTS_THRESHOLD = settings.CAMPAIGN_MAX_HOSTS_THRESHOLD
 CUSTOM_FIELDS = settings.CUSTOM_FIELDS
 ON_MAXHOSTS_REACHED = settings.ON_MAXHOSTS_REACHED
+DISABLE_RUN_DAILY_ON_ERROR = settings.DISABLE_RUN_DAILY_ON_ERROR
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -25,6 +26,11 @@ logger = logging.getLogger(__name__)
 @shared_task()
 def regenerate_stats(query_id):
     query = get_object_or_404(Query, pk=query_id)
+
+    # we assume that query won't fail (flag will be set later if query fails)
+    query.query_error = False
+    query.query_error_message = ''
+    query.save()
     
     # Create Campaign
     # Date of campaign is when the script runs (today) while snapshot date is the day before (detection date)
@@ -213,10 +219,21 @@ def regenerate_stats(query_id):
             snapshot.save()
             
         except:
-            logger.error("[ ERROR ]")
-            logger.error('RUNNING QUERY {}: {}'.format(query.name, query.query))
-            logger.error(r.json())
+            logger.error(f"[ ERROR ] Query {query.name} failed. Check report for more info.")
+            #logger.error('RUNNING QUERY {}: {}'.format(query.name, query.query))
+            #logger.error(r.json())
             logger.error("================================")
+            
+            # if error, we set the query_error flag and save the error message
+            query.query_error = True
+            query.query_error_message = r.json()
+            # remove query from future campaigns (until query is updated)
+            if DISABLE_RUN_DAILY_ON_ERROR:
+                query.run_daily = False
+            # we save query
+            query.save()
+            # we exit the for loop (no need to continue because the query fails)
+            break
 
         # Update Celery task progress
         celery_status.progress = (DB_DATA_RETENTION-days)*100/DB_DATA_RETENTION

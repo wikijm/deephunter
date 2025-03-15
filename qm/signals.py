@@ -16,6 +16,7 @@ SYNC_STAR_RULES = settings.SYNC_STAR_RULES
 STAR_RULES_PREFIX = settings.STAR_RULES_PREFIX
 STAR_RULES_DEFAULTS = settings.STAR_RULES_DEFAULTS
 
+# This handler is triggered before a "Query" object is saved (pre_save when created or updated)
 @receiver(pre_save, sender=Query)
 def check_initial_value(sender, instance, **kwargs):
     # Only apply if SYNC_STAR_RULES set to True in settings
@@ -44,7 +45,20 @@ def check_initial_value(sender, instance, **kwargs):
                     proxies=PROXY
                     )
 
-# This handler is triggered after an object is saved (created or updated)
+    ### Reset counters and error flag when query updated
+    # Check if the instance is being updated (i.e., it's not a new object)
+    if instance.pk:
+        # Retrieve the current value of the field from the database
+        original_instance = Query.objects.get(pk=instance.pk)
+               
+        # Only apply if "query" field is updated
+        if original_instance.query != instance.query:
+            # reset query flag
+            instance.maxhosts_count = 0
+            instance.query_error = False
+            instance.query_error_message = ''
+
+# This handler is triggered after a "Query" object is saved (created or updated)
 @receiver(post_save, sender=Query)
 def post_save_handler(sender, instance, created, **kwargs):
     # Only apply if SYNC_STAR_RULES set to True in settings
@@ -157,7 +171,7 @@ def post_save_handler(sender, instance, created, **kwargs):
                         proxies=PROXY
                         )
 
-# This handler is triggered after an object is deleted
+# This handler is triggered after a "Query" object is deleted
 @receiver(post_delete, sender=Query)
 def post_delete_handler(sender, instance, **kwargs):
     # Only apply if SYNC_STAR_RULES set to True in settings

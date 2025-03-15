@@ -160,6 +160,14 @@ def index(request):
             else:
                 queries = queries.filter(maxhosts_count=0)
                 posted_filters['maxhosts'] = 0
+
+        if 'queryerror' in request.POST:
+            if request.POST['queryerror'] == '1':
+                queries = queries.filter(query_error=True)
+                posted_filters['queryerror'] = 1
+            else:
+                queries = queries.filter(query_error=False)
+                posted_filters['queryerror'] = 0
     
     for query in queries:
         #snapshot = Snapshot.objects.filter(query=query, date__gt=datetime.today()-timedelta(days=1)).order_by('date')

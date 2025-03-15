@@ -137,6 +137,8 @@ class Query(models.Model):
     anomaly_threshold_count = models.IntegerField(default=2, help_text="Value range from 0 to 3. The higher the less sensitive")
     anomaly_threshold_endpoints = models.IntegerField(default=2, help_text="Value range from 0 to 3. The higher the less sensitive")
     maxhosts_count = models.IntegerField(default=0, help_text="Counts how many times max hosts threshold is reached")
+    query_error = models.BooleanField(default=False, editable=False)
+    query_error_message = models.TextField(blank=True, editable=False)
     history = HistoricalRecords()
     
     def __str__(self):

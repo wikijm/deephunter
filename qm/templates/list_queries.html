@@ -130,6 +130,13 @@
 					<button class="button_filter" id="button_checkmaxhosts_0">MAXHOSTS:no&nbsp;&nbsp;<b>x</b></button>
 				{% endif %}
 			{% endif %}
+			{% if posted_filters.queryerror == 0 or posted_filters.queryerror == 1 %}
+				{% if posted_filters.queryerror|slugify == '1' %}
+					<button class="button_filter" id="button_checkqueryerror_1">QUERY_ERROR:yes&nbsp;&nbsp;<b>x</b></button>
+				{% else %}
+					<button class="button_filter" id="button_checkqueryerror_0">QUERY_ERROR:no&nbsp;&nbsp;<b>x</b></button>
+				{% endif %}
+			{% endif %}
 		</div>
 	{% endif %}
 	<table class="table table-expandable">
@@ -349,6 +356,19 @@
 				<input class="form-check-input" type="radio" id="checkmaxhosts0" name="maxhosts" value="0"
 					{% if posted_filters.maxhosts|slugify == '0' %} checked{% endif %} />
 				<label class="form-check-label" for="checkmaxhosts0">no</label>
+			</div>
+
+			<br />
+			<h5>Query error</h5>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" id="checkqueryerror1" name="queryerror" value="1"
+					{% if posted_filters.queryerror|slugify == '1' %} checked{% endif %} />
+				<label class="form-check-label" for="checkqueryerror1">yes</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" id="checkqueryerror0" name="queryerror" value="0"
+					{% if posted_filters.queryerror|slugify == '0' %} checked{% endif %} />
+				<label class="form-check-label" for="checkqueryerror0">no</label>
 			</div>
 
 		</td></tr>
