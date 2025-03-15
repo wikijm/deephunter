@@ -211,6 +211,22 @@ CAMPAIGN_MAX_HOSTS_THRESHOLD
 
 	CAMPAIGN_MAX_HOSTS_THRESHOLD = 1000
 
+ON_MAXHOSTS_REACHED
+*******************
+
+- **Type**: dictionary, with following keys: ``THRESHOLD``: Integer, ``DISABLE_RUN_DAILY``: boolean, ``DELETE_STATS``: boolean.
+- **Description**: If the threshold defined in ``CAMPAIGN_MAX_HOSTS_THRESHOLD`` is reached several times (defined by ``THRESHOLD``), it is possible to automatically remove the Threat Hunting Analytic from future campaigns (the ``run_daily`` flag will be set to ``False`` if ``DISABLE_RUN_DAILY`` is set), and/or delete the associated statistics (if ``DELETE_STATS`` is set).
+- **Example**: 
+
+.. code-block:: py
+
+	# Actions applied to analytics if CAMPAIGN_MAX_HOSTS_THRESHOLD is reached several times
+	ON_MAXHOSTS_REACHED = {
+		"THRESHOLD": 3,
+		"DISABLE_RUN_DAILY": True,
+		"DELETE_STATS": False
+	}
+
 VT_API_KEY
 **********
 - **Type**: string

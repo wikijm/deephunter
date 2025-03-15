@@ -152,6 +152,14 @@ def index(request):
                     snapshot__date=yesterday_date
                 ).distinct()
                 posted_filters['hits'] = 0
+
+        if 'maxhosts' in request.POST:
+            if request.POST['maxhosts'] == '1':
+                queries = queries.filter(maxhosts_count__gt=0)
+                posted_filters['maxhosts'] = 1
+            else:
+                queries = queries.filter(maxhosts_count=0)
+                posted_filters['maxhosts'] = 0
     
     for query in queries:
         #snapshot = Snapshot.objects.filter(query=query, date__gt=datetime.today()-timedelta(days=1)).order_by('date')

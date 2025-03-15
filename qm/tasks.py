@@ -17,6 +17,7 @@ PROXY = settings.PROXY
 DB_DATA_RETENTION = settings.DB_DATA_RETENTION
 CAMPAIGN_MAX_HOSTS_THRESHOLD = settings.CAMPAIGN_MAX_HOSTS_THRESHOLD
 CUSTOM_FIELDS = settings.CUSTOM_FIELDS
+ON_MAXHOSTS_REACHED = settings.ON_MAXHOSTS_REACHED
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -163,6 +164,24 @@ def regenerate_stats(query_id):
             snapshot.hits_c3 = hits_c3
             snapshot.save()
             
+            # When the max_hosts threshold is reached (by default 1000)
+            if hits_count >= CAMPAIGN_MAX_HOSTS_THRESHOLD:
+                # Update the maxhost counter if reached
+                query.maxhosts_count += 1
+                # if threshold is reached
+                if query.maxhosts_count >= ON_MAXHOSTS_REACHED['THRESHOLD']:
+                    # If DISABLE_RUN_DAILY is set, we disable the run_daily flag for the query
+                    if ON_MAXHOSTS_REACHED['DISABLE_RUN_DAILY']:
+                        query.run_daily = False
+                    # If DELETE_STATS is set, we delete all stats for the query
+                    if ON_MAXHOSTS_REACHED['DELETE_STATS']:
+                        Snapshot.objects.filter(query=query).delete()
+                # we update the query (counter updated, and flags updated)
+                query.save()
+                # if threshold is reached, we exit the for loop
+                if query.maxhosts_count >= ON_MAXHOSTS_REACHED['THRESHOLD']:
+                    break
+
             # Anomaly detection for hits_count (compute zscore against all snapshots available in DB)
             snapshots = Snapshot.objects.filter(query = query)
             a = np.array([c.hits_count for c in snapshots])

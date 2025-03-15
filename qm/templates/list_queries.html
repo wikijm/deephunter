@@ -123,6 +123,13 @@
 					<button class="button_filter" id="button_checkhits_0">HITS:no&nbsp;&nbsp;<b>x</b></button>
 				{% endif %}
 			{% endif %}
+			{% if posted_filters.maxhosts == 0 or posted_filters.maxhosts == 1 %}
+				{% if posted_filters.maxhosts|slugify == '1' %}
+					<button class="button_filter" id="button_checkmaxhosts_1">MAXHOSTS:yes&nbsp;&nbsp;<b>x</b></button>
+				{% else %}
+					<button class="button_filter" id="button_checkmaxhosts_0">MAXHOSTS:no&nbsp;&nbsp;<b>x</b></button>
+				{% endif %}
+			{% endif %}
 		</div>
 	{% endif %}
 	<table class="table table-expandable">
@@ -331,6 +338,19 @@
 				<label class="form-check-label" for="checkhits0">no</label>
 			</div>
 
+			<br />
+			<h5>Max hosts</h5>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" id="checkmaxhosts1" name="maxhosts" value="1"
+					{% if posted_filters.maxhosts|slugify == '1' %} checked{% endif %} />
+				<label class="form-check-label" for="checkmaxhosts1">yes</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" id="checkmaxhosts0" name="maxhosts" value="0"
+					{% if posted_filters.maxhosts|slugify == '0' %} checked{% endif %} />
+				<label class="form-check-label" for="checkmaxhosts0">no</label>
+			</div>
+
 		</td></tr>
 		
 	</tbody>
@@ -352,6 +372,7 @@
         <th>Run daily</th>
         <th>STAR rule</th>
         <th>Dyn. query</th>
+		<th>Maxhosts count</th>
         <th>Trend</th>
         <th class="aright">#Hits (24h)</th>
 		<th class="aright">#Hosts (24h)</th>
@@ -371,6 +392,7 @@
 		<td class="acenter">{% if q.run_daily %}<img src="/static/admin/img/icon-yes.svg" />{% else %}<img src="/static/admin/img/icon-no.svg" />{% endif %}</td>
 		<td class="acenter">{% if q.star_rule %}<img src="/static/admin/img/icon-yes.svg" />{% else %}<img src="/static/admin/img/icon-no.svg" />{% endif %}</td>
 		<td class="acenter">{% if q.dynamic_query %}<img src="/static/admin/img/icon-yes.svg" />{% else %}<img src="/static/admin/img/icon-no.svg" />{% endif %}</td>
+		<td class="acenter">{{ q.maxhosts_count }}</td>
 		<td class="acenter"><span id="sparkline_{{ q.id }}"></span></td>		
         <td class="aright"><div{% if q.anomaly_alert_count %} class="alert_orange"{% endif %}>{{ q.hits_count }}</div></td>
 		<td class="aright"><div{% if q.anomaly_alert_endpoints %} class="alert_orange"{% endif %}>{{ q.hits_endpoints }}</div></td>
@@ -385,7 +407,7 @@
 		{% endif %}
     </tr>
     <tr class="collapse row-expanded panel" data-row-number="{{ q.name }}">
-        <td colspan="{{ custom_fields|length|add:11 }}">
+        <td colspan="{{ custom_fields|length|add:12 }}">
 			<div id=d_{{ q.id }}></div>
 	    </td>
       </tr>

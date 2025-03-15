@@ -71,6 +71,12 @@ DB_DATA_RETENTION = 90
 # Threshold for max number of hosts saved to DB for a given analytic (campaigns)
 # By default 1000
 CAMPAIGN_MAX_HOSTS_THRESHOLD = 1000
+# Actions applied to analytics if CAMPAIGN_MAX_HOSTS_THRESHOLD is reached several times
+ON_MAXHOSTS_REACHED = {
+    "THRESHOLD": 3,
+    "DISABLE_RUN_DAILY": True,
+    "DELETE_STATS": False
+}
 
 # VirusTotal API key
 VT_API_KEY = '*******************************************'

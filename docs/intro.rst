@@ -76,6 +76,10 @@ It may happen that you modify a threat hunting query for various reasons (e.g., 
   :width: 1500
   :alt: DeepHunter architecture diagram
 
+Thresholds on the number of matching endpoints
+**********************************************
+In order to prevent the database from being overwhelmed with useless information, several thresholds and automatic actions are available in the `settings <settings.html>`_. See the ``CAMPAIGN_MAX_HOSTS_THRESHOLD`` and ``ON_MAXHOSTS_REACHED`` variables.
+
 Static vs Dynamic analytics
 ***************************
 

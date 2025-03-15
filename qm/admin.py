@@ -11,8 +11,8 @@ admin.site.index_title = 'DeepHunter_'
 CUSTOM_FIELDS = settings.CUSTOM_FIELDS
 
 class QueryHistoryAdmin(SimpleHistoryAdmin):
-    list_display = ('name', 'update_date', 'pub_status', 'confidence', 'relevance', 'run_daily', 'star_rule', 'dynamic_query', 'query')
-    list_filter = ['pub_status', 'confidence', 'relevance', 'run_daily', 'star_rule', 'dynamic_query', 'mitre_techniques', 'mitre_techniques__mitre_tactic', 'threats__name', 'actors__name', 'target_os', 'tags__name']
+    list_display = ('name', 'update_date', 'pub_status', 'confidence', 'relevance', 'run_daily', 'star_rule', 'dynamic_query', 'maxhosts_count', 'query')
+    list_filter = ['pub_status', 'confidence', 'relevance', 'run_daily', 'star_rule', 'maxhosts_count', 'dynamic_query', 'mitre_techniques', 'mitre_techniques__mitre_tactic', 'threats__name', 'actors__name', 'target_os', 'tags__name']
     search_fields = ['name', 'description', 'notes', 'emulation_validation']
     filter_horizontal = ('mitre_techniques', 'threats', 'actors', 'target_os', 'vulnerabilities', 'tags')
     history_list_display = ['query', 'columns']
