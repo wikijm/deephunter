@@ -7,4 +7,5 @@ urlpatterns = [
     path('mitre', views.mitre, name='mitre'),
     path('endpoints', views.endpoints, name='endpoints'),
     path('missing_mitre', views.missing_mitre, name='missing_mitre'),
+    path('disabled_analytics', views.disabled_analytics, name='disabled_analytics'),
 ]

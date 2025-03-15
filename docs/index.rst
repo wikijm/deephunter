@@ -64,6 +64,7 @@ Contents
    reports_endpoints
    reports_mitre_coverage
    reports_missing_mitre
+   reports_disabled_analytics
    tools_lol_drivers_hash_checker
    tools_vt_hash_checker
    tools_whois

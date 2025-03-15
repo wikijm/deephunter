@@ -12,12 +12,12 @@ from qm.models import Country, Query, Snapshot, Campaign, TargetOs, Vulnerabilit
 # Params for requests API calls
 XDR_URL = settings.XDR_URL
 XDR_PARAMS = settings.XDR_PARAMS
-
 # Params for MITRE JSON file
 STATIC_PATH = settings.STATIC_ROOT
-
 # DB retention
 DB_DATA_RETENTION = settings.DB_DATA_RETENTION
+# max hosts threshold
+ON_MAXHOSTS_REACHED = settings.ON_MAXHOSTS_REACHED
 
 @login_required
 def campaigns_stats(request):
@@ -263,3 +263,15 @@ def analytics_perfs(request):
         }
     
     return render(request, 'perfs.html', context)
+
+@login_required
+def disabled_analytics(request):
+    queries = Query.objects.filter(
+        run_daily = False,
+        maxhosts_count__gte = ON_MAXHOSTS_REACHED['THRESHOLD']
+    )
+    context = {
+        'queries': queries
+        }
+    
+    return render(request, 'disabled_analytics.html', context)

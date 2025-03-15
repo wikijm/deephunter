@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/css/list_queries.css" />
+{% endblock %}
+
+{% block body %}
+<h1>Auto-disabled Threat Hunting Analytics</h1>
+<p>This report shows the list of Threat Hunting Analytics that have been automatically removed from future campaigns because they matched too many endpoints.</p>
+<table class="mitre">
+	<tr>
+		<th>Admin/Stats</th>
+		<th>Count</th>
+		<th>Analytic</th>
+	</tr>
+{% for query in queries %}
+	<tr>
+		<td>
+			[<a target="_blank" href="/admin/qm/query/{{ query.id }}/change/">admin</a>]
+			[<a target="_blank" href="/{{ query.id }}/trend/">stats</a>]
+		</td>
+		<td class="acenter">{{ query.maxhosts_count }}</td>
+		<td>{{ query.name }}</td>
+	</tr>	
+{% endfor %}
+</table>
+{% endblock %}
