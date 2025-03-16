@@ -46,6 +46,8 @@ To download DeepHunter, use the following git command:
 	$ cd /data/
 	$ git clone https://github.com/sebastiendamaye/deephunter.git
 
+While cloning the repo as explained above will give you access to the latest features, you may prefer to install the `latest stable release <https://github.com/sebastiendamaye/deephunter/releases/latest>`_.
+
 Install the python dependencies
 *******************************
 
