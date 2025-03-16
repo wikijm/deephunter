@@ -183,7 +183,7 @@ def run():
                 print("Snapshot created")
             
             # When the max_hosts threshold is reached (by default 1000)
-            if hits_count >= CAMPAIGN_MAX_HOSTS_THRESHOLD:
+            if hits_endpoints >= CAMPAIGN_MAX_HOSTS_THRESHOLD:
                 # Update the maxhost counter if reached
                 query.maxhosts_count += 1
                 # if threshold is reached
