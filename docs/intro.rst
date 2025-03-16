@@ -76,9 +76,14 @@ It may happen that you modify a threat hunting query for various reasons (e.g., 
   :width: 1500
   :alt: DeepHunter architecture diagram
 
-Thresholds on the number of matching endpoints
-**********************************************
-In order to prevent the database from being overwhelmed with useless information, several thresholds and automatic actions are available in the `settings <settings.html>`_. See the ``CAMPAIGN_MAX_HOSTS_THRESHOLD`` and ``ON_MAXHOSTS_REACHED`` variables.
+Thresholds, error detection and automation
+******************************************
+
+In order to prevent the database from being overwhelmed with useless information, several thresholds and automatic actions are available in the `settings <settings.html>`_:
+
+- Some analytics may match too many endpoints. It is possible to define a threshold (`CAMPAIGN_MAX_HOSTS_THRESHOLD <settings.html#campaign-max-hosts-threshold>`_) to stop stroing matching endpoints in the database.
+- If the above threshold is reached several times (`ON_MAXHOSTS_REACHED.THRESHOLD <settings.html#on-maxhosts-reached>`_), you can decide to automatically remove the ``run_daily`` flag of the threat hunting analytic, so that it will be removed from future campaigns. You can also configure an automatic deletion (`ON_MAXHOSTS_REACHED.DELETE_STATS <settings.html#on-maxhosts-reached>`_) of the associated statistics.
+- When errors occur while running an analytic automatically (during a campaign of statistics regeneration process), you may decide to automatically remove the analytic from future campaigns (`DISABLE_RUN_DAILY_ON_ERROR <settings.html#disable-run-daily-on-error>`_).
 
 Static vs Dynamic analytics
 ***************************
