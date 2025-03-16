@@ -263,8 +263,15 @@ timeline.on('doubleClick', function (properties) {
 	} else {
 
 		var nodeID = properties['item'];
-		$('#link_events').attr('href', '/events/{{hostname}}/'+mygroups[properties['group']]+'/'+formatDate(properties['time'])+'/')
-		$('#link_storylineid').attr('href', '/storyline/'+storylineid[nodeID]+'/'+formatDate(properties['time'])+'/')
+		$('#link_events').attr('href', '/events/{{hostname}}/'+mygroups[properties['group']]+'/'+formatDate(properties['time'])+'/');
+		
+		if (storylineid[nodeID] != '') {
+			$('#link_storylineid').attr('href', '/storyline/'+storylineid[nodeID]+'/'+formatDate(properties['time'])+'/');
+			$('#link_storylineid').removeClass('disabled');
+		} else {
+			$('#link_storylineid').attr('href', '#');
+			$('#link_storylineid').addClass('disabled');
+		}
 		
 		var x = properties.pageX;
 		var y = properties.pageY;

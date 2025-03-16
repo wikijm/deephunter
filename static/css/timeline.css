@@ -16,3 +16,8 @@
 #contextMenu a:hover {
 	background-color: #f0f0f0;
 }
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.5;
+}
