@@ -3,6 +3,7 @@
 
 {% block style %}
 <link rel="stylesheet" href="/static/css/stats.css" />
+<link rel="stylesheet" href="/static/css/timeline.css" />
 <link href="/static/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="/static/jquery-ui/jquery-ui.min.css" />
 <script src="/static/jquery/jquery.min.js"></script>
@@ -142,6 +143,11 @@
   </div>
 </div>
 
+<div id="contextMenu">
+	<a id="link_events" href="" target="_blank">Open events</a>
+	<a id="link_storylineid" href="" target="_blank">Open Storyline ID</a>
+</div>
+
 <script type="text/javascript" nonce="jc3vgs67dm">
 $( "#tabs" ).tabs();
 
@@ -243,21 +249,41 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
+
+var storylineid = {{ storylineid_json|safe }}
+
 // Double click to play query in new window
-timeline.on('doubleClick', function (properties) {
+timeline.on('doubleClick', function (properties) {	
 	if (properties['group'] == '998') {
 		// Double click not available for apps group
 		return false;
 	} else if (properties['group'] == '999') {
+		// Threats details
 		window.open('{{ S1_THREATS_URL|safe }}', '_blank');
 	} else {
-		window.open('/events/{{hostname}}/'+mygroups[properties['group']]+'/'+formatDate(properties['time'])+'/', '_blank');
+
+		var nodeID = properties['item'];
+		$('#link_events').attr('href', '/events/{{hostname}}/'+mygroups[properties['group']]+'/'+formatDate(properties['time'])+'/')
+		$('#link_storylineid').attr('href', '/storyline/'+storylineid[nodeID]+'/'+formatDate(properties['time'])+'/')
+		
+		var x = properties.pageX;
+		var y = properties.pageY;
+
+		// Position and show the custom context menu
+		$('#contextMenu').css({
+			top: y + 'px',
+			left: x + 'px'
+		}).show();
+
 	}
 });
 
 // Simple click to highlight items with same storylineID as the clicked item
-var storylineid = {{ storylineid_json|safe }}
 timeline.on("click", function(properties) {
+	
+	// Hide the menu when clicking anywhere on the page
+	$('#contextMenu').hide();
+	
 	if (properties['group'] == '998') {
 		// Click not available for apps (because they don't have storylineID)
 		return false;

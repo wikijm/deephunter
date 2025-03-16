@@ -27,6 +27,5 @@ How to use the timeline?
 - **Search**: Enter a endpoint name in the search field and press ``ENTER``.
 - **Compact view**: By default, the view shows as many boxes as necessary, for each day. It may happen that several threats are detected on a given day, or several applications are installed the same day. To have a more compact and readable timeline, click on ``compact view``, to limit the timeline to a maximum of 1 box/day.
 - **Send to Netview**: Sends the machine name to the `netview <usage_netview.html>`_ module.
-- **Zoom in/out + drag timeline**: scroll on your mouse to zoom in/out. Click on the timeline and drag it to the left or right to move over time.
 - **Simple click**: Click on a box to highlight boxes with the same storylineID. Highlighted boxes appear in red.
-- **Double click**: Sends the query to SentinelOne PowerQuery module, for the clicked date.
+- **Double click**: Shows a contextual menu to choose between inspecting events or the storyline ID(s) related to the clicked node. Links will point to SentinelOne.

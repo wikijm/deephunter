@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse, HttpResponseRedirect, FileResponse, JsonResponse
 from django.db.models import Q, Sum
-from urllib.parse import quote
+from urllib.parse import quote, quote_plus
 from datetime import datetime, timedelta, date
 import numpy as np
 from scipy import stats
@@ -598,6 +598,14 @@ def events(request, endpointname, queryname, eventdate):
         q = quote(customized_query)
     
     return HttpResponseRedirect('{}/query?filter={}&startTime={}&endTime=%2B1+day&{}'.format(XDR_URL, q.replace('%0D', ''), eventdate, XDR_PARAMS))
+
+@login_required
+def storyline(request, storylineids, eventdate):    
+    if ',' in storylineids:
+        filter = "src.process.storyline.id in {}".format(tuple(storylineids.split(',')))
+    else:
+        filter = f"src.process.storyline.id = '{storylineids}'"
+    return HttpResponseRedirect('{}/events?filter={}&startTime={}&endTime=%2B1+day&{}'.format(XDR_URL, quote_plus(filter), eventdate, XDR_PARAMS))
 
 @login_required
 @permission_required("qm.delete_campaign")
