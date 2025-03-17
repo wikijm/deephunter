@@ -251,13 +251,18 @@ def run():
             logger.error(f"[ ERROR ] Query {query.name} failed. Check report for more info.")
             #logger.error('RUNNING QUERY {}: {}'.format(query.name, query.query))
             #logger.error(r.json())
-            logger.error("================================")
+            #logger.error("================================")
             
             # if error, we set the query_error flag and save the error message
             query.query_error = True
-            query.query_error_message = r.json()
+            msg = r.text
+            if len(msg) > 500:
+                msg = "{} [...] {}".format(msg[:250], msg[-250:])
+
+            query.query_error_message = msg
+            # if "error" message, and configured to auto-disable query,
             # remove query from future campaigns (until query is updated)
-            if DISABLE_RUN_DAILY_ON_ERROR:
+            if "'errors'" in msg and DISABLE_RUN_DAILY_ON_ERROR:
                 query.run_daily = False
             # we save query
             query.save()

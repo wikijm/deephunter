@@ -38,8 +38,8 @@
 {% if q.notes %}<div class="description">{{ q.notes|apply_markup:"markdown" }}</div>{% endif %}
 
 <h1>POWERQUERY</h1>
-<div class="errormsg">{% if q.query_error %}{{ q.query_error_message }}{% endif %}</div>
-<div class="w1000 ml40{% if q.query_error %} errorquery{% endif %}"><pre>{{ q.query }}{% if q.columns %}<br />{{ q.columns }}{% endif %}</pre></div>
+{% if q.query_error %}<div class="{% if 'errors' in q.query_error_message %}errormsg{% else %}warningmsg{% endif %}">{{ q.query_error_message }}</div>{% endif %}
+<div class="w1000 ml40{% if q.query_error %}{% if 'errors' in q.query_error_message %} errorquery{% else %} warningquery{% endif %}{% endif %}"><pre>{{ q.query }}{% if q.columns %}<br />{{ q.columns }}{% endif %}</pre></div>
 
 <h1>THREAT COVERAGE</h1>
 <ul>

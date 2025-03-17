@@ -13,7 +13,8 @@
 		<th>Admin/Stats</th>
 		<th>Analytic</th>
 		<th>Query</th>
-		<th>Error message</th>
+		<th>Category</th>
+		<th>Message</th>
 	</tr>
 {% for query in queries %}
 	<tr>
@@ -23,6 +24,11 @@
 		</td>
 		<td>{{ query.name }}</td>
 		<td><pre>{{ query.query }}</pre></td>
+		<td>{% if 'error' in query.query_error_message %}
+			<div class="msg_error">ERROR</div>
+		{% else %}
+			<div class="msg_warning">INFO</div>
+		{% endif %}</td>
 		<td><pre>{{ query.query_error_message }}</pre></td>
 	</tr>	
 {% endfor %}

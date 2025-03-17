@@ -272,8 +272,32 @@ div.errormsg {
 	padding-left: 40px;
 	padding-bottom: 5px;
 }
+div.warningmsg {
+	font-weight: bold;
+	color:orange;
+	padding-left: 40px;
+	padding-bottom: 5px;
+}
 div.errorquery {
 	/*color:#ff0000;*/
 	border-left: solid 5px #ff0000;
 	padding-left: 8px;
+}
+div.warningquery {
+	/*color:#ff0000;*/
+	border-left: solid 5px orange;
+	padding-left: 8px;
+}
+.msg_error {
+  border-radius: 5px;
+  background: red;
+  color: white;
+  padding: 3px;
+  text-align: center;
+}
+.msg_warning {
+  border-radius: 5px;
+  background: orange;
+  padding: 3px;
+  text-align: center;
 }
