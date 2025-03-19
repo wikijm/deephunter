@@ -13,6 +13,8 @@
 		<th>Admin/Stats</th>
 		<th>Analytic</th>
 		<th>Query</th>
+		<th>Maxhosts Count</th>
+		<th>Run daily</th>
 		<th>Category</th>
 		<th>Message</th>
 	</tr>
@@ -24,6 +26,14 @@
 		</td>
 		<td>{{ query.name }}</td>
 		<td><pre>{{ query.query }}</pre></td>
+		<td class="acenter">{{ query.maxhosts_count }}</td>
+		<td class="acenter">
+			{% if query.run_daily %}
+				<img src="/static/admin/img/icon-yes.svg" alt="yes" />
+			{% else %}
+				<img src="/static/admin/img/icon-no.svg" alt="no" />
+			{% endif %}
+		</td>
 		<td>{% if 'error' in query.query_error_message %}
 			<div class="msg_error">ERROR</div>
 		{% else %}

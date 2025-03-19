@@ -11,7 +11,8 @@
 <table class="mitre">
 	<tr>
 		<th>Admin/Stats</th>
-		<th>Count</th>
+		<th>Maxhosts Count</th>
+		<th>Run daily</th>
 		<th>Analytic</th>
 	</tr>
 {% for query in queries %}
@@ -21,6 +22,12 @@
 			[<a target="_blank" href="/{{ query.id }}/trend/">stats</a>]
 		</td>
 		<td class="acenter">{{ query.maxhosts_count }}</td>
+		<td class="acenter">
+			{% if query.run_daily %}
+				<img src="/static/admin/img/icon-yes.svg" alt="yes" />
+			{% else %}
+				<img src="/static/admin/img/icon-no.svg" alt="no" />
+			{% endif %}
 		<td>{{ query.name }}</td>
 	</tr>	
 {% endfor %}
