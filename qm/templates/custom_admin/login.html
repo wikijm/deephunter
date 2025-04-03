@@ -44,7 +44,10 @@
     {% if SHOW_LOGIN_FORM %}
 		<input type="submit" value="{% translate 'Log in' %}">
 	{% endif %}
+    {% settings_value "AUTH_PROVIDER" as AUTH_PROVIDER %}
+    {% if AUTH_PROVIDER %}
     &nbsp;&nbsp;&nbsp;<a href="/sso">Login using SSO &raquo;</a>
+	{% endif %}
   </div>
 </form>
 </div>

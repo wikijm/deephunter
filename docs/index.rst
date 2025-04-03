@@ -15,8 +15,8 @@ Contents
   
    intro
    install
-   scripts
    authentication
+   scripts
    settings
    usage_login_and_menu
    usage_analytics

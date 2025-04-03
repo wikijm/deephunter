@@ -28,7 +28,45 @@ AUTHLIB_OAUTH_CLIENTS = {
     }
 }
 
-# USER and GROUP. Used by deployment script
+# PingID / MS Entra ID
+AUTHLIB_OAUTH_CLIENTS = {
+    'pingid': {
+        'client_id': 'YOUR_PINGID_CLIENT_ID',
+        'client_secret': 'YOUR_PINGID_CLIENT_SECRET',
+        'server_metadata_url': 'https://ping-sso.domain.com/.well-known/openid-configuration',
+        'client_kwargs': {'scope': 'openid groups profile email'},
+    },
+    'entra_id': {
+        'client_id': 'YOUR_ENTRA_ID_APP_ID',
+        'client_secret': 'YOUR_ENTRA_ID_CLIENT_SECRET',
+        'server_metadata_url': 'https://login.microsoftonline.com/<TENANT_ID>/.well-known/openid-configuration',
+        'client_kwargs': {'scope': 'openid profile email'}
+    }
+}
+
+# Which auth provider are you using (pingid|entra_id).
+# Set to an empty string for local authentication
+AUTH_PROVIDER = 'entra_id'
+
+# Mapping of expected fields (left) vs token fields (right)
+# You can use the debug return function of ./deephunter/views.py on line 64
+# to check the token values
+AUTH_TOKEN_MAPPING = {
+    'username': 'unique_name',
+    'first_name': 'given_name',
+    'last_name': 'family_name',
+    'email': 'upn',
+    'groups': 'roles'
+}
+
+# To be granted access, users must be in one of these groups (viewer or manager)
+# Mapping between DeepHunter groups (viewer, manager) and your AD groups, or Entra ID roles
+USER_GROUPS_MEMBERSHIP = {
+    'viewer': 'deephunterdev_usr',
+    'manager': 'deephunterdev_pr'
+}
+
+# USER and GROUP. Used by deployment script to apply correct permissions
 USER_GROUP = "user:group"
 
 # GitHub URL used by the deploy.sh script to clone the repo
