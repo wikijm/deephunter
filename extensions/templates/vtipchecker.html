@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="margin10">
+<h1>VirusTotal IP Checker</h1>
+<p>This extension is checking a list of IP addresses against VirusTotal</p>
+
+<form method="post" action="">
+	{% csrf_token %}
+	<label for="hashes">List of IPs (1 per line):</label>
+	<br /><textarea id="ips" class="hash" name="ips">{% if ips %}{{ ips }}{% endif %}</textarea>
+	<br /><input type="submit" value="Check IPs" />
+</form>
+<p>&nbsp;</p>
+{% if output %}
+<table class="hash">
+	<tr>
+		<th>IP</th>
+		<th class="vtcenter">Malicious</th>
+		<th class="vtcenter">Suspicious</th>
+	</tr>
+	{% for ip in output %}
+		<tr>
+			<td><a href="https://www.virustotal.com/gui/ip-address/{{ ip.ip }}" target="_blank" title="{{ ip.whois }}">{{ ip.ip }}</a></td>
+			<td class="vtright">{{ ip.malicious }}</td>
+			<td class="vtright">{{ ip.suspicious }}</td>
+		</tr>
+	{% endfor %}
+</table>
+{% endif %}
+</div>
+{% endblock %}

@@ -32,6 +32,7 @@ Contents
    reports_query_error
    tools_lol_drivers_hash_checker
    tools_vt_hash_checker
+   tools_vt_ip_checker
    tools_whois
    tools_develop_your_own
    admin

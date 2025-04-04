@@ -8,7 +8,7 @@
 <form method="post" action="">
 	{% csrf_token %}
 	<label for="hashes">List of hashes (1 per line):</label>
-	<br /><textarea id="hashes" class="hash" name="hashes">{{ hashes }}</textarea>
+	<br /><textarea id="hashes" class="hash" name="hashes">{% if hashes %}{{ hashes }}{% endif %}</textarea>
 	<br /><input type="submit" value="Check hashes" />
 </form>
 <p>&nbsp;</p>

@@ -129,3 +129,45 @@ def vthashchecker(request):
         'output': output
     }
     return render(request, 'vthashchecker.html', context)
+
+@login_required
+def vtipchecker(request):
+
+    ips = []
+    output = []
+    
+    if request.method == "POST":
+        ips = request.POST['ips']
+
+        headers = {
+            'x-apikey': VT_API_KEY,
+            'accept': 'application/json'
+		}
+
+        for ip in ips.split('\r\n'):
+            ip = ip.strip()
+            if is_valid_ip(ip):
+                
+                vt = {}
+                response = requests.get(
+                    f"https://www.virustotal.com/api/v3/ip_addresses/{ip}",
+                    headers=headers,
+                    proxies=PROXY
+                    )
+                vt['ip'] = ip
+                try:
+                    vt['malicious'] = response.json()['data']['attributes']['last_analysis_stats']['malicious']
+                    vt['suspicious'] = response.json()['data']['attributes']['last_analysis_stats']['suspicious']
+                    vt['whois'] = response.json()['data']['attributes']['whois']
+                except:
+                    vt['malicious'] = 'N/A'
+                    vt['suspicious'] = 'N/A'
+                    vt['whois'] = 'N/A'
+
+                output.append(vt)
+                        
+    context = {
+        'ips': ips,
+        'output': output
+    }
+    return render(request, 'vtipchecker.html', context)
