@@ -418,7 +418,7 @@ def timeline(request):
             if g:
                 g = g['id']
             else:
-                groups.append({'id':gid, 'content':e.snapshot.query.name})
+                groups.append({'id':gid, 'qid':e.snapshot.query.id, 'content':e.snapshot.query.name})
                 g = gid
                 gid += 1
                 
@@ -588,8 +588,8 @@ def timeline(request):
     return render(request, 'timeline.html', context)
 
 @login_required
-def events(request, endpointname, queryname, eventdate):    
-    query = get_object_or_404(Query, name=queryname)
+def events(request, endpointname, query_id, eventdate):    
+    query = get_object_or_404(Query, pk=query_id)
     customized_query = "{} \n| filter endpoint.name='{}'".format(query.query, endpointname)
 
     if query.columns:

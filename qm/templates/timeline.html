@@ -153,7 +153,8 @@ $( "#tabs" ).tabs();
 
 var mygroups = []
 {% for group in groups %}
-	mygroups.push('{{ group.content }}');
+	//mygroups.push('{{ group.content }}');
+	mygroups.push('{{ group.qid }}');
 {% endfor %}
 
 var groups = new vis.DataSet([
