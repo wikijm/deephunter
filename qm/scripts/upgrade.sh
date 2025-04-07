@@ -195,7 +195,7 @@ echo -n -e "[\033[90mINFO\033[0m] CHECKING SETTINGS FILE CONSISTENCY ...........
 
 # Extract keys from the local and remote settings.py files
 LOCAL_KEYS=$(extract_keys /tmp/settings.py)
-NEW_KEYS=$(extract_keys "/tmp/deephunter/deephunter/settings.github")
+NEW_KEYS=$(extract_keys "/tmp/deephunter/deephunter/settings.example.py")
 
 # Compare the sets of keys (sorted to handle order) and check consistency
 if diff <(echo "$LOCAL_KEYS" | sort) <(echo "$NEW_KEYS" | sort) > /dev/null; then

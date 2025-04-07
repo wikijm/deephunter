@@ -70,12 +70,12 @@ NOTE: To manage the session timeout, DeepHunter relies on the `django-auto-logou
 Initialization
 **************
 
-Rename ``settings.github`` to ``settings.py``:
+Rename ``settings.example.py`` to ``settings.py``:
 
 .. code-block:: sh
 	
 	$ cd /data/deephunter/deephunter/
-	$ mv settings.github settings.py
+	$ mv settings.example.py settings.py
 
 Now edit ``settings.py`` and make sure you configure all necessary `settings <settings.html>`_ for your environment.
 
