@@ -85,6 +85,10 @@ In order to prevent the database from being overwhelmed with useless information
 - If the above threshold is reached several times (`ON_MAXHOSTS_REACHED.THRESHOLD <settings.html#on-maxhosts-reached>`_), you can decide to automatically remove the ``run_daily`` flag of the threat hunting analytic, so that it will be removed from future campaigns. You can also configure an automatic deletion (`ON_MAXHOSTS_REACHED.DELETE_STATS <settings.html#on-maxhosts-reached>`_) of the associated statistics.
 - When errors occur while running an analytic automatically (during a campaign of statistics regeneration process), you may decide to automatically remove the analytic from future campaigns (`DISABLE_RUN_DAILY_ON_ERROR <settings.html#disable-run-daily-on-error>`_).
 
+.. note::
+
+	The actions described above won't be applied to Threat Hunting analytics that have the flag ``run_daily_lock`` set. This is a way to protect some analytics from being automatically removed from the campaigns, or have the statistics deleted.
+
 Static vs Dynamic analytics
 ***************************
 

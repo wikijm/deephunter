@@ -409,7 +409,7 @@
         <td>{{ q.pub_status }}</td>
         <td class="acenter"><div class="confidence_{{ q.confidence }}">{{ q.confidence|confidencelabel }}</div></td>
         <td class="acenter"><div class="confidence_{{ q.relevance }}">{{ q.relevance|confidencelabel }}</div></td>
-		<td class="acenter">{% if q.run_daily %}<img src="/static/admin/img/icon-yes.svg" />{% else %}<img src="/static/admin/img/icon-no.svg" />{% endif %}</td>
+		<td class="acenter">{% if q.run_daily %}{% if q.run_daily_lock %}<img src="/static/images/lock.png" width="20" />{% else %}<img src="/static/admin/img/icon-yes.svg" />{% endif %}{% else %}<img src="/static/admin/img/icon-no.svg" />{% endif %}</td>
 		<td class="acenter">{% if q.star_rule %}<img src="/static/admin/img/icon-yes.svg" />{% else %}<img src="/static/admin/img/icon-no.svg" />{% endif %}</td>
 		<td class="acenter">{% if q.dynamic_query %}<img src="/static/admin/img/icon-yes.svg" />{% else %}<img src="/static/admin/img/icon-no.svg" />{% endif %}</td>
 		<td class="acenter">{{ q.maxhosts_count }}</td>

@@ -263,6 +263,11 @@ ON_MAXHOSTS_REACHED
 
 - **Type**: dictionary, with following keys: ``THRESHOLD``: Integer, ``DISABLE_RUN_DAILY``: boolean, ``DELETE_STATS``: boolean.
 - **Description**: If the threshold defined in ``CAMPAIGN_MAX_HOSTS_THRESHOLD`` is reached several times (defined by ``THRESHOLD``), it is possible to automatically remove the Threat Hunting Analytic from future campaigns (the ``run_daily`` flag will be set to ``False`` if ``DISABLE_RUN_DAILY`` is set), and/or delete the associated statistics (if ``DELETE_STATS`` is set).
+
+.. note::
+
+	The actions described above won't be applied to Threat Hunting analytics that have the flag ``run_daily_lock`` set. This is a way to protect some analytics from being automatically removed from the campaigns, or have the statistics deleted.
+
 - **Example**: 
 
 .. code-block:: python

@@ -176,11 +176,11 @@ def regenerate_stats(query_id):
                 query.maxhosts_count += 1
                 # if threshold is reached
                 if query.maxhosts_count >= ON_MAXHOSTS_REACHED['THRESHOLD']:
-                    # If DISABLE_RUN_DAILY is set, we disable the run_daily flag for the query
-                    if ON_MAXHOSTS_REACHED['DISABLE_RUN_DAILY']:
+                    # If DISABLE_RUN_DAILY is set and run_daily_lock is not set, we disable the run_daily flag for the query
+                    if ON_MAXHOSTS_REACHED['DISABLE_RUN_DAILY'] and not query.run_daily_lock:
                         query.run_daily = False
-                    # If DELETE_STATS is set, we delete all stats for the query
-                    if ON_MAXHOSTS_REACHED['DELETE_STATS']:
+                    # If DELETE_STATS is set and run_daily_lock is not set, we delete all stats for the query
+                    if ON_MAXHOSTS_REACHED['DELETE_STATS'] and not query.run_daily_lock:
                         Snapshot.objects.filter(query=query).delete()
                 # we update the query (counter updated, and flags updated)
                 query.save()

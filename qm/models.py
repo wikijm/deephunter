@@ -133,6 +133,7 @@ class Query(models.Model):
     references = models.TextField(blank=True, help_text="List of sources, one per line")
     star_rule = models.BooleanField(default=False)
     run_daily = models.BooleanField(default=True)
+    run_daily_lock = models.BooleanField(default=False, help_text="Prevents the run_daily flag from being unset and stats from being deleted automatically")
     dynamic_query = models.BooleanField(default=False)
     anomaly_threshold_count = models.IntegerField(default=2, help_text="Value range from 0 to 3. The higher the less sensitive")
     anomaly_threshold_endpoints = models.IntegerField(default=2, help_text="Value range from 0 to 3. The higher the less sensitive")
