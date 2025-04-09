@@ -111,6 +111,9 @@ DISABLE_RUN_DAILY_ON_ERROR = True
 # VirusTotal API key
 VT_API_KEY = '*******************************************'
 
+# MalwareBazaar API key
+MALWAREBAZAAR_API_KEY = '*******************************************'
+
 DBBACKUP_STORAGE_OPTIONS = {'location': '/data/backups/'}
 
 # Keep ModelBackend around for per-user permissions and local superuser (admin)
