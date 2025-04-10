@@ -220,7 +220,7 @@ sudo systemctl stop redis-server
 echo -e "[\033[32mdone\033[0m]"
 
 # Backup DB (encrypted. Use the same as DB backup in crontab. Backup will be located in the same folder)
-echo -n -e "[\033[90mINFO\033[0m] STARTING DB BACKUP ............................. "
+echo -n -e "[\033[90mINFO\033[0m] STARTING DB BACKUP .............................. "
 source $VENV_PATH/bin/activate
 cd $APP_PATH
 $VENV_PATH/bin/python3 manage.py dbbackup --encrypt
