@@ -101,28 +101,37 @@ def malwarebazaarhashchecker(request):
         output = []
         hashes = request.POST['hashes']
 
-        client = vt.Client(
-            MALWAREBAZAAR_API_KEY,
-            proxy=PROXY['https']
-        )
+        headers = {
+            'Auth-Key': MALWAREBAZAAR_API_KEY,
+            'accept': 'application/json'
+        }
 
         for hash in hashes.split('\r\n'):
             hash = hash.strip()
-            if is_valid_sha256(hash):        
+            if is_valid_md5(hash) or is_valid_sha1(hash) or is_valid_sha256(hash):        
                 try:
-                    file = client.get_object("/files/{}".format(hash))
+
+                    data = {
+                        'query':'get_info',
+                        'hash':hash
+                        }
+                    r = requests.post(
+                        'https://mb-api.abuse.ch/api/v1/',
+                        data=data,
+                        headers=headers,
+                        proxies=PROXY
+                        )
+
                     output.append({
                         'hash': hash,
                         'foundinmb': 'Y',
-                        'malicious': file.last_analysis_stats['malicious'],
-                        'suspicious': file.last_analysis_stats['suspicious']
+                        'signature': r.json()['data'][0]['signature']
                     })        
                 except:
                     output.append({
                         'hash': hash,
                         'foundinmb': 'N',
-                        'malicious': '',
-                        'suspicious': ''
+                        'signature': ''
                     })        
                         
     context = {
