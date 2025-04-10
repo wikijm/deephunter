@@ -8,6 +8,7 @@ import re
 import vt
 
 PROXY = settings.PROXY
+MALWAREBAZAAR_API_KEY = settings.MALWAREBAZAAR_API_KEY
 VT_API_KEY = settings.VT_API_KEY
 
 def is_valid_md5(hash: str) -> bool:
@@ -89,6 +90,46 @@ def whois(request):
         'output': whois
     }
     return render(request, 'whois.html', context)
+
+@login_required
+def malwarebazaarhashchecker(request):
+
+    hashes = ''
+    output = ''
+    
+    if request.method == "POST":
+        output = []
+        hashes = request.POST['hashes']
+
+        client = vt.Client(
+            MALWAREBAZAAR_API_KEY,
+            proxy=PROXY['https']
+        )
+
+        for hash in hashes.split('\r\n'):
+            hash = hash.strip()
+            if is_valid_sha256(hash):        
+                try:
+                    file = client.get_object("/files/{}".format(hash))
+                    output.append({
+                        'hash': hash,
+                        'foundinmb': 'Y',
+                        'malicious': file.last_analysis_stats['malicious'],
+                        'suspicious': file.last_analysis_stats['suspicious']
+                    })        
+                except:
+                    output.append({
+                        'hash': hash,
+                        'foundinmb': 'N',
+                        'malicious': '',
+                        'suspicious': ''
+                    })        
+                        
+    context = {
+        'hashes': hashes,
+        'output': output
+    }
+    return render(request, 'malwarebazaarhashchecker.html', context)
 
 @login_required
 def vthashchecker(request):
