@@ -300,6 +300,17 @@ VT_API_KEY
 
 	VT_API_KEY = 'r8h84wc9d2v6fj1n5ya7b0qf32kz3p62m14xd9s75boa01u75c6t8s5l3e9a0f7g'
 
+
+MALWAREBAZAAR_API_KEY
+*********************
+- **Type**: string
+- **Description**: Malware Bazaar API key used for the Malware Bazaar Hash Checker tool, available from the "Tools" menu.
+- **Example**: 
+
+.. code-block:: python
+
+	MALWAREBAZAAR_API_KEY  = 'bffgwLSmWs9cmnkhqsGei0TMHw7RmjaW3nsBJZZWg03yEFsImA'
+
 INSTALLED_APPS
 **************
 - **Type**: list
