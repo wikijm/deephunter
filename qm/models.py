@@ -148,6 +148,27 @@ class Query(models.Model):
     class Meta:
         verbose_name_plural = "queries"
 
+    def has_changed(self):
+        if not self.pk:
+            return True  # New object, definitely changed (being created)
+        
+        try:
+            old = Query.objects.get(pk=self.pk)
+        except Query.DoesNotExist:
+            return True  # New object
+
+        for field in self._meta.fields:
+            field_name = field.name
+            if getattr(old, field_name) != getattr(self, field_name):
+                return True  # At least one field changed
+        return False  # No changes
+
+    def save(self, *args, **kwargs):
+        # To prevent simple-history from logging useless entries (when no change)
+        # we only call save method if there is a real change
+        if self.has_changed():
+            super().save(*args, **kwargs)
+
 class Campaign(models.Model):
     name = models.CharField(max_length=250, unique=True)
     description = models.TextField(blank=True)
