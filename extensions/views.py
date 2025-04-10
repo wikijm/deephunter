@@ -92,36 +92,6 @@ def whois(request):
     return render(request, 'whois.html', context)
 
 @login_required
-def whois(request):
-
-    ip = ''
-    whois = ''
-
-    if request.method == "POST":
-        ip = request.POST['ip']
-        if is_valid_ip(ip):
-            try:
-                response = requests.get(
-                    'https://www.whois.com/whois/{}/'.format(ip),
-                    proxies=PROXY
-                    )
-                soup = BeautifulSoup(response.text, features="lxml")
-                elements = soup.find_all('pre', attrs={'id': 'registryData'})
-                whois = elements[0].text
-            except:
-                whois = 'Error. Please try to refresh the page.'
-        else:
-            whois = 'Invalid IP format'
-    else:
-        whois = 'Provide an IP address in the above form.'
-        
-    context = {
-        'ip': ip,
-        'output': whois
-    }
-    return render(request, 'whois.html', context)
-
-@login_required
 def malwarebazaarhashchecker(request):
 
     hashes = ''
