@@ -205,6 +205,7 @@ else
     echo -e "[\033[31mERROR\033[0m] There are likely missing variables in your current settings.py file."
     # Show the differences between the local and new settings
     diff <(echo "$LOCAL_KEYS" | sort) <(echo "$NEW_KEYS" | sort)
+    echo -e "[\033[90mINFO\033[0m] Please use a text editor to add the missing element(s). You can for example use 'nano -c /data/deephunter/deephunter/settings.py' to edit it."
     exit 1
 fi
 
