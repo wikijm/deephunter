@@ -231,6 +231,11 @@ S1_URL = 'https://my_tenant.sentinelone.net'
 S1_TOKEN_EXPIRATION = 30
 S1_TOKEN = '***************************************************'
 
+# Microsoft Graph API Advanced Hunting
+MSGRAPHADVHUNTING_URL = "https://graph.microsoft.com/v1.0/security/runHuntingQuery"
+MSGRAPHADVHUNTING_TOKEN_EXPIRATION = 30
+MSGRAPHADVHUNTING_TOKEN = '***************************************************'
+
 PROXY = {
     'http': 'http://proxy:port',
     'https': 'http://proxy:port'
