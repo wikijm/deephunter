@@ -1,0 +1,25 @@
+name: HTML and CSS Validation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Validate HTML
+        run: |
+          npm install -g html-validator-cli
+          html-validator --file=index.html --verbose
+
+      - name: Validate CSS
+        run: |
+          npm install -g stylelint
+          stylelint "**/*.css"
