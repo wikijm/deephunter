@@ -6,3 +6,4 @@ campaigns.log
 settings.py
 static/mitre.json
 static/tokendate.txt
+docs/_build
