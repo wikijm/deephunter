@@ -5,7 +5,7 @@ Description
 ***********
 The VirusTotal (VT) IP Checker is taking a list of IP addresses, submits them to the VirusTotal database, and outputs results in a table with links to VT, whois information (when you mouse over IPs), the number of malicious detections and the number of suspicious detections. 
 
-.. image:: img/tools_vt_ip_checker.png
+.. image:: ../img/tools_vt_ip_checker.png
   :width: 1000
   :alt: img
 

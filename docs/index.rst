@@ -10,7 +10,6 @@ Contents
 ########
 
 .. toctree::
-   :maxdepth: 2
    :caption: Contents:
   
    intro
@@ -18,23 +17,8 @@ Contents
    authentication
    scripts
    settings
-   usage_login_and_menu
-   usage_analytics
-   usage_trend
-   usage_timeline
-   usage_netview
-   reports_stats
-   reports_perfs
-   reports_endpoints
-   reports_mitre_coverage
-   reports_missing_mitre
-   reports_disabled_analytics
-   reports_query_error
-   tools_lol_drivers_hash_checker
-   tools_vt_hash_checker
-   tools_vt_ip_checker
-   tools_whois
-   tools_mb_hash_checker.rst
-   tools_develop_your_own
+   usage/index
+   reports/index
+   tools/index
    admin
    support

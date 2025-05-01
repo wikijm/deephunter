@@ -7,7 +7,7 @@ Interface
 *********
 Refer to the objects number for details.
 
-.. image:: img/analytics_interface.jpg
+.. image:: ../img/analytics_interface.jpg
   :width: 1500
   :alt: analytics interface
 
@@ -75,14 +75,14 @@ Selected filters
 ****************
 List of applied filters. Click on the cross sign to remove a specific filter.
 
-.. image:: img/analytics_filters.png
+.. image:: ../img/analytics_filters.png
   :alt: analytics filters
 
 Available filters
 *****************
 The list of all possible filters, broken down into sections. Expand a section and select a filter. It will be immediately added to the list of selected filters and the page will refresh. You can add as many filters as you want. Filters from the same section are applied as a list of values (for example, if you select "Windows" and "Linux" as "Target OS", it will show the list of threat hunting analytics that cover "Windows" or "Linux").
 
-.. image:: img/analytics_filters_available.png
+.. image:: ../img/analytics_filters_available.png
   :alt: analytics filters available
 
 Star rules synchronization

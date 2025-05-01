@@ -3,7 +3,7 @@ Reports: Threat Huntig Analytics Performance
 
 This report shows the performance of your Threat Hunting Analytics. It's useful to highlight queries you may need to optimize.
 
-.. image:: img/reports_perfs.png
+.. image:: ../img/reports_perfs.png
   :width: 1500
   :alt: img
 

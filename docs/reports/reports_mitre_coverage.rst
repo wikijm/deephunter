@@ -3,7 +3,7 @@ Reports: Current MITRE coverage
 
 This report shows your current MITRE coverage (provided threat hunting analytics are correctly mapped in DeepHunter).
 
-.. image:: img/reports_mitre_coverage.png
+.. image:: ../img/reports_mitre_coverage.png
   :alt: Reports current MITRE coverage
 
 Unmapped techniques appear in grey and mapped ones appear in green. All boxes are links that point to techniques on the MITRE website.

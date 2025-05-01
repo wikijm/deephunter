@@ -4,7 +4,9 @@ from django.conf import settings
 from time import sleep
 from ldap3 import Server, Connection, ALL
 from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect, FileResponse, JsonResponse
 from django.db.models import Q, Sum
 from urllib.parse import quote, quote_plus
@@ -168,7 +170,11 @@ def index(request):
             else:
                 queries = queries.filter(query_error=False)
                 posted_filters['queryerror'] = 0
-    
+
+        if 'created_by' in request.POST:
+            queries = queries.filter(created_by__pk__in=request.POST.getlist('created_by'))
+            posted_filters['created_by'] = request.POST.getlist('created_by')
+
     for query in queries:
         #snapshot = Snapshot.objects.filter(query=query, date__gt=datetime.today()-timedelta(days=1)).order_by('date')
         snapshot = Snapshot.objects.filter(query=query, date=datetime.today()-timedelta(days=1)).order_by('date')
@@ -254,6 +260,7 @@ def index(request):
         'threat_names': ThreatName.objects.all(),
         'mitre_tactics': MitreTactic.objects.all(),
         'mitre_techniques': MitreTechnique.objects.all(),
+        'created_by': User.objects.filter(id__in=Query.objects.exclude(created_by__isnull=True).values('created_by').distinct()),
         'posted_search': posted_search,
         'posted_filters': posted_filters,
         'custom_fields': custom_fields,
@@ -750,6 +757,7 @@ and dst.ip.address != '127.0.0.1'
 
 @login_required
 def about(request):
+    messages.add_message(request, messages.INFO, "DeepHunter will soon become ARTHIX!")
     
     # local version
     with open(f'{STATIC_PATH}/VERSION', 'r') as f:
@@ -759,3 +767,8 @@ def about(request):
         'version': version
         }
     return render(request, 'about.html', context)
+
+@login_required
+def notifications(request):
+    context = {}
+    return render(request, 'notifications.html', context)

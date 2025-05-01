@@ -5,7 +5,7 @@ Description
 ***********
 The VirusTotal (VT) Hash Checker is taking a list of file hashes (MD5, SHA1, SHA256), submits them to the VirusTotal database, and outputs results in a table with links to VT, a "found" flag that indicates whether each hash is known by VT, the number of malicious detections and the number of suspicious detections. 
 
-.. image:: img/tools_vt_hash_checker.png
+.. image:: ../img/tools_vt_hash_checker.png
   :width: 1000
   :alt: img
 

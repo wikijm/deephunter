@@ -5,7 +5,7 @@ Description
 ***********
 This report shows a list of the top 20 endpoints (highest weighted scores) identified in the last campaign.
 
-.. image:: img/reports_endpoints.png
+.. image:: ../img/reports_endpoints.png
   :width: 1000
   :alt: img
 

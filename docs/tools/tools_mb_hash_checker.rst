@@ -1,11 +1,11 @@
 Tools: MalwareBazaar Hash Checker
-##############################
+#################################
 
 Description
 ***********
 The MalwareBazaar (MB) Hash Checker is taking a list of file hashes (SHA256), submits them to the MalwareBazaar database, and outputs results in a table with links to MalwareBazaar, a "found" flag that indicates whether each hash is known by MalwareBazaar, the number of malicious detections and the number of suspicious detections. 
 
-.. image:: img/tools_mb_hash_checker.png
+.. image:: ../img/tools_mb_hash_checker.png
   :width: 1000
   :alt: img
 

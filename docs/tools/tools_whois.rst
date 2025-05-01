@@ -5,7 +5,7 @@ Description
 ***********
 This tool is performing a Whois query against the whois.com website. Notice that it will fail sometimes due to captcha protections.
 
-.. image:: img/tools_whois.png
+.. image:: ../img/tools_whois.png
   :width: 1000
   :alt: img
 

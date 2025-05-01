@@ -298,10 +298,11 @@ Now, create the celery user and group.
 Create the directories and fix permissions:
 
 .. code-block:: sh
-        $ sudo mkdir /var/run/celery/
-        $ sudo chown celery:celery /var/run/celery/
-        $ sudo mkdir /var/log/celery/
-        $ sudo chown celery:celery /var/log/celery/
+
+	$ sudo mkdir /var/run/celery/
+	$ sudo chown celery:celery /var/run/celery/
+	$ sudo mkdir /var/log/celery/
+	$ sudo chown celery:celery /var/log/celery/
 	$ chmod -R 755 /data
 	$ chmod 666 /data/deephunter/campaigns.log 
 	$ chmod 666 /data/deephunter/static/mitre.json 

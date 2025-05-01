@@ -15,4 +15,5 @@ urlpatterns = [
     path('<int:query_id>/deletestats/', views.deletestats, name='deletestats'),
     path('netview', views.netview, name='netview'),
     path('about', views.about, name='about'),
+    path('notifications', views.notifications, name='notifications'),
 ]

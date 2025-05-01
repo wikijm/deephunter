@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="/static/bootstrap_table_expandable/bootstrap-table-expandable.css">
 <link rel="stylesheet" href="/static/jquery_table_sorter/theme.materialize.min.css" />
 <link rel="stylesheet" href="/static/jquery_table_sorter/theme.default.min.css" />
-<link rel="stylesheet" href="/static/fontawesome/font-awesome.min.css" />
+<!--link rel="stylesheet" href="/static/fontawesome/font-awesome.min.css" /-->
 <link rel="stylesheet" href="/static/css/list_queries.css" />
 
 <script src="/static/jquery/jquery.min.js"></script>
@@ -136,6 +136,11 @@
 				{% else %}
 					<button class="button_filter" id="button_checkqueryerror_0">QUERY_ERROR:no&nbsp;&nbsp;<b>x</b></button>
 				{% endif %}
+			{% endif %}
+			{% if posted_filters.created_by %}
+				{% for v in posted_filters.created_by %}
+					<button class="button_filter" id="button_checkcreatedby_{{ v }}">AUTHOR:{{ v|useridtoname }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
 			{% endif %}
 		</div>
 	{% endif %}
@@ -372,7 +377,18 @@
 			</div>
 
 		</td></tr>
-		
+
+		<tr><td><div class="filter">Created by</div></td></tr>
+		<tr><td>
+			{% for user in created_by %}
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkcreatedby{{ user.id }}" name="created_by" value="{{ user.id }}"
+					{% if user.id|slugify in posted_filters.created_by %} checked{% endif %}>
+				<label class="form-check-label" for="checkcreatedby{{ user.id }}">{{ user.username }}</label>
+			</div>
+			{% endfor %}
+		</td></tr>		
+
 	</tbody>
 	</table>
 	</form>

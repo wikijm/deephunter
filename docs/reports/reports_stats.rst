@@ -3,7 +3,7 @@ Reports: Stats
 
 This report shows graphs that monitor the performance of DeepHunter.
 
-.. image:: img/reports_stats.png
+.. image:: ../img/reports_stats.png
   :width: 1500
   :alt: img
 

@@ -11,13 +11,19 @@ admin.site.index_title = 'DeepHunter_'
 CUSTOM_FIELDS = settings.CUSTOM_FIELDS
 
 class QueryHistoryAdmin(SimpleHistoryAdmin):
-    list_display = ('name', 'update_date', 'pub_status', 'confidence', 'relevance', 'run_daily', 'run_daily_lock', 'star_rule', 'dynamic_query', 'query_error', 'maxhosts_count', 'query')
-    list_filter = ['pub_status', 'confidence', 'relevance', 'run_daily', 'run_daily_lock', 'star_rule', 'maxhosts_count', 'dynamic_query', 'query_error', 'mitre_techniques', 'mitre_techniques__mitre_tactic', 'threats__name', 'actors__name', 'target_os', 'tags__name']
+    list_display = ('name', 'update_date', 'created_by', 'pub_status', 'confidence', 'relevance', 'run_daily', 'run_daily_lock', 'star_rule', 'dynamic_query', 'query_error', 'maxhosts_count', 'query')
+    list_filter = ['pub_status', 'created_by', 'confidence', 'relevance', 'run_daily', 'run_daily_lock', 'star_rule', 'maxhosts_count', 'dynamic_query', 'query_error', 'mitre_techniques', 'mitre_techniques__mitre_tactic', 'threats__name', 'actors__name', 'target_os', 'tags__name']
     search_fields = ['name', 'description', 'notes', 'emulation_validation']
     filter_horizontal = ('mitre_techniques', 'threats', 'actors', 'target_os', 'vulnerabilities', 'tags')
     history_list_display = ['query', 'columns']
     exclude = ('query_error', 'query_error_message')
     save_as = True
+
+    def save_model(self, request, obj, form, change): 
+        if not change:
+            # If the object is being created, set the created_by field to the current user
+            obj.created_by = request.user
+        return super().save_model(request, obj, form, change)
 
 class SnapshotAdmin(admin.ModelAdmin):
     list_display = ('get_campaign', 'query', 'date', 'runtime', 'hits_count', 'hits_endpoints',)

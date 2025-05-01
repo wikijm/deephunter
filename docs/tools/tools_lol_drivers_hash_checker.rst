@@ -5,7 +5,7 @@ Description
 ***********
 This tool takes a list of SHA256 hashes and compares them to the `LOL Drivers <https://www.loldrivers.io/>`_ database. It will output the list of hashes found in the LOL Drivers database.
 
-.. image:: img/tools_lol_driver_hash_checker.png
+.. image:: ../img/tools_lol_driver_hash_checker.png
   :width: 1000
   :alt: img
 

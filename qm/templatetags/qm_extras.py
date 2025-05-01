@@ -1,6 +1,7 @@
 from django import template
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import stringfilter
+from django.contrib.auth.models import User
 from qm.models import Country, TargetOs, ThreatActor, ThreatName, Vulnerability, MitreTactic, MitreTechnique, Tag
 from django.conf import settings
 
@@ -92,6 +93,11 @@ def techniqueidtoname(id):
 def techniqueidtotitle(id):
     v = get_object_or_404(MitreTechnique, pk=id)
     return v.name
+
+@register.filter
+def useridtoname(id):
+    v = get_object_or_404(User, pk=id)
+    return v.username
 
 @register.filter
 def confidencecolor(confidence):

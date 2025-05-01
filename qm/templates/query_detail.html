@@ -24,7 +24,8 @@
 {% endif %}
 
 <div class="ml40">
-	<b>Created on: </b>{{ q.pub_date }}
+	<b>Created by: </b>{% if q.created_by %}{{ q.created_by }}{% else %}-{% endif %}
+	&nbsp;|&nbsp;<b>Created on: </b>{{ q.pub_date }}
 	&nbsp;|&nbsp;<b>Last modified: </b>{{ q.update_date }}
 	&nbsp;[<a href="/admin/qm/query/{{ q.id }}/history/" target="_blank">history</a>]
 </div>
