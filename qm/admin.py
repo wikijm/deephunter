@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Country, TargetOs, Vulnerability, MitreTactic, MitreTechnique, ThreatName, ThreatActor, Query, Snapshot, Campaign, Endpoint, Tag, CeleryStatus
+from .models import Country, TargetOs, Vulnerability, MitreTactic, MitreTechnique, ThreatName, ThreatActor, Query, Snapshot, Campaign, Endpoint, Tag, CeleryStatus, Category
 from django.contrib.admin.models import LogEntry
 from simple_history.admin import SimpleHistoryAdmin
 from django.conf import settings
@@ -11,8 +11,8 @@ admin.site.index_title = 'DeepHunter_'
 CUSTOM_FIELDS = settings.CUSTOM_FIELDS
 
 class QueryHistoryAdmin(SimpleHistoryAdmin):
-    list_display = ('name', 'update_date', 'created_by', 'pub_status', 'confidence', 'relevance', 'run_daily', 'run_daily_lock', 'star_rule', 'dynamic_query', 'query_error', 'maxhosts_count', 'query')
-    list_filter = ['pub_status', 'created_by', 'confidence', 'relevance', 'run_daily', 'run_daily_lock', 'star_rule', 'maxhosts_count', 'dynamic_query', 'query_error', 'mitre_techniques', 'mitre_techniques__mitre_tactic', 'threats__name', 'actors__name', 'target_os', 'tags__name']
+    list_display = ('name', 'update_date', 'created_by', 'pub_status', 'category', 'confidence', 'relevance', 'run_daily', 'run_daily_lock', 'star_rule', 'dynamic_query', 'query_error', 'maxhosts_count', 'query')
+    list_filter = ['pub_status', 'created_by', 'category', 'confidence', 'relevance', 'run_daily', 'run_daily_lock', 'star_rule', 'maxhosts_count', 'dynamic_query', 'query_error', 'mitre_techniques', 'mitre_techniques__mitre_tactic', 'threats__name', 'actors__name', 'target_os', 'tags__name']
     search_fields = ['name', 'description', 'notes', 'emulation_validation']
     filter_horizontal = ('mitre_techniques', 'threats', 'actors', 'target_os', 'vulnerabilities', 'tags')
     history_list_display = ['query', 'columns']
@@ -120,6 +120,9 @@ class LogEntryAdmin(admin.ModelAdmin):
 class CeleryStatusAdmin(admin.ModelAdmin):
     list_display = ('query', 'date', 'progress')
 
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'short_name', 'description')
+
 admin.site.register(LogEntry, LogEntryAdmin)
 admin.site.register(Tag)
 admin.site.register(Country)
@@ -134,3 +137,4 @@ admin.site.register(Snapshot, SnapshotAdmin)
 admin.site.register(Campaign, CampaignAdmin)
 admin.site.register(Endpoint, EndpointAdmin)
 admin.site.register(CeleryStatus, CeleryStatusAdmin)
+admin.site.register(Category, CategoryAdmin)

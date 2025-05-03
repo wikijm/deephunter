@@ -2,7 +2,7 @@ from django import template
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import stringfilter
 from django.contrib.auth.models import User
-from qm.models import Country, TargetOs, ThreatActor, ThreatName, Vulnerability, MitreTactic, MitreTechnique, Tag
+from qm.models import Country, TargetOs, ThreatActor, ThreatName, Vulnerability, MitreTactic, MitreTechnique, Tag, Category
 from django.conf import settings
 
 register = template.Library()
@@ -33,6 +33,11 @@ def cvecolor(base_score):
         myclass = 'none'
     
     return myclass
+
+@register.filter
+def categoryidtoname(id):
+    v = get_object_or_404(Category, pk=id)
+    return v.name
 
 @register.filter
 def osidtoname(id):

@@ -13,7 +13,7 @@ from urllib.parse import quote, quote_plus
 from datetime import datetime, timedelta, date
 import numpy as np
 from scipy import stats
-from .models import Country, Query, Snapshot, Campaign, TargetOs, Vulnerability, ThreatActor, ThreatName, MitreTactic, MitreTechnique, Endpoint, Tag, CeleryStatus
+from .models import Country, Query, Snapshot, Campaign, TargetOs, Vulnerability, ThreatActor, ThreatName, MitreTactic, MitreTechnique, Endpoint, Tag, CeleryStatus, Category
 from .tasks import regenerate_stats
 import ipaddress
 import re
@@ -61,6 +61,10 @@ def index(request):
             )
             posted_search = request.POST['search']
             
+        if 'categories' in request.POST:
+            queries = queries.filter(category__pk__in=request.POST.getlist('categories'))
+            posted_filters['categories'] = request.POST.getlist('categories')
+
         if 'target_os' in request.POST:
             queries = queries.filter(target_os__pk__in=request.POST.getlist('target_os'))
             posted_filters['target_os'] = request.POST.getlist('target_os')
@@ -260,6 +264,7 @@ def index(request):
         'threat_names': ThreatName.objects.all(),
         'mitre_tactics': MitreTactic.objects.all(),
         'mitre_techniques': MitreTechnique.objects.all(),
+        'categories': Category.objects.all(),
         'created_by': User.objects.filter(id__in=Query.objects.exclude(created_by__isnull=True).values('created_by').distinct()),
         'posted_search': posted_search,
         'posted_filters': posted_filters,

@@ -92,6 +92,17 @@ class Tag(models.Model):
     class Meta:
         ordering = ['name']
 
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    short_name = models.CharField(max_length=4, unique=True)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name_plural = "categories"
+
 class Query(models.Model):
     STATUS_CHOICES = [
         ('DRAFT', 'Draft'),
@@ -111,6 +122,7 @@ class Query(models.Model):
     ]
     name = models.CharField(max_length=200, unique=True)
     description = models.TextField(blank=True, help_text="Description, Markdown syntax")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
     notes = models.TextField(blank=True, help_text="Threat hunting notes, Markdown syntax")
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
     pub_date = models.DateTimeField(auto_now_add=True)

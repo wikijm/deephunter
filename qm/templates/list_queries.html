@@ -40,6 +40,11 @@
 	<div class="floatrightpadding">{% if posted_search or posted_filters %}[<a href="/qm/">remove filters</a>]{% endif %}</div>
 	{% if posted_filters %}
 		<div id="divfilters">
+			{% if posted_filters.categories %}
+				{% for v in posted_filters.categories %}
+					<button class="button_filter" id="button_checkcategory_{{ v }}">CAT:{{ v|categoryidtoname }}&nbsp;&nbsp;<b>x</b></button>
+				{% endfor %}
+			{% endif %}
 			{% if posted_filters.target_os %}
 				{% for v in posted_filters.target_os %}
 					<button class="button_filter" id="button_checkos_{{ v }}">OS:{{ v|osidtoname }}&nbsp;&nbsp;<b>x</b></button>
@@ -147,6 +152,17 @@
 	<table class="table table-expandable">
 	<tbody>
 	
+		<tr><td><div class="filter">Categories</div></td></tr>
+		<tr><td>
+			{% for category in categories %}
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="checkcategory{{ category.id }}" name="categories" value="{{ category.id }}"
+					{% if category.id|slugify in posted_filters.categories %} checked{% endif %}>
+				<label class="form-check-label" for="checkcategory{{ category.id }}" title="{{ category.description }}"">{{ category.name }}</label>
+			</div>
+			{% endfor %}
+		</td></tr>
+
 		<tr><td><div class="filter">Target OS</div></td></tr>
 		<tr><td>
 			{% for os in target_os %}
@@ -403,6 +419,7 @@
       <th width="50px" data-sort="false"><!--toggle--></th>
         <th>Name</th>
 		<th>Pub status</th>
+		<th>Cat.</th>
 		<th>Confidence</th>
 		<th>Relevance</th>
         <th>Run daily</th>
@@ -423,6 +440,7 @@
         <td><button id="b_{{ q.id }}" class="btn btn-default toggle-row"><i class="fa fa-chevron-right"></i></button></td>
         <td>{{ q.name }}</td>
         <td>{{ q.pub_status }}</td>
+        <td>{{ q.category.short_name }}</td>
         <td class="acenter"><div class="confidence_{{ q.confidence }}">{{ q.confidence|confidencelabel }}</div></td>
         <td class="acenter"><div class="confidence_{{ q.relevance }}">{{ q.relevance|confidencelabel }}</div></td>
 		<td class="acenter">{% if q.run_daily %}{% if q.run_daily_lock %}<img src="/static/images/lock.png" width="20" />{% else %}<img src="/static/admin/img/icon-yes.svg" />{% endif %}{% else %}<img src="/static/admin/img/icon-no.svg" />{% endif %}</td>
@@ -443,7 +461,7 @@
 		{% endif %}
     </tr>
     <tr class="collapse row-expanded panel" data-row-number="{{ q.name }}">
-        <td colspan="{{ custom_fields|length|add:12 }}">
+        <td colspan="{{ custom_fields|length|add:13 }}">
 			<div id=d_{{ q.id }}></div>
 	    </td>
       </tr>
