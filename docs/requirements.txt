@@ -1,2 +1,3 @@
 sphinx-togglebutton
+sphinx-copybutton
 sphinx-book-theme
