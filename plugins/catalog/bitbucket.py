@@ -12,11 +12,14 @@ from requests.auth import HTTPBasicAuth
 
 _globals_initialized = False
 def init_globals():
-    global DEBUG, PROXY
+    global DEBUG, PROXY, HTTP_TIMEOUT
     global _globals_initialized
     if not _globals_initialized:
         DEBUG = False
         PROXY = settings.PROXY
+        # Prevent connector calls from hanging indefinitely on network issues.
+        # Tuple form is (connect timeout seconds, read timeout seconds).
+        HTTP_TIMEOUT = getattr(settings, "REPO_CONNECTOR_HTTP_TIMEOUT", (5, 30))
         _globals_initialized = True
 
 def get_requirements():
@@ -31,10 +34,16 @@ def parse_bitbucket_url(url):
 
     parsed = urlparse(url)
     parts = parsed.path.strip('/').split('/')
+    # Expected:
+    #   https://bitbucket.org/<owner>/<repo>/src/<branch>/<optional path...>
+    if len(parts) < 4 or parts[2] != 'src':
+        raise ValueError(
+            "Invalid Bitbucket URL. Expected: https://bitbucket.org/<owner>/<repo>/src/<branch>/<path>"
+        )
     repo_owner = parts[0]
     repo_slug = parts[1]
     branch = parts[3]
-    path = parts[4] if len(parts) > 4 else ''
+    path = '/'.join(parts[4:]) if len(parts) > 4 else ''
     return repo_owner, repo_slug, branch, path
 
 def get_bitbucket_contents(repo):
@@ -46,20 +55,47 @@ def get_bitbucket_contents(repo):
     init_globals()
 
     full = []
-    repo_owner, repo_slug, branch, path = parse_bitbucket_url(repo.url)
+    try:
+        repo_owner, repo_slug, branch, path = parse_bitbucket_url(repo.url)
+    except Exception as e:
+        add_error_notification(f"Bitbucket connector: invalid repo URL {repo.url}: {e}")
+        return []
     if path:
         api_url = f"https://api.bitbucket.org/2.0/repositories/{repo_owner}/{repo_slug}/src/{branch}/{path}"
     else:
         api_url = f"https://api.bitbucket.org/2.0/repositories/{repo_owner}/{repo_slug}/src/{branch}/"
 
-    if repo.token:
-        response = requests.get(api_url, auth=HTTPBasicAuth(repo_owner, repo.token), proxies=PROXY)
-    else:
-        response = requests.get(api_url, proxies=PROXY)
+    auth = HTTPBasicAuth(repo_owner, repo.token) if repo.token else None
+    try:
+        response = requests.get(
+            api_url,
+            auth=auth,
+            proxies=PROXY,
+            timeout=HTTP_TIMEOUT,
+        )
+    except requests.Timeout as e:
+        add_error_notification(
+            f"Bitbucket connector: timeout calling Bitbucket API: {api_url} "
+            f"(repo: {repo.url}, timeout={HTTP_TIMEOUT}): {e}"
+        )
+        return []
+    except requests.RequestException as e:
+        add_error_notification(
+            f"Bitbucket connector: failed to call Bitbucket API: {api_url} "
+            f"(repo: {repo.url}, timeout={HTTP_TIMEOUT}): {e}"
+        )
+        return []
     
     if response.status_code == 200:
-        data = response.json()
-        for item in data.get('values'):
+        try:
+            data = response.json()
+        except ValueError as e:
+            add_error_notification(
+                f"Bitbucket connector: invalid JSON response from {api_url} (repo: {repo.url}): {e}"
+            )
+            return []
+
+        for item in data.get('values', []):
             if item['type'] == 'commit_file' and Path(item['path']).suffix == ".json":
                 full.append({
                     "name": item['path'],
@@ -67,14 +103,47 @@ def get_bitbucket_contents(repo):
                 })
 
         # Bitbucket is paginating results. The "next" key returns the URL of the next page results
-        while "next" in response.json():
-            api_url = response.json()["next"]
-            if repo.token:
-                response = requests.get(api_url, auth=HTTPBasicAuth(repo_owner, repo.token), proxies=PROXY)
-            else:
-                response = requests.get(api_url, proxies=PROXY)
-            data = response.json()
-            for item in data.get('values'):
+        while data.get("next"):
+            api_url = data["next"]
+            try:
+                response = requests.get(
+                    api_url,
+                    auth=auth,
+                    proxies=PROXY,
+                    timeout=HTTP_TIMEOUT,
+                )
+            except requests.Timeout as e:
+                add_error_notification(
+                    f"Bitbucket connector: timeout calling Bitbucket API: {api_url} "
+                    f"(repo: {repo.url}, timeout={HTTP_TIMEOUT}): {e}"
+                )
+                break
+            except requests.RequestException as e:
+                add_error_notification(
+                    f"Bitbucket connector: failed to call Bitbucket API: {api_url} "
+                    f"(repo: {repo.url}, timeout={HTTP_TIMEOUT}): {e}"
+                )
+                break
+
+            if response.status_code != 200:
+                details = (response.text or "").strip().replace("\n", " ")
+                if len(details) > 300:
+                    details = details[:300] + "..."
+                add_error_notification(
+                    f"Bitbucket connector: error (status code {response.status_code}) calling {api_url} "
+                    f"(repo: {repo.url}). Response: {details}"
+                )
+                break
+
+            try:
+                data = response.json()
+            except ValueError as e:
+                add_error_notification(
+                    f"Bitbucket connector: invalid JSON response from {api_url} (repo: {repo.url}): {e}"
+                )
+                break
+
+            for item in data.get('values', []):
                 if item['type'] == 'commit_file' and Path(item['path']).suffix == ".json":
                     full.append({
                         "name": item['path'],
@@ -84,5 +153,11 @@ def get_bitbucket_contents(repo):
         return full
 
     # In case of an error
-    add_error_notification(f"Bitbucket connector: error (status code {response.status_code}) connecting to {repo.url}")
+    details = (response.text or "").strip().replace("\n", " ")
+    if len(details) > 300:
+        details = details[:300] + "..."
+    add_error_notification(
+        f"Bitbucket connector: error (status code {response.status_code}) calling {api_url} "
+        f"(repo: {repo.url}). Response: {details}"
+    )
     return []

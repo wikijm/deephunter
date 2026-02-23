@@ -1,5 +1,5 @@
 from celery import shared_task
-from notifications.utils import add_info_notification, add_success_notification, add_debug_notification
+from notifications.utils import add_info_notification, add_success_notification, add_debug_notification, add_error_notification
 from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
 from django.conf import settings
@@ -25,6 +25,7 @@ for loader, module_name, is_pkg in pkgutil.iter_modules(plugins.__path__):
     all_connectors[module_name] = module
 
 PROXY = settings.PROXY
+REPO_IMPORT_HTTP_TIMEOUT = getattr(settings, "REPO_IMPORT_HTTP_TIMEOUT", (5, 60))
 REPO_IMPORT_CREATE_FIELD_IF_NOT_EXIST = settings.REPO_IMPORT_CREATE_FIELD_IF_NOT_EXIST
 REPO_IMPORT_DEFAULT_STATUS = settings.REPO_IMPORT_DEFAULT_STATUS
 REPO_IMPORT_DEFAULT_RUN_DAILY = settings.REPO_IMPORT_DEFAULT_RUN_DAILY
@@ -67,10 +68,27 @@ def import_repo_task(repo_id, mode, selected_analytics=None):
             stop = False
             update_analytic = False
 
-            results = requests.get(
-                content.get('download_url'),
-                proxies=PROXY
-            )
+            download_url = content.get('download_url')
+            try:
+                results = requests.get(
+                    download_url,
+                    proxies=PROXY,
+                    timeout=REPO_IMPORT_HTTP_TIMEOUT,
+                )
+            except requests.Timeout as e:
+                report.append({"type": "error", "message": f"HTTP timeout fetching {download_url} (timeout={REPO_IMPORT_HTTP_TIMEOUT}): {e}"})
+                add_error_notification(
+                    f"Repo import: timeout downloading {download_url} for repo '{repo.name}' (timeout={REPO_IMPORT_HTTP_TIMEOUT}): {e}"
+                )
+                stop = True
+                results = None
+            except requests.RequestException as e:
+                report.append({"type": "error", "message": f"HTTP error fetching {download_url}: {e}"})
+                add_error_notification(
+                    f"Repo import: failed downloading {download_url} for repo '{repo.name}': {e}"
+                )
+                stop = True
+                results = None
             
             if DEBUG:
                 add_debug_notification(f'Results: {results}')
@@ -78,7 +96,15 @@ def import_repo_task(repo_id, mode, selected_analytics=None):
             # Validate the JSON format
             imported_analytic = {}
             try:
-                imported_analytic = results.json()
+                if not stop and results is not None and results.status_code != 200:
+                    report.append({"type": "error", "message": f"HTTP error {results.status_code} fetching {download_url}"})
+                    add_error_notification(
+                        f"Repo import: HTTP {results.status_code} downloading {download_url} for repo '{repo.name}'"
+                    )
+                    stop = True
+
+                if not stop and results is not None:
+                    imported_analytic = results.json()
                 if DEBUG:
                     add_debug_notification(f'Successfully got results in JSON: {imported_analytic}')
 

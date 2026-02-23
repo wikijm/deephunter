@@ -11,11 +11,14 @@ from notifications.utils import add_error_notification
 
 _globals_initialized = False
 def init_globals():
-    global DEBUG, PROXY
+    global DEBUG, PROXY, HTTP_TIMEOUT
     global _globals_initialized
     if not _globals_initialized:
         DEBUG = False
         PROXY = settings.PROXY
+        # Prevent connector calls from hanging indefinitely on network issues.
+        # Tuple form is (connect timeout seconds, read timeout seconds).
+        HTTP_TIMEOUT = getattr(settings, "REPO_CONNECTOR_HTTP_TIMEOUT", (5, 30))
         _globals_initialized = True
 
 def get_requirements():
@@ -61,7 +64,25 @@ def get_github_contents(repo):
     else:
         headers = {}
     
-    response = requests.get(api_url, headers=headers, proxies=PROXY)
+    try:
+        response = requests.get(
+            api_url,
+            headers=headers,
+            proxies=PROXY,
+            timeout=HTTP_TIMEOUT,
+        )
+    except requests.Timeout as e:
+        add_error_notification(
+            f"GitHub connector: timeout calling GitHub API: {api_url} "
+            f"(repo: {repo.url}, timeout={HTTP_TIMEOUT}): {e}"
+        )
+        return []
+    except requests.RequestException as e:
+        add_error_notification(
+            f"GitHub connector: failed to call GitHub API: {api_url} "
+            f"(repo: {repo.url}, timeout={HTTP_TIMEOUT}): {e}"
+        )
+        return []
     
     if response.status_code == 200:
         data = response.json()
@@ -75,6 +96,12 @@ def get_github_contents(repo):
         ]
 
     # In case of an error
-    add_error_notification(f"GitHub connector: error (status code {response.status_code}) connecting to {repo.url}")
+    details = (response.text or "").strip().replace("\n", " ")
+    if len(details) > 300:
+        details = details[:300] + "..."
+    add_error_notification(
+        f"GitHub connector: error (status code {response.status_code}) calling {api_url} "
+        f"(repo: {repo.url}). Response: {details}"
+    )
     return []
     
